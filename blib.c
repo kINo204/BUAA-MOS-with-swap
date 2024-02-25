@@ -1,7 +1,18 @@
 #include <blib.h>
 
 size_t strlen(const char *s) {
-    panic("please implement");
+    if (s == NULL)
+    {
+        panic("strlen: NULL pointer");
+        return -1;
+    }
+
+    int i = 0;
+    while (s[i] != '\0')
+    {
+        i++;
+    }
+    return i;
 }
 
 char *strcpy(char *dst, const char *src) {
@@ -42,12 +53,40 @@ int strncmp(const char *s1, const char *s2, size_t n) {
     return 0;
 }
 
+// Not rubust at the time.
 char *strcat(char *dst, const char *src) {
-    panic("please implement");
+    char *org = dst; // Reserved for return
+
+    // Instead of calling strlen(), directly use the loop to minimize cost
+    while (*dst != '\0')
+        dst++;
+
+    char *ps = src;
+    while (*ps != '\0')
+    {
+        *dst++ = *ps++;
+    } 
+    *dst = '\0';
+
+    return org;
 }
 
+// Not rubust at the time.
 char *strncat(char *dst, const char *src, size_t n){
-    panic("please implement");
+    char *org = dst; // Reserved for return
+
+    // Instead of calling strlen(), directly use the loop to minimize cost
+    while (*dst != '\0')
+        dst++;
+    
+    char *ps = src;
+    for (int i = 0; i < n && *ps != '\0'; i++)
+    {
+        *dst++ = *ps++;
+    }
+    *dst = '\0';
+
+    return org;
 }
 
 char *strchr(const char *str, int character){
@@ -61,8 +100,30 @@ char *strchr(const char *str, int character){
     return NULL;
 }
 
-char* strsep(char** stringp, const char* delim){
-    panic("please implement");
+char *strsep(char** stringp, const char *delim){
+    char *org = *stringp;
+    if (org == NULL)
+    {
+        return NULL;
+    }
+
+    while (**stringp != '\0')
+    {
+        char *p = delim;
+        while (*p != '\0')
+        {
+            if (*p == **stringp)
+            {
+                **stringp = '\0';
+                (*stringp)++;
+                return org;
+            }
+            p++;
+        }
+        (*stringp)++;
+    }
+    *stringp = NULL;
+    return org;
 }
 
 
