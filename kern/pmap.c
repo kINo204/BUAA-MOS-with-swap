@@ -251,19 +251,16 @@ int page_insert(Pde *pgdir, u_int asid, struct Page *pp, u_long va, u_int perm) 
 	}
 
 	/* Step 2: Flush TLB with 'tlb_invalidate'. */
-	/* Exercise 2.7: Your code here. (1/3) */
 	tlb_invalidate(asid, va);
 
 	/* Step 3: Re-get or create the page table entry. */
 	/* If failed to create, return the error. */
-	/* Exercise 2.7: Your code here. (2/3) */
 	if (pgdir_walk(pgdir, va, 1, &pte) == -E_NO_MEM) {
 		return -E_NO_MEM;
 	}
 
 	/* Step 4: Insert the page to the page table entry with 'perm | PTE_C_CACHEABLE | PTE_V'
 	 * and increase its 'pp_ref'. */
-	/* Exercise 2.7: Your code here. (3/3) */
 	*pte = page2pa(pp) | perm | PTE_C_CACHEABLE | PTE_V;
 	pp->pp_ref++;
 

@@ -8,22 +8,21 @@
 
 extern Pde *cur_pgdir;
 
-LIST_HEAD(Page_list, Page);
-typedef LIST_ENTRY(Page) Page_LIST_entry_t;
+LIST_HEAD(Page_list, Page); // Page_list type(for head of free list of physical pages)
+typedef LIST_ENTRY(Page) Page_LIST_entry_t; // Page_list's node type
 
-struct Page {
-	Page_LIST_entry_t pp_link; /* free list link */
+struct Page { // physical page's management structure
+	Page_LIST_entry_t pp_link; // Page_list's node
 
 	// Ref is the count of pointers (usually in page table entries)
 	// to this page.  This only holds for pages allocated using
 	// page_alloc.  Pages allocated at boot time using pmap.c's "alloc"
 	// do not have valid reference count fields.
-
 	u_short pp_ref;
 };
 
-extern struct Page *pages;
-extern struct Page_list page_free_list;
+extern struct Page *pages; // address of the page array
+extern struct Page_list page_free_list; // head of the free list of physical pages
 
 static inline u_long page2ppn(struct Page *pp) {
 	return pp - pages;
@@ -64,12 +63,39 @@ void mips_init(u_int argc, char **argv, char **penv, u_int ram_low_size);
 void page_init(void);
 void *alloc(u_int n, u_int align, int clear);
 
-int page_alloc(struct Page **pp);
+int page_alloc(struct Page **pp); // allocate the 1st of free list
 void page_free(struct Page *pp);
 void page_decref(struct Page *pp);
+
+/* page_insert:
+* Set the page table entry(in the given page table) of the
+* given virtual address to PTE(physical page, permission bits),
+* and flush TLB entry with the key(virtual address, address
+* space ID) by padding with 0.
+*
+* note: Any nonexist 2nd-level page table page will be created.
+* params:
+* 	- pgdir: address of the page directory
+* 	- va:	 virtual address to insert at
+*	- asid:  current address space ID, used for inferring TLB
+*	- pp: 	 address of the physical page structure to use for the mapping
+* 	- perm:  desired pattern of permission bits
+*/
 int page_insert(Pde *pgdir, u_int asid, struct Page *pp, u_long va, u_int perm);
+
+/* page_lookup:
+* Search in the given page table for the given virtual address, and
+* return the physical page and page table entry if found.
+*
+* note: if the PTE is nonexist, return NULL for the address of Page,
+* 		BUT the returned address of PTE may not be NULL.
+* params:
+* 	- pgdir: address of the page directory
+* 	- va: 	 virtual address to search the page table for
+*	- ppte:  OUTPUT the address of the PTE found
+*/
 struct Page *page_lookup(Pde *pgdir, u_long va, Pte **ppte);
-void page_remove(Pde *pgdir, u_int asid, u_long va);
+void page_remove(Pde *pgdir, u_int asid, u_long va); // flush PTE(pgdir, va) and flush TLB(asid, va)
 
 extern struct Page *pages;
 
