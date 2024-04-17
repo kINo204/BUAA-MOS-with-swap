@@ -4,7 +4,7 @@
 
 /* Lab 2 Key Code "tlb_invalidate" */
 /* Overview:
- *   Invalidate the TLB entry with specified 'asid' and virtual address 'va'.
+ *   Invalidate the TLB entry with specified 'asid' and VPN of virtual address 'va'.
  *
  * Hint:
  *   Construct a new Entry HI and call 'tlb_out' to flush TLB.
@@ -64,7 +64,7 @@ void _do_tlb_refill(u_long *pentrylo, u_int va, u_int asid) {
 		passive_alloc(va, cur_pgdir, asid);
 	}
 
-	ppte = (Pte *)((u_long)ppte & ~0x7);
+	ppte = (Pte *)((u_long)ppte & ~0x7); // 0x7: 2 for a 32bit u_long, 1 for odd/even
 	pentrylo[0] = ppte[0] >> 6;
 	pentrylo[1] = ppte[1] >> 6;
 }

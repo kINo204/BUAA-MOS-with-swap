@@ -24,10 +24,9 @@ void schedule(int yield) {
 	 * 'NULL', or 'e' is not runnable, then we pick up a new env from 'env_sched_list' (list of
 	 * all runnable envs), set 'count' to its priority, and schedule it with 'env_run'. **Panic
 	 * if that list is empty**.
-	 *
-	 * (Note that if 'e' is still a runnable env, we should move it to the tail of
+	 * Note that if 'e' is still a runnable env, we should move it to the tail of
 	 * 'env_sched_list' before picking up another env from its head, or we will schedule the
-	 * head env repeatedly.)
+	 * head env repeatedly.
 	 *
 	 * Otherwise, we simply schedule 'e' again.
 	 *
@@ -35,5 +34,29 @@ void schedule(int yield) {
 	 *   'TAILQ_FIRST', 'TAILQ_REMOVE', 'TAILQ_INSERT_TAIL'
 	 */
 	/* Exercise 3.12: Your code here. */
+	if (yield != 0 || count == 0 || e == NULL || e->env_status != ENV_RUNNABLE)
+	{
+		if (e == NULL && TAILQ_EMPTY(&env_sched_list))
+		{
+			panic("no runnable env");
+		}
 
+		if (e != NULL)
+		{
+			TAILQ_REMOVE(&env_sched_list, e, env_sched_link);
+			if (e->env_status == ENV_RUNNABLE)
+			{
+				TAILQ_INSERT_TAIL(&env_sched_list, e, env_sched_link);
+			}
+		}
+
+		e = TAILQ_FIRST(&env_sched_list);
+		count = e->env_pri;
+		env_run(e);
+	}
+	else
+	{
+		count--;
+		env_run(curenv);
+	}
 }

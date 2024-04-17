@@ -165,7 +165,8 @@ void page_free(struct Page *pp) {
 
 /* Overview:
  *   Given 'pgdir', a pointer to a page directory, 'pgdir_walk' returns a pointer to
- *   the page table entry for virtual address 'va'.
+ *   the page table entry for the page where the virtual address 'va' lies.(Offset
+ * 	 field of the va will be regarded)
  *
  * Pre-Condition:
  *   'pgdir' is a two-level page table structure.
@@ -223,8 +224,9 @@ static int pgdir_walk(Pde *pgdir, u_long va, int create, Pte **ppte) {
 }
 
 /* Overview:
- *   Map the physical page 'pp' at virtual address 'va'. The permission (the low 12 bits) of the
- *   page table entry should be set to 'perm | PTE_C_CACHEABLE | PTE_V'.
+ *   Map the physical page 'pp' at the page where the virtual address
+ *   'va' lies. The permission (the low 12 bits) of the page table entry
+ *   should be set to 'perm | PTE_C_CACHEABLE | PTE_V'.
  *
  * Post-Condition:
  *   Return 0 on success
@@ -269,7 +271,7 @@ int page_insert(Pde *pgdir, u_int asid, struct Page *pp, u_long va, u_int perm) 
 
 /* Lab 2 Key Code "page_lookup" */
 /*Overview:
-    Look up the Page that virtual address `va` map to.
+    Look up the Page that the virtual page where `va` lies map to.
   Post-Condition:
     Return a pointer to corresponding Page, and store it's page table entry to *ppte.
     If `va` doesn't mapped to any Page, return NULL.*/

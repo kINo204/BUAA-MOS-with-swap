@@ -9,11 +9,14 @@
 struct Env envs[NENV] __attribute__((aligned(PAGE_SIZE))); // All environments
 
 struct Env *curenv = NULL;	      // the current env
-static struct Env_list env_free_list; // Free list
 
+static struct Env_list env_free_list; // Free list
 // Invariant: 'env' in 'env_sched_list' iff. 'env->env_status' is 'RUNNABLE'.
 struct Env_sched_list env_sched_list; // Runnable list
 
+// Base page directory: a base/template for user pgdir.
+// Whenever a user pgdir is created, it get a copy of base
+// dir to get started, thus getting all commonly used mappings.
 static Pde *base_pgdir;
 
 static uint32_t asid_bitmap[NASID / 32] = {0};
@@ -61,7 +64,7 @@ static void asid_free(u_int i) {
  *   'pa', 'va' and 'size' are aligned to 'PAGE_SIZE'.
  */
 static void map_segment(Pde *pgdir, u_int asid, u_long pa, u_long va, u_int size, u_int perm) {
-
+	// must be aligned
 	assert(pa % PAGE_SIZE == 0);
 	assert(va % PAGE_SIZE == 0);
 	assert(size % PAGE_SIZE == 0);
@@ -74,7 +77,7 @@ static void map_segment(Pde *pgdir, u_int asid, u_long pa, u_long va, u_int size
 		 *  Use 'pa2page' to get the 'struct Page *' of the physical address.
 		 */
 		/* Exercise 3.2: Your code here. */
-
+		page_insert(pgdir, asid, pa2page(pa + i), va + i, perm);
 	}
 }
 
@@ -88,7 +91,7 @@ static void map_segment(Pde *pgdir, u_int asid, u_long pa, u_long va, u_int size
  *  return e's envid on success
  */
 u_int mkenvid(struct Env *e) {
-	static u_int i = 0;
+	static u_int i = 0; // initialized only in the first call
 	return ((++i) << (1 + LOG2NENV)) | (e - envs);
 }
 
@@ -144,12 +147,18 @@ void env_init(void) {
 	/* Step 1: Initialize 'env_free_list' with 'LIST_INIT' and 'env_sched_list' with
 	 * 'TAILQ_INIT'. */
 	/* Exercise 3.1: Your code here. (1/2) */
+	LIST_INIT(&env_free_list);
+	TAILQ_INIT(&env_sched_list);
 
 	/* Step 2: Traverse the elements of 'envs' array, set their status to 'ENV_FREE' and insert
 	 * them into the 'env_free_list'. Make sure, after the insertion, the order of envs in the
 	 * list should be the same as they are in the 'envs' array. */
-
 	/* Exercise 3.1: Your code here. (2/2) */
+	for (i = NENV - 1; i >= 0; i--)
+	{
+		envs[i].env_status = ENV_FREE;
+		LIST_INSERT_HEAD(&env_free_list, &envs[i], env_link);
+	}
 
 	/*
 	 * We want to map 'UPAGES' and 'UENVS' to *every* user space with PTE_G permission (without
@@ -166,8 +175,8 @@ void env_init(void) {
 	base_pgdir = (Pde *)page2kva(p);
 	map_segment(base_pgdir, 0, PADDR(pages), UPAGES,
 		    ROUND(npage * sizeof(struct Page), PAGE_SIZE), PTE_G);
-	map_segment(base_pgdir, 0, PADDR(envs), UENVS, ROUND(NENV * sizeof(struct Env), PAGE_SIZE),
-		    PTE_G);
+	map_segment(base_pgdir, 0, PADDR(envs),  UENVS,
+			ROUND(NENV  * sizeof(struct Env),  PAGE_SIZE), PTE_G);
 }
 
 /* Overview:
@@ -181,31 +190,39 @@ static int env_setup_vm(struct Env *e) {
 	 * Hint:
 	 *   You can get the kernel address of a specified physical page using 'page2kva'.
 	 */
-	struct Page *p;
+	struct Page *p; // the physical page for the Env block
 	try(page_alloc(&p));
-	/* Exercise 3.3: Your code here. */
+	p->pp_ref++;
+	e->env_pgdir = (Pde*)page2kva(p); // Note: the page2kva(indicating in kseg0)
 
-	/* Step 2: Copy the template page directory 'base_pgdir' to 'e->env_pgdir'. */
+	/* Step 2: Copy part the template page directory 'base_pgdir' to 'e->env_pgdir'. */
+	// NOTE: Mappings of envs and pages object arrays are copied.
+	//       They're between the values UTOP and UVPT.
 	/* Hint:
 	 *   As a result, the address space of all envs is identical in [UTOP, UVPT).
 	 *   See include/mmu.h for layout.
 	 */
+	// note: in the memory copying process, virtual addresses are accessed
 	memcpy(e->env_pgdir + PDX(UTOP), base_pgdir + PDX(UTOP),
 	       sizeof(Pde) * (PDX(UVPT) - PDX(UTOP)));
+	// Now at the VA in part "envs" and "pages"(in usr space) in the page map pointed
+	// by the `e->env_pgdir`, the user progress can access the pages and envs objects.
 
-	/* Step 3: Map its own page table at 'UVPT' with readonly permission.
-	 * As a result, user programs can read its page table through 'UVPT' */
-	e->env_pgdir[PDX(UVPT)] = PADDR(e->env_pgdir) | PTE_V;
+	/* Step 3: Map its own page table e->env_pgdir at VA of 'UVPT' with readonly permission.
+	 * As a result, user programs can read its page table through the VA 'UVPT' */
+	// Note: it's the page table itself that is being accessed, not identical to "page_lookup"!
+	// (page table: the 2nd-level page table)
+	e->env_pgdir[PDX(UVPT)] = PADDR(e->env_pgdir) | PTE_V; // WHAT is the equivilant expression here?
 	return 0;
 }
 
 /* Overview:
- *   Allocate and initialize a new env.
+ *   Allocate and initialize a new struct Env(PCB).
  *   On success, the new env is stored at '*new'.
  *
  * Pre-Condition:
  *   If the new env doesn't have parent, 'parent_id' should be zero.
- *   'env_init' has been called before this function.
+ *   'env_init' should have been called before this function.
  *
  * Post-Condition:
  *   return 0 on success, and basic fields of the new Env are set up.
@@ -223,10 +240,14 @@ int env_alloc(struct Env **new, u_int parent_id) {
 	struct Env *e;
 
 	/* Step 1: Get a free Env from 'env_free_list' */
-	/* Exercise 3.4: Your code here. (1/4) */
+	if (LIST_EMPTY(&env_free_list))
+	{
+		return -E_NO_FREE_ENV;
+	}
+	e = LIST_FIRST(&env_free_list);
 
 	/* Step 2: Call a 'env_setup_vm' to initialize the user address space for this new Env. */
-	/* Exercise 3.4: Your code here. (2/4) */
+	try(env_setup_vm(e));
 
 	/* Step 3: Initialize these fields for the new Env with appropriate values:
 	 *   'env_user_tlb_mod_entry' (lab4), 'env_runs' (lab6), 'env_id' (lab3), 'env_asid' (lab3),
@@ -236,9 +257,11 @@ int env_alloc(struct Env **new, u_int parent_id) {
 	 *   Use 'asid_alloc' to allocate a free asid.
 	 *   Use 'mkenvid' to allocate a free envid.
 	 */
+	e->env_id = mkenvid(e);
+	try(asid_alloc(&(e->env_asid)));
+	e->env_parent_id = parent_id;
 	e->env_user_tlb_mod_entry = 0; // for lab4
 	e->env_runs = 0;	       // for lab6
-	/* Exercise 3.4: Your code here. (3/4) */
 
 	/* Step 4: Initialize the sp and 'cp0_status' in 'e->env_tf'.
 	 *   Set the EXL bit to ensure that the processor remains in kernel mode during context
@@ -250,7 +273,7 @@ int env_alloc(struct Env **new, u_int parent_id) {
 	e->env_tf.regs[29] = USTACKTOP - sizeof(int) - sizeof(char **);
 
 	/* Step 5: Remove the new Env from env_free_list. */
-	/* Exercise 3.4: Your code here. (4/4) */
+	LIST_REMOVE(e, env_link); // WHY must be at last?
 
 	*new = e;
 	return 0;
@@ -281,13 +304,14 @@ static int load_icode_mapper(void *data, u_long va, size_t offset, u_int perm, c
 
 	/* Step 1: Allocate a page with 'page_alloc'. */
 	/* Exercise 3.5: Your code here. (1/2) */
+	try(page_alloc(&p));
 
 	/* Step 2: If 'src' is not NULL, copy the 'len' bytes started at 'src' into 'offset' at this
 	 * page. */
 	// Hint: You may want to use 'memcpy'.
 	if (src != NULL) {
 		/* Exercise 3.5: Your code here. (2/2) */
-
+		memcpy((void*)page2kva(p) + offset, src, len);
 	}
 
 	/* Step 3: Insert 'p' into 'env->env_pgdir' at 'va' with 'perm'. */
@@ -322,11 +346,12 @@ static void load_icode(struct Env *e, const void *binary, size_t size) {
 
 	/* Step 3: Set 'e->env_tf.cp0_epc' to 'ehdr->e_entry'. */
 	/* Exercise 3.6: Your code here. */
-
+	e->env_tf.cp0_epc = ehdr->e_entry;
 }
 
 /* Overview:
  *   Create a new env with specified 'binary' and 'priority'.
+ *   NOTE:
  *   This is only used to create early envs from kernel during initialization, before the
  *   first created env is scheduled.
  *
@@ -336,18 +361,19 @@ static void load_icode(struct Env *e, const void *binary, size_t size) {
 struct Env *env_create(const void *binary, size_t size, int priority) {
 	struct Env *e;
 	/* Step 1: Use 'env_alloc' to alloc a new env, with 0 as 'parent_id'. */
-	/* Exercise 3.7: Your code here. (1/3) */
+	env_alloc(&e, 0);
 
 	/* Step 2: Assign the 'priority' to 'e' and mark its 'env_status' as runnable. */
-	/* Exercise 3.7: Your code here. (2/3) */
+	e->env_pri = priority;
+	e->env_status = ENV_RUNNABLE;
 
 	/* Step 3: Use 'load_icode' to load the image from 'binary', and insert 'e' into
 	 * 'env_sched_list' using 'TAILQ_INSERT_HEAD'. */
-	/* Exercise 3.7: Your code here. (3/3) */
+	load_icode(e, binary, size);
+	TAILQ_INSERT_HEAD(&env_sched_list, e, env_sched_link);
 
 	return e;
 }
-
 /* Overview:
  *  Free env e and all memory it uses.
  */
@@ -447,6 +473,7 @@ void env_run(struct Env *e) {
 
 	/* Step 3: Change 'cur_pgdir' to 'curenv->env_pgdir', switching to its address space. */
 	/* Exercise 3.8: Your code here. (1/2) */
+	cur_pgdir = curenv->env_pgdir; // cur_pgdir in pmap.h(dec) and pmap.c(def)
 
 	/* Step 4: Use 'env_pop_tf' to restore the curenv's saved context (registers) and return/go
 	 * to user mode.
@@ -457,7 +484,7 @@ void env_run(struct Env *e) {
 	 *    returning to the kernel caller, making 'env_run' a 'noreturn' function as well.
 	 */
 	/* Exercise 3.8: Your code here. (2/2) */
-
+	env_pop_tf(&curenv->env_tf, curenv->env_asid);
 }
 
 void env_check() {

@@ -8,7 +8,7 @@
 
 #define LOG2NENV 10
 #define NENV (1 << LOG2NENV)
-#define ENVX(envid) ((envid) & (NENV - 1))
+#define ENVX(envid) ((envid) & (NENV - 1)) // get the last LOG2NENV bits of envid
 
 // All possible values of 'env_status' in 'struct Env'.
 #define ENV_FREE 0
@@ -17,15 +17,17 @@
 
 // Control block of an environment (process).
 struct Env {
-	struct Trapframe env_tf;	 // saved context (registers) before switching
-	LIST_ENTRY(Env) env_link;	 // intrusive entry in 'env_free_list'
+	LIST_ENTRY(Env) env_link;	 		// intrusive entry in 'env_free_list'
+	TAILQ_ENTRY(Env) env_sched_link; 	// intrusive entry in 'env_sched_list'
+
 	u_int env_id;			 // unique environment identifier
+	u_int env_parent_id;	 // env_id of this env's parent
 	u_int env_asid;			 // ASID of this env
-	u_int env_parent_id;		 // env_id of this env's parent
+	u_int env_pri;			 // scheduling priority
+
 	u_int env_status;		 // status of this env
-	Pde *env_pgdir;			 // page directory
-	TAILQ_ENTRY(Env) env_sched_link; // intrusive entry in 'env_sched_list'
-	u_int env_pri;			 // schedule priority
+	struct Trapframe env_tf; // saved context (registers) before switching
+	Pde *env_pgdir;			 // virtual entrance of the env's page directory
 
 	// Lab 4 IPC
 	u_int env_ipc_value;   // the value sent to us
