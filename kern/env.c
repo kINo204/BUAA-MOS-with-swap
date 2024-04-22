@@ -146,14 +146,12 @@ void env_init(void) {
 	int i;
 	/* Step 1: Initialize 'env_free_list' with 'LIST_INIT' and 'env_sched_list' with
 	 * 'TAILQ_INIT'. */
-	/* Exercise 3.1: Your code here. (1/2) */
 	LIST_INIT(&env_free_list);
 	TAILQ_INIT(&env_sched_list);
 
 	/* Step 2: Traverse the elements of 'envs' array, set their status to 'ENV_FREE' and insert
 	 * them into the 'env_free_list'. Make sure, after the insertion, the order of envs in the
 	 * list should be the same as they are in the 'envs' array. */
-	/* Exercise 3.1: Your code here. (2/2) */
 	for (i = NENV - 1; i >= 0; i--)
 	{
 		envs[i].env_status = ENV_FREE;
@@ -168,11 +166,15 @@ void env_init(void) {
 	 * Here we first map them into the *template* page directory 'base_pgdir'.
 	 * Later in 'env_setup_vm', we will copy them into each 'env_pgdir'.
 	 */
+	// Prepare base_pgdir for later use.
 	struct Page *p;
 	panic_on(page_alloc(&p));
 	p->pp_ref++;
-
 	base_pgdir = (Pde *)page2kva(p);
+
+	// Add mappings: pages & envs.
+	// UPAGES and UENVS: user access for kernel pages(after `end`) and
+	// envs(in kernel data segment) objects
 	map_segment(base_pgdir, 0, PADDR(pages), UPAGES,
 		    ROUND(npage * sizeof(struct Page), PAGE_SIZE), PTE_G);
 	map_segment(base_pgdir, 0, PADDR(envs),  UENVS,
@@ -190,7 +192,8 @@ static int env_setup_vm(struct Env *e) {
 	 * Hint:
 	 *   You can get the kernel address of a specified physical page using 'page2kva'.
 	 */
-	struct Page *p; // the physical page for the Env block
+	// Allocate a PPage for the env_pgdir.
+	struct Page *p;
 	try(page_alloc(&p));
 	p->pp_ref++;
 	e->env_pgdir = (Pde*)page2kva(p); // Note: the page2kva(indicating in kseg0)
@@ -202,7 +205,6 @@ static int env_setup_vm(struct Env *e) {
 	 *   As a result, the address space of all envs is identical in [UTOP, UVPT).
 	 *   See include/mmu.h for layout.
 	 */
-	// note: in the memory copying process, virtual addresses are accessed
 	memcpy(e->env_pgdir + PDX(UTOP), base_pgdir + PDX(UTOP),
 	       sizeof(Pde) * (PDX(UVPT) - PDX(UTOP)));
 	// Now at the VA in part "envs" and "pages"(in usr space) in the page map pointed
@@ -212,7 +214,7 @@ static int env_setup_vm(struct Env *e) {
 	 * As a result, user programs can read its page table through the VA 'UVPT' */
 	// Note: it's the page table itself that is being accessed, not identical to "page_lookup"!
 	// (page table: the 2nd-level page table)
-	e->env_pgdir[PDX(UVPT)] = PADDR(e->env_pgdir) | PTE_V; // WHAT is the equivilant expression here?
+	e->env_pgdir[PDX(UVPT)] = PADDR(e->env_pgdir) | PTE_V;
 	return 0;
 }
 
@@ -247,7 +249,7 @@ int env_alloc(struct Env **new, u_int parent_id) {
 	e = LIST_FIRST(&env_free_list);
 
 	/* Step 2: Call a 'env_setup_vm' to initialize the user address space for this new Env. */
-	try(env_setup_vm(e));
+	try(env_setup_vm(e)); // create pgdir, shaping from base_pgdir, and setup self-mapping PDE
 
 	/* Step 3: Initialize these fields for the new Env with appropriate values:
 	 *   'env_user_tlb_mod_entry' (lab4), 'env_runs' (lab6), 'env_id' (lab3), 'env_asid' (lab3),
@@ -323,6 +325,7 @@ static int load_icode_mapper(void *data, u_long va, size_t offset, u_int perm, c
  *   'binary' points to an ELF executable image of 'size' bytes, which contains both text and data
  *   segments.
  */
+// the loader
 static void load_icode(struct Env *e, const void *binary, size_t size) {
 	/* Step 1: Use 'elf_from' to parse an ELF header from 'binary'. */
 	const Elf32_Ehdr *ehdr = elf_from(binary, size);
@@ -336,11 +339,10 @@ static void load_icode(struct Env *e, const void *binary, size_t size) {
 	size_t ph_off;
 	ELF_FOREACH_PHDR_OFF (ph_off, ehdr) {
 		Elf32_Phdr *ph = (Elf32_Phdr *)(binary + ph_off);
-		if (ph->p_type == PT_LOAD) {
-			// 'elf_load_seg' is defined in lib/elfloader.c
-			// 'load_icode_mapper' defines the way in which a page in this segment
-			// should be mapped.
-			panic_on(elf_load_seg(ph, binary + ph->p_offset, load_icode_mapper, e));
+		if (ph->p_type == PT_LOAD) { // loadable program segment
+			panic_on(
+				elf_load_seg(ph, binary + ph->p_offset, load_icode_mapper, e)
+			);
 		}
 	}
 

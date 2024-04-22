@@ -33,7 +33,7 @@ int elf_load_seg(Elf32_Phdr *ph, const void *bin, elf_mapper_t map_page, void *d
 
 	int r;
 	size_t i;
-	u_long offset = va - ROUNDDOWN(va, PAGE_SIZE);
+	u_long offset = va - ROUNDDOWN(va, PAGE_SIZE); // calc ofs from va
 	if (offset != 0) {
 		if ((r = map_page(data, va, offset, perm, bin,
 				  MIN(bin_size, PAGE_SIZE - offset))) != 0) {
@@ -50,6 +50,7 @@ int elf_load_seg(Elf32_Phdr *ph, const void *bin, elf_mapper_t map_page, void *d
 	}
 
 	/* Step 2: alloc pages to reach `sgsize` when `bin_size` < `sgsize`. */
+	// deal with .bss
 	while (i < sgsize) {
 		if ((r = map_page(data, va + i, 0, perm, NULL, MIN(sgsize - i, PAGE_SIZE))) != 0) {
 			return r;

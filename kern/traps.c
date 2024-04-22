@@ -11,6 +11,7 @@ extern void handle_reserved(void);
 
 void (*exception_handlers[32])(void) = {
     [0 ... 31] = handle_reserved,
+	// overwrite:
     [0] = handle_int,
     [2 ... 3] = handle_tlb,
 #if !defined(LAB) || LAB >= 4
