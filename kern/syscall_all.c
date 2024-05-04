@@ -165,6 +165,7 @@ int sys_mem_map(u_int srcid, u_int srcva, u_int dstid, u_int dstva, u_int perm) 
 	struct Env *srcenv;
 	struct Env *dstenv;
 	struct Page *pp;
+
 	/* Step 1: Check if 'srcva' and 'dstva' are legal user virtual addresses using
 	 * 'is_illegal_va'. */
 	if (is_illegal_va(srcva) || is_illegal_va(dstva)) { return -E_INVAL; }

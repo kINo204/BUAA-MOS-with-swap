@@ -51,11 +51,12 @@ void mips_init(u_int argc, char **argv, char **penv, u_int ram_low_size) {
 
 	// lab3:
 	ENV_CREATE_PRIORITY(user_bare_loop, 1);
-	ENV_CREATE_PRIORITY(user_bare_loop, 2);
+	//ENV_CREATE_PRIORITY(user_bare_loop, 2);
 
 	// lab4:
+	ENV_CREATE(user_hello);
 	//ENV_CREATE(user_tltest);
-	ENV_CREATE(user_fktest);
+	//ENV_CREATE(user_fktest);
 	//ENV_CREATE(user_pingpong);
 
 	// lab6:

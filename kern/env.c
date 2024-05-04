@@ -120,7 +120,13 @@ int envid2env(u_int envid, struct Env **penv, int checkperm) {
 	 *   If envid is zero, set 'penv' to 'curenv' and return 0.
 	 *   You may want to use 'ENVX'.
 	 */
-	e = envid == 0 ? curenv : &envs[ENVX(envid)];
+	if (envid == 0)
+	{
+		*penv = curenv;
+		return 0;
+	}
+
+	e = &envs[ENVX(envid)];
 
 	if (e->env_status == ENV_FREE || e->env_id != envid) {
 		return -E_BAD_ENV;
