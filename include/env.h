@@ -37,7 +37,7 @@ struct Env {
 	u_int env_ipc_perm;    // perm in which the received page should be mapped
 
 	// Lab 4 fault handling
-	u_int env_user_tlb_mod_entry; // userspace TLB Mod handler
+	u_int env_user_tlb_mod_entry; // userspace TLB Mod handler(function pointer)
 
 	// Lab 6 scheduler counts
 	u_int env_runs; // number of times we've been env_run'ed

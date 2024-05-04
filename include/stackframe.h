@@ -8,16 +8,16 @@
 .set noreorder
 	mfc0    k0, CP0_STATUS
 	andi    k0, STATUS_UM
-	beqz    k0, 1f
-	move    k0, sp
+	beqz    k0, 1f // STATUS_UM == 0
+	move    k0, sp // store the current $sp
 	/*
 	* If STATUS_UM is not set, the exception was triggered in kernel mode.
 	* $sp is already a kernel stack pointer, we don't need to set it again.
 	*/
-	li      sp, KSTACKTOP
+	li      sp, KSTACKTOP // $sp initialized as kernal sp from now on
 1:
-	subu    sp, sp, TF_SIZE
-	sw      k0, TF_REG29(sp)
+	subu    sp, sp, TF_SIZE // alloc a stack frame for trapframe
+	sw      k0, TF_REG29(sp) // store the current $sp value, preserved in beqz' slot
 	mfc0    k0, CP0_STATUS
 	sw      k0, TF_STATUS(sp)
 	mfc0    k0, CP0_CAUSE
@@ -59,6 +59,7 @@
 	sw      $26, TF_REG26(sp)
 	sw      $27, TF_REG27(sp)
 	sw      $28, TF_REG28(sp)
+	// 		$29
 	sw      $30, TF_REG30(sp)
 	sw      $31, TF_REG31(sp)
 .set at
@@ -78,7 +79,10 @@
 	mtc0    v1, CP0_EPC
 	lw      $31, TF_REG31(sp)
 	lw      $30, TF_REG30(sp)
+	// 		$29
 	lw      $28, TF_REG28(sp)
+	//		$27
+	//		$26
 	lw      $25, TF_REG25(sp)
 	lw      $24, TF_REG24(sp)
 	lw      $23, TF_REG23(sp)

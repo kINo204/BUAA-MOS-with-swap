@@ -57,7 +57,7 @@ int syscall_mem_map(u_int srcid, void *srcva, u_int dstid, void *dstva, u_int pe
 int syscall_mem_unmap(u_int envid, void *va);
 
 __attribute__((always_inline)) inline static int syscall_exofork(void) {
-	return msyscall(SYS_exofork, 0, 0, 0, 0, 0);
+	return msyscall(SYS_exofork, 0, 0, 0, 0, 0); // WHY only this one here? Others in ../inc/lib.h
 }
 
 int syscall_set_env_status(u_int envid, u_int status);

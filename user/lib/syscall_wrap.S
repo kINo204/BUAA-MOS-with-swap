@@ -1,8 +1,9 @@
 #include <asm/asm.h>
 
+// Defined as LEAF, but params passed in to shape stack and $ax.
 LEAF(msyscall)
 	// Just use 'syscall' instruction and return.
-
-	/* Exercise 4.1: Your code here. */
+	syscall
+	jr ra
 
 END(msyscall)

@@ -1,6 +1,10 @@
 #include <asm/asm.h>
 #include <stackframe.h>
 
+/* $sp inside the macro is a kernel stack pointer;
+ * "move a0, sp" passes the current (struct Trapframe*) pointer
+ * to the handler as the 1st argument.
+ */
 .macro BUILD_HANDLER exception handler
 NESTED(handle_\exception, TF_SIZE + 8, zero)
 	move    a0, sp

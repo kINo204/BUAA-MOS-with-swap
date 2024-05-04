@@ -92,6 +92,10 @@ static void map_segment(Pde *pgdir, u_int asid, u_long pa, u_long va, u_int size
  */
 u_int mkenvid(struct Env *e) {
 	static u_int i = 0; // initialized only in the first call
+	/*
+	   structure of the made ENVID:
+		SORT_OF_CREATED_ENVS || INDEX_OF_ENV_STRUCT(that is ENVX)
+	*/
 	return ((++i) << (1 + LOG2NENV)) | (e - envs);
 }
 
@@ -116,7 +120,7 @@ int envid2env(u_int envid, struct Env **penv, int checkperm) {
 	 *   If envid is zero, set 'penv' to 'curenv' and return 0.
 	 *   You may want to use 'ENVX'.
 	 */
-	/* Exercise 4.3: Your code here. (1/2) */
+	e = envid == 0 ? curenv : &envs[ENVX(envid)];
 
 	if (e->env_status == ENV_FREE || e->env_id != envid) {
 		return -E_BAD_ENV;
@@ -128,7 +132,10 @@ int envid2env(u_int envid, struct Env **penv, int checkperm) {
 	 *   specified env, i.e. 'e' is either 'curenv' or its immediate child.
 	 *   If violated, return '-E_BAD_ENV'.
 	 */
-	/* Exercise 4.3: Your code here. (2/2) */
+	if (checkperm && !(e == curenv || e->env_parent_id == curenv->env_id))
+	{
+		return -E_BAD_ENV;
+	}
 
 	/* Step 3: Assign 'e' to '*penv'. */
 	*penv = e;
@@ -366,6 +373,7 @@ struct Env *env_create(const void *binary, size_t size, int priority) {
 	env_alloc(&e, 0);
 
 	/* Step 2: Assign the 'priority' to 'e' and mark its 'env_status' as runnable. */
+	// note that attributes set here and in env_alloc are different!
 	e->env_pri = priority;
 	e->env_status = ENV_RUNNABLE;
 

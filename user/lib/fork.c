@@ -2,8 +2,11 @@
 #include <lib.h>
 #include <mmu.h>
 
+// WHY? I'm totally confused, please help me.
+
 /* Overview:
  *   Map the faulting page to a private writable copy.
+ *   ("cow" = copy on write)
  *
  * Pre-Condition:
  * 	'va' is the address which led to the TLB Mod exception.
@@ -13,30 +16,35 @@
  *  - Otherwise, this handler should map a private writable copy of
  *    the faulting page at the same address.
  */
+// Note: this function runs in USER mode!
 static void __attribute__((noreturn)) cow_entry(struct Trapframe *tf) {
-	u_int va = tf->cp0_badvaddr;
+	u_int va = tf->cp0_badvaddr; // WHAT is this???
 	u_int perm;
 
 	/* Step 1: Find the 'perm' in which the faulting address 'va' is mapped. */
 	/* Hint: Use 'vpt' and 'VPN' to find the page table entry. If the 'perm' doesn't have
 	 * 'PTE_COW', launch a 'user_panic'. */
-	/* Exercise 4.13: Your code here. (1/6) */
+	perm = ((Pte*)vpt)[VPN(va)];
+
+	if (!(perm & PTE_COW))
+		user_panic("Error in cow_entry: not a COW page");
 
 	/* Step 2: Remove 'PTE_COW' from the 'perm', and add 'PTE_D' to it. */
-	/* Exercise 4.13: Your code here. (2/6) */
+	perm &= ~PTE_COW;
+	perm |= PTE_D;
 
 	/* Step 3: Allocate a new page at 'UCOW'. */
-	/* Exercise 4.13: Your code here. (3/6) */
+	try(syscall_mem_alloc(0, UCOW, perm)); // WHAT should perm here be?
 
 	/* Step 4: Copy the content of the faulting page at 'va' to 'UCOW'. */
 	/* Hint: 'va' may not be aligned to a page! */
-	/* Exercise 4.13: Your code here. (4/6) */
+	memcpy(UCOW, va - (va % PAGE_SIZE), PAGE_SIZE); // A substitution of ROUNDDOWN, maybe ...
 
 	// Step 5: Map the page at 'UCOW' to 'va' with the new 'perm'.
-	/* Exercise 4.13: Your code here. (5/6) */
+	try(syscall_mem_map(0, va, 0, UCOW, perm));
 
 	// Step 6: Unmap the page at 'UCOW'.
-	/* Exercise 4.13: Your code here. (6/6) */
+	try(syscall_mem_unmap(0, UCOW));
 
 	// Step 7: Return to the faulting routine.
 	int r = syscall_set_trapframe(0, tf);
@@ -71,14 +79,26 @@ static void duppage(u_int envid, u_int vpn) {
 
 	/* Step 1: Get the permission of the page. */
 	/* Hint: Use 'vpt' to find the page table entry. */
-	/* Exercise 4.10: Your code here. (1/2) */
+	Pte pte = ((Pte*)vpt)[vpn];
+	perm = PTE_FLAGS(pte);
+	if (!(perm & PTE_V)) { return; } // not sure
 
 	/* Step 2: If the page is writable, and not shared with children, and not marked as COW yet,
 	 * then map it as copy-on-write, both in the parent (0) and the child (envid). */
 	/* Hint: The page should be first mapped to the child before remapped in the parent. (Why?)
 	 */
-	/* Exercise 4.10: Your code here. (2/2) */
-
+	addr = vpn * PAGE_SIZE;
+	if ((perm & PTE_D)
+			&& !(perm & PTE_LIBRARY)
+			&& !(perm & PTE_COW))
+	{
+		try(syscall_mem_map(0, addr, envid, addr, perm & ~PTE_D | PTE_COW)); // Map child
+		try(syscall_mem_map(0, addr,     0, addr, perm & ~PTE_D | PTE_COW)); // Remap parent
+	}
+	else
+	{
+		try(syscall_mem_map(0, addr, envid, addr, perm)); // Map child
+	}
 }
 
 /* Overview:
@@ -93,7 +113,7 @@ static void duppage(u_int envid, u_int vpn) {
  *   Use 'syscall_set_tlb_mod_entry', 'syscall_getenvid', 'syscall_exofork',  and 'duppage'.
  */
 int fork(void) {
-	u_int child;
+	u_int child; // envid of the child process
 	u_int i;
 
 	/* Step 1: Set our TLB Mod user exception entry to 'cow_entry' if not done yet. */
@@ -110,9 +130,13 @@ int fork(void) {
 		return 0;
 	}
 
-	/* Step 3: Map all mapped pages below 'USTACKTOP' into the child's address space. */
+	/* Step 3: Map all MAPPED pages below 'USTACKTOP' into the child's address space. */
 	// Hint: You should use 'duppage'.
 	/* Exercise 4.15: Your code here. (1/2) */
+	for (u_int va = 0; va < USTACKTOP; va += PAGE_SIZE)
+	{
+		duppage(child, VPN(va));
+	}
 
 	/* Step 4: Set up the child's tlb mod handler and set child's 'env_status' to
 	 * 'ENV_RUNNABLE'. */
@@ -120,7 +144,8 @@ int fork(void) {
 	 *   You may use 'syscall_set_tlb_mod_entry' and 'syscall_set_env_status'
 	 *   Child's TLB Mod user exception entry should handle COW, so set it to 'cow_entry'
 	 */
-	/* Exercise 4.15: Your code here. (2/2) */
+	try(syscall_set_tlb_mod_entry(child, cow_entry));
+	try(syscall_set_env_status(child, ENV_RUNNABLE));
 
 	return child;
 }
