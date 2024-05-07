@@ -30,11 +30,13 @@ struct Env {
 	Pde *env_pgdir;			 // virtual entrance of the env's page directory
 
 	// Lab 4 IPC
-	u_int env_ipc_value;   // the value sent to us
-	u_int env_ipc_from;    // envid of the sender
+	// IPC state
 	u_int env_ipc_recving; // whether this env is blocked receiving
-	u_int env_ipc_dstva;   // va at which the received page should be mapped
+	// IPC received data record
+	u_int env_ipc_value;   // Data(u_int): the value sent to us
+	u_int env_ipc_dstva;   // Data(Page):  va at which the received page should be mapped
 	u_int env_ipc_perm;    // perm in which the received page should be mapped
+	u_int env_ipc_from;    // envid of the sender
 
 	// Lab 4 fault handling
 	u_int env_user_tlb_mod_entry; // userspace TLB Mod handler(function pointer)

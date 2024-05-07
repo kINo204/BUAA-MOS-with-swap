@@ -323,6 +323,8 @@ void sys_panic(char *msg) {
  *   Return 0 on success.
  *   Return -E_INVAL: 'dstva' is neither 0 nor a legal address.
  */
+// Enter IPC receiving mode, set up receiving configs and sleep.
+// Return -E_INVAL on error; no return if success(yield)
 int sys_ipc_recv(u_int dstva) {
 	/* Step 1: Check if 'dstva' is either zero or a legal address. */
 	if (dstva != 0 && is_illegal_va(dstva)) {
@@ -341,8 +343,13 @@ int sys_ipc_recv(u_int dstva) {
 	TAILQ_REMOVE(&env_sched_list, curenv, env_sched_link);
 
 	/* Step 5: Give up the CPU and block until a message is received. */
-	((struct Trapframe *)KSTACKTOP - 1)->regs[2] = 0;
-	schedule(1);
+	// Set the return value of the syscall(success=0).
+	// We're successful here, and will jump to schedule(noreturn),
+	// so the wrapper "do_syscall" won't be able to set the return value
+	// in the trapframe for us, and we have to do it here.
+	((struct Trapframe *)KSTACKTOP - 1)->regs[2] = 0; // $v0 = 0
+
+	schedule(1); // yield
 }
 
 /* Overview:
@@ -366,7 +373,6 @@ int sys_ipc_try_send(u_int envid, u_int value, u_int srcva, u_int perm) {
 	struct Page *p;
 
 	/* Step 1: Check if 'srcva' is either zero or a legal address. */
-	/* Exercise 4.8: Your code here. (4/8) */
 	if (srcva != 0 && is_illegal_va(srcva)) {
 		return -E_INVAL;
 	}
@@ -374,7 +380,6 @@ int sys_ipc_try_send(u_int envid, u_int value, u_int srcva, u_int perm) {
 	/* Step 2: Convert 'envid' to 'struct Env *e'. */
 	/* This is the only syscall where the 'envid2env' should be used with 'checkperm' UNSET,
 	 * because the target env is not restricted to 'curenv''s children. */
-	/* Exercise 4.8: Your code here. (5/8) */
 	try(envid2env(envid, &e, 0));
 
 	/* Step 3: Check if the target is waiting for a message. */
@@ -400,9 +405,8 @@ int sys_ipc_try_send(u_int envid, u_int value, u_int srcva, u_int perm) {
 		/* Exercise 4.8: Your code here. (8/8) */
 		p = page_lookup(curenv->env_pgdir, srcva, NULL);
 		if (p == NULL) { return -E_INVAL; }
-		page_insert(e->env_pgdir, e->env_asid, p, 
-				e->env_ipc_dstva, perm);
-		//sys_mem_map(curenv->env_id, srcva, envid, e->env_ipc_dstva, perm); // WHY this is wrong?
+		page_insert(e->env_pgdir, e->env_asid, p, e->env_ipc_dstva, perm);
+		//try(sys_mem_map(curenv->env_id, srcva, envid, e->env_ipc_dstva, perm)); // WHY this is wrong?
 	}
 	return 0;
 }
@@ -527,5 +531,9 @@ void do_syscall(struct Trapframe *tf) {
 	arg5 = *((u_int*)(tf->regs[29] + 20));
 	/* Step 5: Invoke 'func' with retrieved arguments and store its return value to $v0 in 'tf'.
 	 */
+	// User get the return value of syscall through $v0, so set tf->regs[2]
+	// and $v0 will be set when RESTORE_ALL.
+	// This only works for the "func"s who return to here. For noreturn "func"s, they can also
+	// set the trapframe themselves.
 	tf->regs[2] = func(arg1, arg2, arg3, arg4, arg5); // $v0 = func( ... );
 }
