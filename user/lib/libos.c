@@ -17,6 +17,7 @@ extern int main(int, char **);
 
 void libmain(int argc, char **argv) {
 	// set env to point at our env structure in envs[].
+	// Note that the envs is our read-only copy in user space(UENVS).
 	env = &envs[ENVX(syscall_getenvid())];
 
 	// call user main routine

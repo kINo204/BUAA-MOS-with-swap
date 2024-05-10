@@ -36,6 +36,7 @@ static void __attribute__((noreturn)) cow_entry(struct Trapframe *tf) {
 	perm |= PTE_D;
 
 	/* Step 3: Allocate a new page at 'UCOW'. */
+	// UCOW's alloc help us get a new **physical page**.
 	try(syscall_mem_alloc(0, UCOW, perm)); // WHAT should perm here be?
 
 	/* Step 4: Copy the content of the faulting page at 'va' to 'UCOW'. */
@@ -83,6 +84,7 @@ static void duppage(u_int envid, u_int vpn) {
 	/* Hint: Use 'vpt' to find the page table entry. */
 	Pte pte = ((Pte*)vpt)[vpn];
 	perm = PTE_FLAGS(pte);
+	// No need to duplicate invalid page(no actual physical page here)
 	if (!(perm & PTE_V)) {
 		return;
 	} // not sure
@@ -92,10 +94,9 @@ static void duppage(u_int envid, u_int vpn) {
 	/* Hint: The page should be first mapped to the child before remapped in the parent. (Why?)
 	 */
 	addr = vpn * PAGE_SIZE;
-	if ((perm & PTE_D)
-			&& !(perm & PTE_LIBRARY)
-			&& !(perm & PTE_COW))
+	if ((perm & PTE_D) && !(perm & PTE_LIBRARY) && !(perm & PTE_COW))
 	{
+		// Both: unset D(writable), set COW
 		try(syscall_mem_map(0, addr, envid, addr, perm & ~PTE_D | PTE_COW)); // Map child
 		try(syscall_mem_map(0, addr,     0, addr, perm & ~PTE_D | PTE_COW)); // Remap parent
 	}
@@ -129,14 +130,16 @@ int fork(void) {
 	// Hint: 'env' should always point to the current env itself, so we should fix it to the
 	// correct value.
 	child = syscall_exofork();
+	// Only the child env, when first scheduled, will enter(actually start from) this condition.
 	if (child == 0) {
+		// Initialize our env structure.
 		env = envs + ENVX(syscall_getenvid());
+		// We can set $ra in trapframe to customize the child's "starting" PC for fork-exec.
 		return 0;
 	}
 
 	/* Step 3: Map all MAPPED pages below 'USTACKTOP' into the child's address space. */
 	// Hint: You should use 'duppage'.
-	/* Exercise 4.15: Your code here. (1/2) */
 	for (u_int va = UTEMP; va < USTACKTOP; va += PAGE_SIZE)
 	{
 		duppage(child, VPN(va));

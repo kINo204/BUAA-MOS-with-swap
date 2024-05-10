@@ -88,11 +88,13 @@ void do_tlb_mod(struct Trapframe *tf) {
 		tf->regs[29] = UXSTACKTOP;
 	}
 	tf->regs[29] -= sizeof(struct Trapframe);
-	*(struct Trapframe *)tf->regs[29] = tmp_tf;
+	*(struct Trapframe *)tf->regs[29] = tmp_tf; // Copy the trapframe into UXSTACK
+
 	Pte *pte;
 	page_lookup(cur_pgdir, tf->cp0_badvaddr, &pte);
+
 	if (curenv->env_user_tlb_mod_entry) {
-		tf->regs[4] = tf->regs[29];
+		tf->regs[4] = tf->regs[29]; // First param is a pointer to the trapframe
 		tf->regs[29] -= sizeof(tf->regs[4]);
 		// Hint: Set 'cp0_epc' in the context 'tf' to 'curenv->env_user_tlb_mod_entry'.
 		tf->cp0_epc = curenv->env_user_tlb_mod_entry;

@@ -278,12 +278,13 @@ int env_alloc(struct Env **new, u_int parent_id) {
 	e->env_user_tlb_mod_entry = 0; // for lab4
 	e->env_runs = 0;	       // for lab6
 
-	/* Step 4: Initialize the sp and 'cp0_status' in 'e->env_tf'.
+	/* Step 4: Initialize the user stack pointer and 'cp0_status' in 'e->env_tf'.
 	 *   Set the EXL bit to ensure that the processor remains in kernel mode during context
 	 * recovery. Additionally, set UM to 1 so that when ERET unsets EXL, the processor
 	 * transitions to user mode.
 	 */
 	e->env_tf.cp0_status = STATUS_IM7 | STATUS_IE | STATUS_EXL | STATUS_UM;
+	// Set up the user stack pointer here.
 	// Reserve space for 'argc' and 'argv'.
 	e->env_tf.regs[29] = USTACKTOP - sizeof(int) - sizeof(char **);
 

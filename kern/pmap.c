@@ -242,10 +242,12 @@ int page_insert(Pde *pgdir, u_int asid, struct Page *pp, u_long va, u_int perm) 
 	/* Step 1: Get corresponding page table entry. */
 	pgdir_walk(pgdir, va, 0, &pte);
 
+	// A valid pte exist
 	if (pte && (*pte & PTE_V)) {
+		// Different physical page
 		if (pa2page(*pte) != pp) {
 			page_remove(pgdir, asid, va);
-		} else {
+		} else { // Same physical page
 			tlb_invalidate(asid, va);
 			*pte = page2pa(pp) | perm | PTE_C_CACHEABLE | PTE_V;
 			return 0;

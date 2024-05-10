@@ -296,7 +296,7 @@ int sys_set_trapframe(u_int envid, struct Trapframe *tf) {
 	try(envid2env(envid, &env, 1));
 	if (env == curenv) {
 		*((struct Trapframe *)KSTACKTOP - 1) = *tf;
-		// return `tf->regs[2]` instead of 0, because return value overrides regs[2] on
+		// Return `tf->regs[2]` instead of 0, because return value overrides regs[2] on
 		// current trapframe.
 		return tf->regs[2];
 	} else {
