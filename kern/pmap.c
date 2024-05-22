@@ -181,6 +181,7 @@ void page_free(struct Page *pp) {
  *   We use a two-level pointer to store page table entry and return a state code to indicate
  *   whether this function succeeds or not.
  */
+/* VPage -> PTE(kaddr) (fixed indexed mapping) */
 static int pgdir_walk(Pde *pgdir, u_long va, int create, Pte **ppte) {
 	Pde *pgdir_entryp;
 	struct Page *pp;
@@ -236,10 +237,11 @@ static int pgdir_walk(Pde *pgdir, u_long va, int create, Pte **ppte) {
  *   If there is already a page mapped at `va`, call page_remove() to release this mapping.
  *   The `pp_ref` should be incremented if the insertion succeeds.
  */
+/* Modify mapping: VPage -> PPage (configurable by editing PTE)  */
 int page_insert(Pde *pgdir, u_int asid, struct Page *pp, u_long va, u_int perm) {
 	Pte *pte;
 
-	/* Step 1: Get corresponding page table entry. */
+	/* Step 1: Get PTE. */
 	pgdir_walk(pgdir, va, 0, &pte);
 
 	// A valid pte exist
@@ -277,7 +279,8 @@ int page_insert(Pde *pgdir, u_int asid, struct Page *pp, u_long va, u_int perm) 
   Post-Condition:
     Return a pointer to corresponding Page, and store it's page table entry to *ppte.
     If `va` doesn't mapped to any Page, return NULL.*/
-struct Page *page_lookup(Pde *pgdir, u_long va, Pte **ppte) {
+/* Look up mapping: VPage -> PPage */
+struct Page *page_lookup(Pde *pgdir, u_long va, /* for efficiency */ Pte **ppte) {
 	struct Page *pp;
 	Pte *pte;
 
@@ -316,6 +319,7 @@ void page_decref(struct Page *pp) {
 /* Lab 2 Key Code "page_remove" */
 // Overview:
 //   Unmap the physical page at virtual address 'va'.
+/* Modify mapping(removal): VPage -> PPage */
 void page_remove(Pde *pgdir, u_int asid, u_long va) {
 	Pte *pte;
 

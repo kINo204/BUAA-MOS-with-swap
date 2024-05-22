@@ -8,7 +8,7 @@
 
 struct Env envs[NENV] __attribute__((aligned(PAGE_SIZE))); // All environments
 
-struct Env *curenv = NULL;	      // the current env
+struct Env *curenv = NULL;	      // the currently running env
 
 static struct Env_list env_free_list; // Free list
 // Invariant: 'env' in 'env_sched_list' iff. 'env->env_status' is 'RUNNABLE'.
@@ -63,6 +63,7 @@ static void asid_free(u_int i) {
  * Pre-Condition:
  *   'pa', 'va' and 'size' are aligned to 'PAGE_SIZE'.
  */
+/* Perform page_insert in a continuous seg. */
 static void map_segment(Pde *pgdir, u_int asid, u_long pa, u_long va, u_int size, u_int perm) {
 	// must be aligned
 	assert(pa % PAGE_SIZE == 0);
@@ -155,6 +156,7 @@ int envid2env(u_int envid, struct Env **penv, int checkperm) {
  * Hints:
  *   You may use these macro definitions below: 'LIST_INIT', 'TAILQ_INIT', 'LIST_INSERT_HEAD'
  */
+/* Initialize mechanisms for env. */
 void env_init(void) {
 	int i;
 	/* Step 1: Initialize 'env_free_list' with 'LIST_INIT' and 'env_sched_list' with
@@ -197,6 +199,7 @@ void env_init(void) {
 /* Overview:
  *   Initialize the user address space for 'e'.
  */
+/* Initialize the pgtbl. */
 static int env_setup_vm(struct Env *e) {
 	/* Step 1:
 	 *   Allocate a page for the page directory with 'page_alloc'.
@@ -227,6 +230,8 @@ static int env_setup_vm(struct Env *e) {
 	 * As a result, user programs can read its page table through the VA 'UVPT' */
 	// Note: it's the page table itself that is being accessed, not identical to "page_lookup"!
 	// (page table: the 2nd-level page table)
+	// Enable the user to view the PGTBL's content(PTEs)
+	// (not using it, as the user always can!)
 	e->env_pgdir[PDX(UVPT)] = PADDR(e->env_pgdir) | PTE_V;
 	return 0;
 }
@@ -250,6 +255,7 @@ static int env_setup_vm(struct Env *e) {
  *     'env_id', 'env_asid', 'env_parent_id', 'env_tf.regs[29]', 'env_tf.cp0_status',
  *     'env_user_tlb_mod_entry', 'env_runs'
  */
+/* Alloc an env and initialize it. */
 int env_alloc(struct Env **new, u_int parent_id) {
 	int r;
 	struct Env *e;
@@ -374,6 +380,7 @@ static void load_icode(struct Env *e, const void *binary, size_t size) {
  * Hint:
  *   'binary' is an ELF executable image in memory.
  */
+/* Alloc an initialized env, and load it with an ELF file. */
 struct Env *env_create(const void *binary, size_t size, int priority) {
 	struct Env *e;
 	/* Step 1: Use 'env_alloc' to alloc a new env, with 0 as 'parent_id'. */

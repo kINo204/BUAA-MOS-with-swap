@@ -17,8 +17,9 @@
  *    the faulting page at the same address.
  */
 // Note: this function runs in USER mode!
+// The param tf is a pointer to the tmp_tf's copy in UXSTACK.
 static void __attribute__((noreturn)) cow_entry(struct Trapframe *tf) {
-	u_int va = tf->cp0_badvaddr; // WHAT is this???
+	u_int va = tf->cp0_badvaddr;
 	u_int perm;
 
 	/* Step 1: Find the 'perm' in which the faulting address 'va' is mapped. */
@@ -37,6 +38,8 @@ static void __attribute__((noreturn)) cow_entry(struct Trapframe *tf) {
 
 	/* Step 3: Allocate a new page at 'UCOW'. */
 	// UCOW's alloc help us get a new **physical page**.
+	// Trying to directly use `sys_mem_alloc` will fail, because sys_mem_map->page_insert will
+	// only modify the `perm` when an identical physical page is found mapped.
 	try(syscall_mem_alloc(0, UCOW, perm)); // WHAT should perm here be?
 
 	/* Step 4: Copy the content of the faulting page at 'va' to 'UCOW'. */

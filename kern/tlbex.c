@@ -82,6 +82,16 @@ void _do_tlb_refill(u_long *pentrylo, u_int va, u_int asid) {
  *   The user entry should handle this TLB Mod exception and restore the context.
  */
 void do_tlb_mod(struct Trapframe *tf) {
+	// Note that we store an original version of tf in a `tmp_tf` for the following reason:
+	// 
+	// 1. The user's handler wants to see the original tf when the exception happens, and
+	// $sp has not become a UXSTACK pointer yet(and other changes, like changing the $a0);
+	//
+	// 2. And the tf, lying in the KSTACK, is our interface to manage user registers, and we change
+	// the user $sp to UXSTACK through writing tf.
+	//
+	// In other word, the tmp_tf is the actual saved scene to recover after handling
+	// (by `sys_set_trapframe`).
 	struct Trapframe tmp_tf = *tf;
 
 	if (tf->regs[29] < USTACKTOP || tf->regs[29] >= UXSTACKTOP) {

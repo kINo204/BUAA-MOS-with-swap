@@ -161,6 +161,10 @@ int sys_mem_alloc(u_int envid, u_int va, u_int perm) {
  *   You may want to use the following functions:
  *   'envid2env', 'page_lookup', 'page_insert'
  */
+/* Let the src and dst env share a PPage.
+ * Former mapping: src_VPage -> PPage
+ * After mapping:  src_VPage -> PPage, dst_VPage -> PPage
+ */
 int sys_mem_map(u_int srcid, u_int srcva, u_int dstid, u_int dstva, u_int perm) {
 	struct Env *srcenv;
 	struct Env *dstenv;
@@ -228,7 +232,10 @@ int sys_exofork(void) {
 	try(env_alloc(&e, curenv->env_id)); // WHY alloc or create
 
 	/* Step 2: Copy the current Trapframe below 'KSTACKTOP' to the new env's 'env_tf'. */
-	e->env_tf = *((struct Trapframe*)KSTACKTOP - 1); // WHY in kstack but not curenv->env_tf?
+	// We're using KSTACKTOP(the newest tf) instead of curenv->tf because we want the `fork`
+	// process to happen exactly here, and the current tf under KSTACKTOP has already been
+	// modified, thus different from the curenv->tf saved when entering exception.
+	e->env_tf = *((struct Trapframe*)KSTACKTOP - 1);
 
 	/* Step 3: Set the new env's 'env_tf.regs[2]' to 0 to indicate the return value in child. */
 	e->env_tf.regs[2] = 0; // $v0 = 0
@@ -452,7 +459,18 @@ int sys_cgetc(void) {
  */
 int sys_write_dev(u_int va, u_int pa, u_int len) {
 	/* Exercise 5.1: Your code here. (1/2) */
+	// Check length.
+	if (len != 1 && len != 2 && len != 4) { return -E_INVAL; }
+	// Check va.
+	if (is_illegal_va_range(va, len)) { return -E_INVAL; }
+	// Check pa.
+	int valid_pa = 0;
+	valid_pa |= (0x180003f8 <= pa && pa + len < 0x180003f8 + 0x20) ? 1 : 0; // console
+	valid_pa |= (0x180001f0 <= pa && pa + len < 0x180001f0 + 0x8)  ? 1 : 0; // IDE disk
+	if (!valid_pa) { return -E_INVAL; };
 
+	// Perform write and return.
+	memcpy((void*)(KSEG1 + pa), (void*)va, (size_t)len);
 	return 0;
 }
 
@@ -473,7 +491,18 @@ int sys_write_dev(u_int va, u_int pa, u_int len) {
  */
 int sys_read_dev(u_int va, u_int pa, u_int len) {
 	/* Exercise 5.1: Your code here. (2/2) */
+	// Check length.
+	if (len != 1 && len != 2 && len != 4) { return -E_INVAL; }
+	// Check va.
+	if (is_illegal_va_range(va, len)) { return -E_INVAL; }
+	// Check pa.
+	int valid_pa = 0;
+	valid_pa |= (0x180003f8 <= pa && pa + len < 0x180003f8 + 0x20) ? 1 : 0; // console
+	valid_pa |= (0x180001f0 <= pa && pa + len < 0x180001f0 + 0x8)  ? 1 : 0; // IDE disk
+	if (!valid_pa) { return -E_INVAL; };
 
+	// Perform write and return.
+	memcpy((void*)va, (void*)(KSEG1 + pa), (size_t)len);
 	return 0;
 }
 

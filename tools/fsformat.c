@@ -21,10 +21,10 @@ typedef struct Super Super;
 typedef struct File File;
 
 #define NBLOCK 1024 // The number of blocks in the disk.
-uint32_t nbitblock; // the number of bitmap blocks.
-uint32_t nextbno;   // next availiable block.
+uint32_t nbitblock; // The number of bitmap blocks.
+uint32_t nextbno;   // Next availiable block.
 
-struct Super super; // super block.
+struct Super super;
 
 enum {
 	BLOCK_FREE = 0,
@@ -101,7 +101,7 @@ void reverse_block(struct Block *b) {
 	}
 }
 
-// Initial the disk. Do some work with bitmap and super block.
+// Initialize the disk. Do some work with bitmap and super block.
 void init_disk() {
 	int i, diff;
 
@@ -124,7 +124,7 @@ void init_disk() {
 		memset(disk[2 + (nbitblock - 1)].data + diff, 0x00, BLOCK_SIZE - diff);
 	}
 
-	// Step 3: Initialize super block.
+	// Step 3: Initialize the super block.
 	disk[1].type = BLOCK_SUPER;
 	super.s_magic = FS_MAGIC;
 	super.s_nblocks = NBLOCK;
