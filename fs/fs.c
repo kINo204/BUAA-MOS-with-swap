@@ -154,6 +154,7 @@ void unmap_block(u_int blockno) {
 	void *va;
 	/* Exercise 5.7: Your code here. (3/5) */
 	va = block_is_mapped(blockno);
+	if (va == NULL) { return; }
 
 	// Step 2: If this block is used (not free) and dirty in cache, write it back to the disk
 	// first.
@@ -258,7 +259,7 @@ void read_super(void) {
 
 	super = blk;
 
-	// Step 2: Check fs magic nunber.
+	// Step 2: Check fs magic number.
 	if (super->s_magic != FS_MAGIC) {
 		user_panic("bad file system magic number %x %x", super->s_magic, FS_MAGIC);
 	}

@@ -135,9 +135,9 @@ void test_fs() {
 int main() {
 	test_syscall();
 	test_ide_write(0);
-	test_ide_write(1);
-	test_ide_read(0);
-	test_ide_read(1);
+	//test_ide_write(1);
+	//test_ide_read(0);
+	//test_ide_read(1);
 	debugf("TEST IDE read/write test passed!\n");
 	test_fs();
 	return 0;

@@ -398,7 +398,6 @@ int main() {
 
 	serve_init();
 	fs_init();
-
 	serve();
 	return 0;
 }
