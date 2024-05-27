@@ -208,13 +208,18 @@ int make_link_block(struct File *dirf, int nblk) {
 struct File *create_file(struct File *dirf) {
 	int nblk = dirf->f_size / BLOCK_SIZE;
 
-	// Step 1: Iterate through all existing blocks in the directory.
+	// Step 1: Iterate through all existing File blocks in the directory.
 	for (int i = 0; i < nblk; ++i) {
 		int bno; // the block number
 		// If the block number is in the range of direct pointers (NDIRECT), get the 'bno'
 		// directly from 'f_direct'. Otherwise, access the indirect block on 'disk' and get
 		// the 'bno' at the index.
 		/* Exercise 5.5: Your code here. (1/3) */
+		if (i < NDIRECT) {
+			bno = dirf->f_direct[i];
+		} else {
+			bno = (uint32_t *)(disk[dirf->f_indirect].data)[i];
+		}
 
 		// Get the directory block using the block number.
 		struct File *blk = (struct File *)(disk[bno].data);
@@ -224,15 +229,19 @@ struct File *create_file(struct File *dirf) {
 			// If the first byte of the file name is null, the 'File' is unused.
 			// Return a pointer to the unused 'File'.
 			/* Exercise 5.5: Your code here. (2/3) */
-
+			if (*(uint8_t *)f->f_name == 0) {
+				return f;
+			}
 		}
 	}
 
 	// Step 2: If no unused file is found, allocate a new block using 'make_link_block' function
 	// and return a pointer to the new block on 'disk'.
 	/* Exercise 5.5: Your code here. (3/3) */
+	int newbno = make_link_block(dirf, nblk);
+	return (struct File*)disk[newbno].data;
 
-	return NULL;
+	// return NULL;
 }
 
 // Write file to disk under specified dir.
@@ -248,11 +257,15 @@ void write_file(struct File *dirf, const char *path) {
 	int fd = open(path, O_RDONLY);
 
 	// Get file name with no path prefix.
+	// "aaa/bbb"
 	const char *fname = strrchr(path, '/');
+	// "/bbb"
 	if (fname) {
 		fname++;
+		// "bbb"
 	} else {
 		fname = path;
+		// In case no '/' exists.
 	}
 	strcpy(target->f_name, fname);
 
@@ -260,7 +273,7 @@ void write_file(struct File *dirf, const char *path) {
 	target->f_type = FTYPE_REG;
 
 	// Start reading file.
-	lseek(fd, 0, SEEK_SET);
+	lseek(fd, 0, SEEK_SET); // Set to start of file.
 	while ((r = read(fd, disk[nextbno].data, n)) > 0) {
 		save_block_link(target, iblk++, next_block(BLOCK_DATA));
 	}

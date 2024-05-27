@@ -132,8 +132,11 @@ int fork(void) {
 	/* Step 2: Create a child env that's not ready to be scheduled. */
 	// Hint: 'env' should always point to the current env itself, so we should fix it to the
 	// correct value.
+
+	// Note: The father and the child both start from here: sw $v0, x($sp) (writing return val)
+	// Both will write the `child` var, but only father calls the exofork.
 	child = syscall_exofork();
-	// Only the child env, when first scheduled, will enter(actually start from) this condition.
+	// Only the child env, when first scheduled, will enter this condition.
 	if (child == 0) {
 		// Initialize our env structure.
 		env = envs + ENVX(syscall_getenvid());

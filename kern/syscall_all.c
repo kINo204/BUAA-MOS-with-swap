@@ -465,9 +465,9 @@ int sys_write_dev(u_int va, u_int pa, u_int len) {
 	if (is_illegal_va_range(va, len)) { return -E_INVAL; }
 	// Check pa.
 	int valid_pa = 0;
-	valid_pa |= (0x180003f8 <= pa && pa + len < 0x180003f8 + 0x20) ? 1 : 0; // console
-	valid_pa |= (0x180001f0 <= pa && pa + len < 0x180001f0 + 0x8)  ? 1 : 0; // IDE disk
-	if (!valid_pa) { return -E_INVAL; };
+	valid_pa |= (0x180003f8 <= pa && pa + len <= 0x180003f8 + 0x20) ? 1 : 0; // console
+	valid_pa |= (0x180001f0 <= pa && pa + len <= 0x180001f0 + 0x8)  ? 1 : 0; // IDE disk
+	if (valid_pa == 0) { return -E_INVAL; };
 
 	// Perform write and return.
 	memcpy((void*)(KSEG1 + pa), (void*)va, (size_t)len);
@@ -497,9 +497,9 @@ int sys_read_dev(u_int va, u_int pa, u_int len) {
 	if (is_illegal_va_range(va, len)) { return -E_INVAL; }
 	// Check pa.
 	int valid_pa = 0;
-	valid_pa |= (0x180003f8 <= pa && pa + len < 0x180003f8 + 0x20) ? 1 : 0; // console
-	valid_pa |= (0x180001f0 <= pa && pa + len < 0x180001f0 + 0x8)  ? 1 : 0; // IDE disk
-	if (!valid_pa) { return -E_INVAL; };
+	valid_pa |= (0x180003f8 <= pa && pa + len <= 0x180003f8 + 0x20) ? 1 : 0; // console
+	valid_pa |= (0x180001f0 <= pa && pa + len <= 0x180001f0 + 0x8)  ? 1 : 0; // IDE disk
+	if (valid_pa == 0) { return -E_INVAL; };
 
 	// Perform write and return.
 	memcpy((void*)va, (void*)(KSEG1 + pa), (size_t)len);
