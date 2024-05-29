@@ -504,7 +504,7 @@ int file_dirty(struct File *f, u_int offset) {
 //  Return the underlying error if an error occurs.
 int dir_lookup(struct File *dir, char *name, struct File **file) {
 	// NEW check permission
-	if (dir->f_mode & FMODE_X == 0) {
+	if ((dir->f_mode & FMODE_X) == 0) {
 		return -E_PERM_DENY;
 	}
 
@@ -688,7 +688,7 @@ int file_create(char *path, struct File **file) {
 		return r;
 	}
 
-	if (dir->f_mode & FMODE_W == 0) {
+	if ((dir->f_mode & FMODE_W) == 0) {
 		return -E_PERM_DENY;
 	}
 
@@ -823,7 +823,7 @@ int file_remove(char *path) {
 	// Step 4: flush the file.
 	file_flush(f);
 	if (f->f_dir) {
-		if (f->f_dir->f_mode & FMODE_W == 0) {
+		if ((f->f_dir->f_mode & FMODE_W) == 0) {
 			return -E_PERM_DENY;
 		}
 		file_flush(f->f_dir);
