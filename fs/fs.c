@@ -503,6 +503,11 @@ int file_dirty(struct File *f, u_int offset) {
 //  Return 0 on success, and set the pointer to the target file in `*file`.
 //  Return the underlying error if an error occurs.
 int dir_lookup(struct File *dir, char *name, struct File **file) {
+	// NEW check permission
+	if (dir->f_mode & FMODE_X == 0) {
+		return -E_PERM_DENY;
+	}
+
 	// Step 1: Calculate the number of blocks in 'dir' via its size.
 	u_int nblock;
 	/* Exercise 5.8: Your code here. (1/3) */
@@ -670,6 +675,7 @@ int file_open(char *path, struct File **file) {
 //  On success set *file to point at the file and return 0.
 //  On error return < 0.
 int file_create(char *path, struct File **file) {
+	// TODO check permission
 	char name[MAXNAMELEN];
 	int r;
 	struct File *dir, *f;
@@ -682,11 +688,16 @@ int file_create(char *path, struct File **file) {
 		return r;
 	}
 
+	if (dir->f_mode & FMODE_W == 0) {
+		return -E_PERM_DENY;
+	}
+
 	if (dir_alloc_file(dir, &f) < 0) {
 		return r;
 	}
 
 	strcpy(f->f_name, name);
+	f->f_mode = FMODE_ALL; // NEW
 	*file = f;
 	return 0;
 }
@@ -794,6 +805,7 @@ void file_close(struct File *f) {
 // Overview:
 //  Remove a file by truncating it and then zeroing the name.
 int file_remove(char *path) {
+	// TODO check permission
 	int r;
 	struct File *f;
 
@@ -811,6 +823,9 @@ int file_remove(char *path) {
 	// Step 4: flush the file.
 	file_flush(f);
 	if (f->f_dir) {
+		if (f->f_dir->f_mode & FMODE_W == 0) {
+			return -E_PERM_DENY;
+		}
 		file_flush(f->f_dir);
 	}
 

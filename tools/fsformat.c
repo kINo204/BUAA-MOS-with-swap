@@ -129,6 +129,7 @@ void init_disk() {
 	super.s_magic = FS_MAGIC;
 	super.s_nblocks = NBLOCK;
 	super.s_root.f_type = FTYPE_DIR;
+	super.s_root.f_mode = FMODE_ALL; // NEW
 	strcpy(super.s_root.f_name, "/");
 }
 
@@ -254,6 +255,10 @@ void write_file(struct File *dirf, const char *path) {
 		return;
 	}
 
+	struct stat stat_buf;
+	assert(stat(path, &stat_buf) == 0);
+	target->f_mode = STMODE2FMODE(stat_buf.st_mode);
+
 	int fd = open(path, O_RDONLY);
 
 	// Get file name with no path prefix.
@@ -294,6 +299,11 @@ void write_directory(struct File *dirf, char *path) {
 		return;
 	}
 	struct File *pdir = create_file(dirf);
+
+	struct stat stat_buf;
+	assert(stat(path, &stat_buf) == 0);
+	pdir->f_mode = STMODE2FMODE(stat_buf.st_mode);
+
 	strncpy(pdir->f_name, basename(path), MAXNAMELEN - 1);
 	if (pdir->f_name[MAXNAMELEN - 1] != 0) {
 		fprintf(stderr, "file name is too long: %s\n", path);

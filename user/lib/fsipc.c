@@ -26,6 +26,18 @@ static int fsipc(u_int type, void *fsreq, void *dstva, u_int *perm) {
 	return ipc_recv(&whom, dstva, perm); // Receive the reply at dstva.
 }
 
+int fsipc_chmod(const char *path, u_int mode, int type) {
+	// NEW
+	struct Fsreq_chmod *req;
+	req = (struct Fsreq_chmod *)fsipcbuf;
+
+	strcpy(req->req_path, path);
+	req->req_mode = mode;
+	req->req_type = type;
+
+	return fsipc(FSREQ_CHMOD, req, 0, 0);
+}
+
 // Overview:
 //  Send file-open request to the file server. Includes path and
 //  omode in request, sets *fileid and *size from reply.

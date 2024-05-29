@@ -19,6 +19,11 @@ struct Dev devfile = {
     .dev_stat = file_stat,
 };
 
+int chmod(const char *path, u_int mode, int type) {
+	// NEW
+	return fsipc_chmod(path, mode, type);
+}
+
 // Overview:
 //  Open a file (or directory).
 //
@@ -195,6 +200,7 @@ static int file_stat(struct Fd *fd, struct Stat *st) {
 	strcpy(st->st_name, f->f_file.f_name);
 	st->st_size = f->f_file.f_size;
 	st->st_isdir = f->f_file.f_type == FTYPE_DIR;
+	st->st_mode = f->f_file.f_mode; // NEW
 	return 0;
 }
 

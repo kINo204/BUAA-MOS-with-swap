@@ -165,6 +165,25 @@ void serve_open(u_int envid, struct Fsreq_open *rq) {
 		return;
 	}
 
+	// NEW check permission
+	u_int fmode = f->f_mode;
+	if (rq->req_omode == O_RDONLY) {
+		if ((fmode & FMODE_R) == 0) {
+			ipc_send(envid, -E_PERM_DENY, 0, 0);
+			return;
+		}
+	} else if (rq->req_omode == O_WRONLY) {
+		if ((fmode & FMODE_W) == 0) {
+			ipc_send(envid, -E_PERM_DENY, 0, 0);
+			return;
+		}
+	} else if (rq->req_omode == O_RDWR) {
+		if (((fmode & FMODE_R) == 0) || ((fmode & FMODE_W) == 0)) {
+			ipc_send(envid, -E_PERM_DENY, 0, 0);
+			return;
+		}
+	}
+
 	// Save the file pointer to the File struct on disk buffer.
 	o->o_file = f;
 
@@ -338,6 +357,29 @@ void serve_sync(u_int envid) {
 	ipc_send(envid, 0, 0, 0);
 }
 
+void serve_chmod(u_int envid, struct Fsreq_chmod *rq) {
+	// NEW
+	int r;
+
+	struct File *f;
+	if ((r = file_open(rq->req_path, &f)) < 0) {
+		ipc_send(envid, r, 0, 0);
+		return;
+	}
+
+	if (rq->req_type == 0) {
+		f->f_mode = rq->req_mode;
+	} else if (rq->req_type == 1) {
+		f->f_mode |= rq->req_mode;
+	} else if (rq->req_type == 2) {
+		f->f_mode &= ~rq->req_mode;
+		debugf("removed %b, now %b\n", rq->req_mode, f->f_mode);
+	}
+
+	file_close(f);
+	ipc_send(envid, 0, 0, 0);
+}
+
 /*
  * The serve function table
  * File system use this table and the request number to
@@ -346,7 +388,7 @@ void serve_sync(u_int envid) {
 void *serve_table[MAX_FSREQNO] = {
     [FSREQ_OPEN] = serve_open,	 [FSREQ_MAP] = serve_map,     [FSREQ_SET_SIZE] = serve_set_size,
     [FSREQ_CLOSE] = serve_close, [FSREQ_DIRTY] = serve_dirty, [FSREQ_REMOVE] = serve_remove,
-    [FSREQ_SYNC] = serve_sync,
+    [FSREQ_SYNC] = serve_sync,   [FSREQ_CHMOD] = serve_chmod,
 };
 
 /*.
