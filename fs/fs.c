@@ -683,15 +683,14 @@ int file_create(char *path, struct File **file) {
 		return -E_FILE_EXISTS;
 	}
 
-	// TODO check permission
-	if ((f->f_mode & FMODE_W) == 0) {
-		return -E_PERM_DENY;
-	}
-
 	if (r != -E_NOT_FOUND || dir == 0) {
 		return r;
 	}
 
+	// TODO check permission
+	if ((dir->f_mode & FMODE_W) == 0) {
+		return -E_PERM_DENY;
+	}
 
 	if (dir_alloc_file(dir, &f) < 0) {
 		return r;
@@ -815,6 +814,10 @@ int file_remove(char *path) {
 		return r;
 	}
 
+	if ((f->f_dir) && (f->f_dir->f_mode & FMODE_W) == 0) {
+		return -E_PERM_DENY;
+	}
+
 	// Step 2: truncate it's size to zero.
 	file_truncate(f, 0);
 
@@ -824,9 +827,6 @@ int file_remove(char *path) {
 	// Step 4: flush the file.
 	file_flush(f);
 	if (f->f_dir) {
-		if ((f->f_dir->f_mode & FMODE_W) == 0) {
-			return -E_PERM_DENY;
-		}
 		file_flush(f->f_dir);
 	}
 
