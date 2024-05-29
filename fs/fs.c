@@ -675,7 +675,6 @@ int file_open(char *path, struct File **file) {
 //  On success set *file to point at the file and return 0.
 //  On error return < 0.
 int file_create(char *path, struct File **file) {
-	// TODO check permission
 	char name[MAXNAMELEN];
 	int r;
 	struct File *dir, *f;
@@ -688,6 +687,7 @@ int file_create(char *path, struct File **file) {
 		return r;
 	}
 
+	// TODO check permission
 	if ((dir->f_mode & FMODE_W) == 0) {
 		return -E_PERM_DENY;
 	}

@@ -372,8 +372,7 @@ void serve_chmod(u_int envid, struct Fsreq_chmod *rq) {
 	} else if (rq->req_type == 1) {
 		f->f_mode |= rq->req_mode;
 	} else if (rq->req_type == 2) {
-		f->f_mode &= ~rq->req_mode;
-		debugf("removed %b, now %b\n", rq->req_mode, f->f_mode);
+		f->f_mode &= ~(rq->req_mode);
 	}
 
 	file_close(f);
