@@ -1,5 +1,6 @@
 /*
- * operations on IDE disk.
+ * Operations on IDE disk.
+ * This is a CPU friendly PIO IDE driver.
  */
 
 #include "serv.h"

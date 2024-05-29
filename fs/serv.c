@@ -16,10 +16,10 @@
  * o_ff: va of filefd page
  */
 struct Open {
-	struct File *o_file;
+	struct File *o_file;	// Point to the `File` in the disk buf.
 	u_int o_fileid;
 	int o_mode;
-	struct Filefd *o_ff;
+	struct Filefd *o_ff;	// Point to the `Filefd` in the Filefd array.
 };
 
 /*
@@ -50,7 +50,7 @@ void serve_init(void) {
 	// Set virtual address to map.
 	va = FILEVA;
 
-	// Initial array opentab.
+	// Initial array for Filefds.
 	for (i = 0; i < MAXOPEN; i++) {
 		opentab[i].o_fileid = i;
 		opentab[i].o_ff = (struct Filefd *)va;
@@ -152,6 +152,7 @@ void serve_open(u_int envid, struct Fsreq_open *rq) {
 		return;
 	}
 
+	// Deal with O_CREAT option.
 	if ((rq->req_omode & O_CREAT) && (r = file_create(rq->req_path, &f)) < 0 &&
 	    r != -E_FILE_EXISTS) {
 		ipc_send(envid, r, 0, 0);
@@ -164,7 +165,7 @@ void serve_open(u_int envid, struct Fsreq_open *rq) {
 		return;
 	}
 
-	// Save the file pointer.
+	// Save the file pointer to the File struct on disk buffer.
 	o->o_file = f;
 
 	// If mode include O_TRUNC, set the file size to 0
@@ -174,13 +175,15 @@ void serve_open(u_int envid, struct Fsreq_open *rq) {
 		}
 	}
 
-	// Fill out the Filefd structure
-	ff = (struct Filefd *)o->o_ff;
-	ff->f_file = *f;
+	// Fill out the Filefd structure.
+	ff = (struct Filefd *)o->o_ff;  // Get ff
+	ff->f_file = *f;				// Copy the File structure from 
+									// disk buf to Filefds array.
 	ff->f_fileid = o->o_fileid;
 	o->o_mode = rq->req_omode;
 	ff->f_fd.fd_omode = o->o_mode;
 	ff->f_fd.fd_dev_id = devfile.dev_id;
+	// Normal situation ipc: send Filefd.
 	ipc_send(envid, 0, o->o_ff, PTE_D | PTE_LIBRARY);
 }
 
@@ -346,7 +349,7 @@ void *serve_table[MAX_FSREQNO] = {
     [FSREQ_SYNC] = serve_sync,
 };
 
-/*
+/*.
  * Overview:
  *  The main loop of the file system server.
  *  It receives requests from other processes, if no request,
@@ -361,14 +364,12 @@ void serve(void) {
 	for (;;) {
 		perm = 0;
 
+		// Receive a request argument page on the REQVA page.
 		req = ipc_recv(&whom, (void *)REQVA, &perm);
-
-		// All requests must contain an argument page
 		if (!(perm & PTE_V)) {
 			debugf("Invalid request from %08x: no argument page\n", whom);
 			continue; // just leave it hanging, waiting for the next request.
 		}
-
 		// The request number must be valid.
 		if (req < 0 || req >= MAX_FSREQNO) {
 			debugf("Invalid request code %d from %08x\n", req, whom);
@@ -380,7 +381,7 @@ void serve(void) {
 		func = serve_table[req];
 		func(whom, REQVA);
 
-		// Unmap the argument page.
+		// Unmap the argument page to prep for the next req.
 		panic_on(syscall_mem_unmap(0, (void *)REQVA));
 	}
 }

@@ -25,6 +25,8 @@ struct Dev devfile = {
 // Returns:
 //  the file descriptor on success,
 //  the underlying error on failure.
+
+// Init Filefd and get file content.
 int open(const char *path, int mode) {
 	int r;
 
@@ -50,6 +52,7 @@ int open(const char *path, int mode) {
 	fileid = ffd->f_fileid;
 
 	// Step 4: Map the file content using 'fsipc_map'.
+	// Map the file's content to its data cache page by page.
 	for (int i = 0; i < size; i += PTMAP) {
 		/* Exercise 5.9: Your code here. (4/5) */
 		try(fsipc_map(fileid, i, va + i)); // NOT SURE

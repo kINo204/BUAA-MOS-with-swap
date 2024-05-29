@@ -333,7 +333,7 @@ void page_remove(Pde *pgdir, u_int asid, u_long va) {
 	page_decref(pp);
 
 	/* Step 3: Flush TLB. */
-	*pte = 0;
+	*pte = 0; // PTE set to INVALID at the time.
 	tlb_invalidate(asid, va);
 	return;
 }

@@ -143,7 +143,7 @@ int dup(int oldfdnum, int newfdnum) {
 	/* Step 4: Get data address. */
 	ova = fd2data(oldfd);
 	nva = fd2data(newfd);
-	/* Step 5: Dunplicate the data and 'fd' self from old to new. */
+	/* Step 5: Duplicate the data and 'fd' self from old to new. */
 	if ((r = syscall_mem_map(0, oldfd, 0, newfd, vpt[VPN(oldfd)] & (PTE_D | PTE_LIBRARY))) <
 	    0) {
 		goto err;

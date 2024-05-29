@@ -22,8 +22,8 @@ u_char fsipcbuf[PAGE_SIZE] __attribute__((aligned(PAGE_SIZE)));
 static int fsipc(u_int type, void *fsreq, void *dstva, u_int *perm) {
 	u_int whom;
 	// Our file system server must be the 2nd env.
-	ipc_send(envs[1].env_id, type, fsreq, PTE_D);
-	return ipc_recv(&whom, dstva, perm);
+	ipc_send(envs[1].env_id, type, fsreq, PTE_D); // Send the #req and argument page.
+	return ipc_recv(&whom, dstva, perm); // Receive the reply at dstva.
 }
 
 // Overview:
@@ -46,7 +46,8 @@ int fsipc_open(const char *path, u_int omode, struct Fd *fd) {
 
 	strcpy((char *)req->req_path, path);
 	req->req_omode = omode;
-	return fsipc(FSREQ_OPEN, req, fd, &perm);
+
+	return fsipc(FSREQ_OPEN, req, fd, &perm); // Actually a Filefd is received here.
 }
 
 // Overview:

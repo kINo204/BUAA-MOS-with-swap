@@ -19,6 +19,7 @@ void *disk_addr(u_int blockno) {
 // Overview:
 //  Check if this virtual address is mapped to a block. (check PTE_V bit)
 int va_is_mapped(void *va) {
+	// Must check pgdir and pgtbl(2nd level) at the same time!
 	return (vpd[PDX(va)] & PTE_V) && (vpt[VPN(va)] & PTE_V);
 }
 
@@ -91,12 +92,12 @@ void write_block(u_int blockno) {
 // Hint:
 //  use disk_addr, block_is_mapped, syscall_mem_alloc, and ide_read.
 int read_block(u_int blockno, void **blk, u_int *isnew) {
-	// Step 1: validate blockno. Make file the block to read is within the disk.
+	// Step 1: Validate blockno. Make sure the block to read is within the disk.
 	if (super && blockno >= super->s_nblocks) {
 		user_panic("reading non-existent block %08x\n", blockno);
 	}
 
-	// Step 2: validate this block is used, not free.
+	// Step 2: Validate this block is used, not free.
 	// Hint:
 	//  If the bitmap is NULL, indicate that we haven't read bitmap from disk to memory
 	//  until now. So, before we check if a block is free using `block_is_free`, we must
@@ -211,7 +212,7 @@ void free_block(u_int blockno) {
 int alloc_block_num(void) {
 	int blockno;
 	// walk through this bitmap, find a free one and mark it as used, then sync
-	// this block to IDE disk (using `write_block`) from memory.
+	// this block(bitmap block) to IDE disk (using `write_block`) from memory.
 	for (blockno = 3; blockno < super->s_nblocks; blockno++) {
 		if (bitmap[blockno / 32] & (1 << (blockno % 32))) { // the block is free
 			bitmap[blockno / 32] &= ~(1 << (blockno % 32));
@@ -358,6 +359,8 @@ void fs_init(void) {
 //  Return -E_NO_DISK if there's no space on the disk for an indirect block.
 //  Return -E_NO_MEM if there's not enough memory for an indirect block.
 //  Return -E_INVAL if filebno is out of range (>= NINDIRECT).
+
+// filebno -> the (in)direct pointer to the file block
 int file_block_walk(struct File *f, u_int filebno, uint32_t **ppdiskbno, u_int alloc) {
 	int r;
 	uint32_t *ptr;
@@ -366,7 +369,7 @@ int file_block_walk(struct File *f, u_int filebno, uint32_t **ppdiskbno, u_int a
 	if (filebno < NDIRECT) {
 		// Step 1: if the target block is corresponded to a direct pointer, just return the
 		// disk block number.
-		ptr = &f->f_direct[filebno];
+		ptr = &f->f_direct[filebno]; // Pointer to the diskbno(in struct File in mem).
 	} else if (filebno < NINDIRECT) {
 		// Step 2: if the target block is corresponded to the indirect block, but there's no
 		//  indirect block and `alloc` is set, create the indirect block.
@@ -406,6 +409,8 @@ int file_block_walk(struct File *f, u_int filebno, uint32_t **ppdiskbno, u_int a
 //   -E_NO_DISK: if a block needed to be allocated but the disk is full.
 //   -E_NO_MEM: if we're out of memory.
 //   -E_INVAL: if filebno is out of range.
+
+// filebno -> diskbno
 int file_map_block(struct File *f, u_int filebno, u_int *diskbno, u_int alloc) {
 	int r;
 	uint32_t *ptr;
@@ -434,6 +439,8 @@ int file_map_block(struct File *f, u_int filebno, u_int *diskbno, u_int alloc) {
 
 // Overview:
 //  Remove a block from file f. If it's not there, just silently succeed.
+
+// Modify mapping: filebno -> diskbno
 int file_clear_block(struct File *f, u_int filebno) {
 	int r;
 	uint32_t *ptr;
@@ -457,6 +464,8 @@ int file_clear_block(struct File *f, u_int filebno) {
 //
 // Post-Condition:
 //  return 0 on success, and read the data to `blk`, return <0 on error.
+
+// Call read_block for the file's filebnoth block.
 int file_get_block(struct File *f, u_int filebno, void **blk) {
 	int r;
 	u_int diskbno;
@@ -587,16 +596,13 @@ int walk_path(char *path, struct File **pdir, struct File **pfile, char *lastele
 	struct File *dir, *file;
 	int r;
 
-	// start at the root.
+	// Init searching indexes at the root.
 	path = skip_slash(path);
 	file = &super->s_root;
 	dir = 0;
 	name[0] = 0;
 
-	if (pdir) {
-		*pdir = 0;
-	}
-
+	if (pdir) { *pdir = 0; }
 	*pfile = 0;
 
 	// find the target file by name recursively.
@@ -650,6 +656,9 @@ int walk_path(char *path, struct File **pdir, struct File **pfile, char *lastele
 // Post-Condition:
 //  On success set *pfile to point at the file and return 0.
 //  On error return < 0.
+
+// Set the pointer (struct File *file) to point at the found File block
+// in the disk buffer.
 int file_open(char *path, struct File **file) {
 	return walk_path(path, 0, file, 0);
 }

@@ -459,7 +459,7 @@ int sys_cgetc(void) {
  */
 int sys_write_dev(u_int va, u_int pa, u_int len) {
 	/* Exercise 5.1: Your code here. (1/2) */
-	// Check length.
+	// Check length, only byte, half-word and word.
 	if (len != 1 && len != 2 && len != 4) { return -E_INVAL; }
 	// Check va.
 	if (is_illegal_va_range(va, len)) { return -E_INVAL; }
