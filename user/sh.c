@@ -91,8 +91,20 @@ int parsecmd(char **argv, int *rightpipe) {
 			// utilize 'debugf' to print relevant messages,
 			// and subsequently terminate the process using 'exit'.
 			/* Exercise 6.5: Your code here. (1/3) */
+			if ((fd = open(t, O_RDONLY)) < 0) {
+				debugf("redirection failed: cannot open file: %s\n", t);
+				exit();
+			}
+			if (dup(fd, 0) < 0) {
+				debugf("redirection failed: cannot use file as input: %s\n", t);
+				exit();
+			}
+			if (close(fd) < 0) {
+				debugf("redirection failed: cannot close file descriptor: %d of %s\n", fd, t);
+				exit();
+			}
 
-			user_panic("< redirection not implemented");
+			//user_panic("< redirection not implemented");
 
 			break;
 		case '>':
@@ -106,8 +118,20 @@ int parsecmd(char **argv, int *rightpipe) {
 			// utilize 'debugf' to print relevant messages,
 			// and subsequently terminate the process using 'exit'.
 			/* Exercise 6.5: Your code here. (2/3) */
+			if ((fd = open(t, O_WRONLY)) < 0) {
+				debugf("redirection failed: cannot open file: %s\n", t);
+				exit();
+			}
+			if (dup(fd, 1) < 0) {
+				debugf("redirection failed: cannot use file for output: %s\n", t);
+				exit();
+			}
+			if (close(fd) < 0) {
+				debugf("redirection failed: cannot close file descriptor: %d of %s\n", fd, t);
+				exit();
+			}
 
-			user_panic("> redirection not implemented");
+			//user_panic("> redirection not implemented");
 
 			break;
 		case '|':;
@@ -128,6 +152,39 @@ int parsecmd(char **argv, int *rightpipe) {
 			 */
 			int p[2];
 			/* Exercise 6.5: Your code here. (3/3) */
+			if (pipe(p) < 0) {
+				debugf("cannot create a pipe\n");
+				exit();
+			}
+			if ((*rightpipe = fork()) == 0) { // child
+				if (dup(p[0], 0) < 0) {
+					debugf("child pipe read end dup failed\n");
+					exit();
+				}
+				if (close(p[0]) < 0) {
+					debugf("child pipe read end closing failed\n");
+					exit();
+				}
+				if (close(p[1]) < 0) {
+					debugf("child pipe write end closing failed\n");
+					exit();
+				}
+				return parsecmd(argv, rightpipe);
+			} else { // parent
+				if (dup(p[1], 1) < 0) {
+					debugf("parent pipe write end dup failed\n");
+					exit();
+				}
+				if (close(p[0]) < 0) {
+					debugf("parent pipe read end closing failed\n");
+					exit();
+				}
+				if (close(p[1]) < 0) {
+					debugf("parent pipe write end closing failed\n");
+					exit();
+				}
+				return argc;
+			}
 
 			user_panic("| not implemented");
 

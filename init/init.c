@@ -60,12 +60,15 @@ void mips_init(u_int argc, char **argv, char **penv, u_int ram_low_size) {
 	//ENV_CREATE(user_pingpong);
 
 	// lab6:
-	// ENV_CREATE(user_icode);  // This must be the first env!
+	/* 1st */ ENV_CREATE(user_icode);
 
 	// lab5:
-	ENV_CREATE(user_fstest);
-	ENV_CREATE(fs_serv);  // This must be the second env!
+	//ENV_CREATE(user_fstest);
+	/* 2nd */ ENV_CREATE(fs_serv);
 	//ENV_CREATE(user_devtst);
+
+	// My tests:
+	//ENV_CREATE(user_mytst);
 
 	// lab3:
 	schedule(0);
