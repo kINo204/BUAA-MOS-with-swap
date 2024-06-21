@@ -5,6 +5,7 @@
 #include <fd.h>
 #include <mmu.h>
 #include <pmap.h>
+#include <swap.h>
 #include <syscall.h>
 #include <trap.h>
 

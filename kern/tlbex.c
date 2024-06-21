@@ -1,6 +1,8 @@
 #include <bitops.h>
 #include <env.h>
 #include <pmap.h>
+#include <swap.h>
+#include <printk.h>
 
 /* Lab 2 Key Code "tlb_invalidate" */
 /* Overview:
@@ -19,26 +21,18 @@ static void passive_alloc(u_int va, Pde *pgdir, u_int asid) {
 	struct Page *p = NULL;
 
 	if (va < UTEMP) {
-		panic("address too low");
-	}
-
+		panic("address too low"); }
 	if (va >= USTACKTOP && va < USTACKTOP + PAGE_SIZE) {
-		panic("invalid memory");
-	}
-
+		panic("invalid memory"); }
 	if (va >= UENVS && va < UPAGES) {
-		panic("envs zone");
-	}
-
+		panic("envs zone"); }
 	if (va >= UPAGES && va < UVPT) {
-		panic("pages zone");
-	}
-
+		panic("pages zone"); }
 	if (va >= ULIM) {
-		panic("kernel address");
-	}
+		panic("kernel address"); }
 
 	panic_on(page_alloc(&p));
+	swap_register(p, pgdir, PTE_ADDR(va), asid); // Register ppage for swap.
 	panic_on(page_insert(pgdir, asid, p, PTE_ADDR(va), (va >= UVPT && va < ULIM) ? 0 : PTE_D));
 }
 
@@ -47,7 +41,7 @@ static void passive_alloc(u_int va, Pde *pgdir, u_int asid) {
  */
 void _do_tlb_refill(u_long *pentrylo, u_int va, u_int asid) {
 	tlb_invalidate(asid, va);
-	Pte *ppte;
+	Pte *ppte = NULL;
 	/* Hints:
 	 *  Invoke 'page_lookup' repeatedly in a loop to find the page table entry '*ppte'
 	 * associated with the virtual address 'va' in the current address space 'cur_pgdir'.
@@ -56,12 +50,13 @@ void _do_tlb_refill(u_long *pentrylo, u_int va, u_int asid) {
 	 *  allocate a new page using 'passive_alloc' until 'page_lookup' succeeds.
 	 */
 
-	/* Exercise 2.9: Your code here. */
-	while (1) {
-		if (page_lookup(cur_pgdir, va, &ppte) != NULL) {
-			break;
+	while (page_lookup(cur_pgdir, va, &ppte) == NULL) {
+		if ((ppte != NULL) && ((*ppte) & PTE_SWAPPED)) {
+			//printk("swapped out page\n");
+			swap_back(*ppte);
+		} else {
+			passive_alloc(va, cur_pgdir, asid);
 		}
-		passive_alloc(va, cur_pgdir, asid);
 	}
 
 	ppte = (Pte *)((u_long)ppte & ~0x7); // 0x7: 2 for a 32bit u_long, 1 for odd/even

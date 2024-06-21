@@ -1,0 +1,47 @@
+qemu-system-mipsel -cpu 4Kc -m 64 -nographic -M malta -drive id=ide0,file=target/fs.img,if=ide,format=raw -drive id=ide1,file=target/empty.img,if=ide,format=raw -drive id=swap,file=target/swap.img,if=ide,format=raw -no-reboot -kernel target/mos
+init.c:	mips_init() is called
+Memory size: 65536 KiB, number of pages: 16384
+to memory 80450000 for struct Pages.
+pmap.c:	 mips vm init success
+------Enter my test------
+FS is running
+icode: open /motd
+superblock is good
+np=5000
+np=10000
+read_bitmap is good
+np=15000
+icode: read /motd
+This is /motd, the message of the day.
+
+Welcome to the MOS kernel, now with a file system!
+
+icode: close /motd
+icode: spawn /init
+icode: exiting
+[00000800] destroying 00000800
+[00000800] free env 00000800
+i am killed ... 
+init: running
+init: data seems okay
+init: bss seems okay
+init: args: 'init' 'initarg1' 'initarg2'
+init: running sh
+[00002003] destroying 00002003
+[00002003] free env 00002003
+i am killed ... 
+np=20000
+np=25000
+np=30000
+np=35000
+np=40000
+np=45000
+np=50000
+np=55000
+np=60000
+np=65000
+panic at swap.c:54 (swap_register): no struct SwapInfo available
+ra:    80027700  sp:  803ffe88  Status: 00008000
+Cause: 0000040c  EPC: 004000e8  BadVA:  104fe000
+curenv:    8012a1b8 (id = 0x1802, off = 2)
+cur_pgdir: 83fde000

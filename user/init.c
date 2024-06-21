@@ -51,6 +51,7 @@ int main(int argc, char **argv) {
 		user_panic("dup: %d", r);
 	}
 
+#ifndef SUSP_SH
 	while (1) {
 		debugf("init: starting sh\n");
 		r = spawnl("sh.b", "sh", NULL);
@@ -60,4 +61,5 @@ int main(int argc, char **argv) {
 		}
 		wait(r);
 	}
+#endif
 }

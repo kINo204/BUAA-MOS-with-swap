@@ -3,6 +3,7 @@
 #include <malta.h>
 #include <mmu.h>
 #include <pmap.h>
+#include <swap.h>
 #include <printk.h>
 
 /* These variables are set by mips_detect_memory(ram_low_size); */
@@ -80,6 +81,7 @@ void mips_vm_init() {
 	 * physical address `pages` allocated before. For consideration of alignment,
 	 * you should round up the memory size before map. */
 	pages = (struct Page *)alloc(npage * sizeof(struct Page), PAGE_SIZE, 1);
+
 	printk("to memory %x for struct Pages.\n", freemem);
 	printk("pmap.c:\t mips vm init success\n");
 }
@@ -91,6 +93,7 @@ void mips_vm_init() {
  * Hint: Use 'LIST_INSERT_HEAD' to insert free pages to 'page_free_list'.
  */
 void page_init(void) {
+	swap_init();
 	/* Step 1: Initialize page_free_list. */
 	/* Hint: Use macro `LIST_INIT` defined in include/queue.h. */
 	/* Exercise 2.3: Your code here. (1/4) */
@@ -132,19 +135,20 @@ void page_init(void) {
 int page_alloc(struct Page **new) {
 	/* Step 1: Get a page from free memory. If fails, return the error code.*/
 	struct Page *pp;
-	/* Exercise 2.4: Your code here. (1/2) */
 	if (LIST_EMPTY(&page_free_list))
 	{
-		return -E_NO_MEM;
+		swap();
+		if (LIST_EMPTY(&page_free_list)) {
+			panic("swap err: no PPage available after swapping");
+		} 
 	}
 	pp = LIST_FIRST(&page_free_list);
-
 	LIST_REMOVE(pp, pp_link);
 
-	/* Step 2: Initialize this page with zero.
-	 * Hint: use `memset`. */
-	/* Exercise 2.4: Your code here. (2/2) */
+	/* Step 2: Initialize this page with zero. */
 	memset((void*)page2kva(pp), 0, PAGE_SIZE);
+	pp->swap_link.tqe_next = NULL;
+	pp->swap_link.tqe_prev = NULL;
 
 	*new = pp;
 	return 0;
@@ -199,12 +203,8 @@ static int pgdir_walk(Pde *pgdir, u_long va, int create, Pte **ppte) {
 	/* Exercise 2.6: Your code here. (2/3) */
 	if (((*pgdir_entryp) & PTE_V) == 0) // invalid page directory entry, no page table yet
 	{
-		if (create)
-		{
-			if (page_alloc(&pp) == -E_NO_MEM)
-			{
-				return -E_NO_MEM;
-			}
+		if (create) { // Pgtbl pages created here:
+			if (page_alloc(&pp) == -E_NO_MEM) { return -E_NO_MEM; }
 			pp->pp_ref += 1;
 			*pgdir_entryp  = PTE_FLAGS(*pgdir_entryp);    // clear pgdir_entryp's PA field
 			*pgdir_entryp |= page2pa(pp); 		// write newly allocated PA to pgdir_entryp
@@ -243,6 +243,10 @@ int page_insert(Pde *pgdir, u_int asid, struct Page *pp, u_long va, u_int perm) 
 
 	/* Step 1: Get PTE. */
 	pgdir_walk(pgdir, va, 0, &pte);
+
+	if (pte && !(*pte & PTE_V) && (*pte & PTE_SWAPPED)) {
+		swap_back(*pte);
+	}
 
 	// A valid pte exist
 	if (pte && (*pte & PTE_V)) {
@@ -289,12 +293,17 @@ struct Page *page_lookup(Pde *pgdir, u_long va, /* for efficiency */ Pte **ppte)
 
 	/* Hint: Check if the page table entry doesn't exist or is not valid. */
 	if (pte == NULL || (*pte & PTE_V) == 0) {
-		return NULL;
+		if (pte && (*pte & PTE_SWAPPED)) {
+			swap_back(*pte);
+		} else if (ppte) {
+			*ppte = pte;
+			return NULL;
+		}
 	}
 
 	/* Step 2: Get the corresponding Page struct. */
 	/* Hint: Use function `pa2page`, defined in include/pmap.h . */
-	pp = pa2page(*pte);
+	pp = pa2page(*pte); // TODO
 	if (ppte) {
 		*ppte = pte;
 	}
@@ -331,6 +340,9 @@ void page_remove(Pde *pgdir, u_int asid, u_long va) {
 
 	/* Step 2: Decrease reference count on 'pp'. */
 	page_decref(pp);
+
+	// Unregister the pp in swap_tbl.
+	swap_unregister(pp, pgdir, va, asid);
 
 	/* Step 3: Flush TLB. */
 	*pte = 0; // PTE set to INVALID at the time.

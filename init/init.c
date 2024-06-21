@@ -1,6 +1,8 @@
 #include <asm/asm.h>
 #include <env.h>
 #include <pmap.h>
+#include <swap.h>
+#include <sdisk.h>
 #include <printk.h>
 #include <sched.h>
 #include <trap.h>
@@ -45,6 +47,8 @@ void mips_init(u_int argc, char **argv, char **penv, u_int ram_low_size) {
 	mips_detect_memory(ram_low_size);
 	mips_vm_init();
 	page_init();
+	// Call swap disk tester.
+	//test_sdisk();
 
 	// lab3:
 	env_init();

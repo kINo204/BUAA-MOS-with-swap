@@ -37,6 +37,7 @@ clean:
 image: $(tools_dir)/fsformat
 	dd if=/dev/zero of=../target/fs.img bs=4096 count=1024 2>/dev/null
 	dd if=/dev/zero of=../target/empty.img bs=4096 count=1024 2>/dev/null
+	dd if=/dev/zero of=../target/swap.img bs=4096 count=1024 2>/dev/null
 	# using awk to remove paths with identical basename from FSIMGFILES
 	$(tools_dir)/fsformat ../target/fs.img \
 		$$(printf '%s\n' $(FSIMGFILES) | awk -F/ '{ ns[$$NF]=$$0 } END { for (n in ns) { print ns[n] } }')

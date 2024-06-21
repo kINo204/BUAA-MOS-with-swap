@@ -6,6 +6,7 @@ target_dir              := target
 mos_elf                 := $(target_dir)/mos
 user_disk               := $(target_dir)/fs.img
 empty_disk              := $(target_dir)/empty.img
+swap_disk               := $(target_dir)/swap.img
 qemu_pts                := $(shell [ -f .qemu_log ] && grep -Eo '/dev/pts/[0-9]+' .qemu_log)
 link_script             := kernel.lds
 
@@ -34,6 +35,7 @@ CFLAGS                  += -DLAB=$(shell echo $(lab) | cut -f1 -d_)
 QEMU_FLAGS              += -cpu 4Kc -m 64 -nographic -M malta \
 						$(shell [ -f '$(user_disk)' ] && echo '-drive id=ide0,file=$(user_disk),if=ide,format=raw') \
 						$(shell [ -f '$(empty_disk)' ] && echo '-drive id=ide1,file=$(empty_disk),if=ide,format=raw') \
+						$(shell [ -f '$(swap_disk)' ] && echo '-drive id=swap,file=$(swap_disk),if=ide,format=raw') \
 						-no-reboot
 
 .PHONY: all test tools $(modules) clean run dbg_run dbg_pts dbg objdump fs-image clean-and-all connect

@@ -35,6 +35,20 @@
 #define MALTA_IDE_CMD_PIO_READ 0x20  /* Read sectors with retry */
 #define MALTA_IDE_CMD_PIO_WRITE 0x30 /* write sectors with retry */
 
+#define MALTA_SWAP_BASE (MALTA_PCIIO_BASE + 0x0170)
+#define MALTA_SWAP_DATA (MALTA_SWAP_BASE + 0x00)
+#define MALTA_SWAP_ERR (MALTA_SWAP_BASE + 0x01)
+#define MALTA_SWAP_NSECT (MALTA_SWAP_BASE + 0x02)
+#define MALTA_SWAP_LBAL (MALTA_SWAP_BASE + 0x03)
+#define MALTA_SWAP_LBAM (MALTA_SWAP_BASE + 0x04)
+#define MALTA_SWAP_LBAH (MALTA_SWAP_BASE + 0x05)
+#define MALTA_SWAP_DEVICE (MALTA_SWAP_BASE + 0x06)
+#define MALTA_SWAP_STATUS (MALTA_SWAP_BASE + 0x07)
+#define MALTA_SWAP_LBA 0xE0
+#define MALTA_SWAP_BUSY 0x80
+#define MALTA_SWAP_CMD_PIO_READ 0x20  /* Read sectors with retry */
+#define MALTA_SWAP_CMD_PIO_WRITE 0x30 /* write sectors with retry */
+
 /*
  * MALTA Power Management device definitions.
  */

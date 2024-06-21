@@ -10,9 +10,12 @@ extern Pde *cur_pgdir;
 
 LIST_HEAD(Page_list, Page); // Page_list type(for head of free list of physical pages)
 typedef LIST_ENTRY(Page) Page_LIST_entry_t; // Page_list's node type
+TAILQ_HEAD(Page_tailq, Page);
+typedef TAILQ_ENTRY(Page) Page_TAILQ_entry_t;
 
 struct Page { // physical page's management structure
-	Page_LIST_entry_t pp_link; // Page_list's node
+	Page_LIST_entry_t pp_link;
+	Page_TAILQ_entry_t swap_link;
 
 	// Ref is the count of pointers (usually in page table entries)
 	// to this page.  This only holds for pages allocated using

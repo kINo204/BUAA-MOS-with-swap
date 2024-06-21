@@ -412,6 +412,7 @@ void env_free(struct Env *e) {
 	for (pdeno = 0; pdeno < PDX(UTOP); pdeno++) {
 		/* Hint: only look at mapped page tables. */
 		if (!(e->env_pgdir[pdeno] & PTE_V)) {
+			// Page tables won't be swapped out.
 			continue;
 		}
 		/* Hint: find the pa and va of the page table. */
@@ -419,7 +420,7 @@ void env_free(struct Env *e) {
 		pt = (Pte *)KADDR(pa);
 		/* Hint: Unmap all PTEs in this page table. */
 		for (pteno = 0; pteno <= PTX(~0); pteno++) {
-			if (pt[pteno] & PTE_V) {
+			if (pt[pteno] & PTE_V || pt[pteno] & PTE_SWAPPED) {
 				page_remove(e->env_pgdir, e->env_asid,
 					    (pdeno << PDSHIFT) | (pteno << PGSHIFT));
 			}
