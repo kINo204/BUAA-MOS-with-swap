@@ -719,7 +719,7 @@ void swap(void) {
 		Pde pde = sinfo->pgdir[PDX(sinfo->va)];
 		Pte *pte = (Pte *)KADDR( PTE_ADDR(pde) ) + PTX(sinfo->va);
 
-		panic_on(!(*pte & PTE_V));
+		//panic_on(!(*pte & PTE_V));
 		panic_on(*pte & PTE_SWAPPED);
 
 		*pte &= ~PTE_V;  	 		// Unset V.
@@ -729,9 +729,9 @@ void swap(void) {
 
 		tlb_invalidate(sinfo->asid, sinfo->va); // Invalidate corresponding TLB entry.
 
-		pp->pp_ref--;
 	}
-	panic_on(pp->pp_ref != 0);
+	pp->pp_ref = 0;
+	//panic_on(pp->pp_ref != 0);
 
 	// Move sinfos from swap_tbl to bno_tbl.
 	SwapTableEntry *bno_ste = bno2ste(sd_bno);
