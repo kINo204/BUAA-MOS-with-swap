@@ -32,8 +32,8 @@ static void passive_alloc(u_int va, Pde *pgdir, u_int asid) {
 		panic("kernel address"); }
 
 	panic_on(page_alloc(&p));
-	swap_register(p, pgdir, PTE_ADDR(va), asid); // Register ppage for swap.
 	panic_on(page_insert(pgdir, asid, p, PTE_ADDR(va), (va >= UVPT && va < ULIM) ? 0 : PTE_D));
+	swap_register(p, pgdir, PTE_ADDR(va), asid); // Register ppage for swap.
 }
 
 /* Overview:

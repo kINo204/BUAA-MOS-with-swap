@@ -312,7 +312,7 @@ struct Page *page_lookup(Pde *pgdir, u_long va, /* for efficiency */ Pte **ppte)
 
 	return pp;
 }
-/* End of Key Code "page_lookup" */
+/* End of Key Code "age_lookup" */
 
 /* Overview:
  *   Decrease the 'pp_ref' value of Page 'pp'.
@@ -599,6 +599,7 @@ void swap_init(void) {
    Called when a VPage of swappable type is accessed, requiring a PPage.
  */
 void swap_register(struct Page *pp, Pde *pgdir, u_int va, u_int asid) {
+	if (PTE_ADDR(va) == 0x500000) { printk("#0 registered\n"); }
 	// If it's the first time the PPage is mapped, insert it to swap_queue.
 	SwapTableEntry *pp_ste = page2ste(pp);
 	if (LIST_EMPTY(pp_ste)) {
@@ -610,7 +611,7 @@ void swap_register(struct Page *pp, Pde *pgdir, u_int va, u_int asid) {
 	struct SwapInfo *sinfo = LIST_FIRST(&swapInfo_free_list);
 	LIST_REMOVE(sinfo, link);
 	sinfo->pgdir = pgdir;
-	sinfo->va    = va;
+	sinfo->va    = PTE_ADDR(va);
 	sinfo->asid  = asid;
 
 	// Insert sinfo to corresponding list of pp.
@@ -622,18 +623,25 @@ void swap_unregister(struct Page *pp, Pde *pgdir, u_int va, u_int asid) {
 	// Find the corresponding SwapInfo from the swap_tbl and remove it.
 	struct SwapInfo *sinfo;
 	SwapTableEntry *ste = page2ste(pp);
+	if (LIST_EMPTY(ste)) { return; }
+
+	int flag = 1;
 	LIST_FOREACH(sinfo, ste, link) {
 		if ((((u_int) sinfo->pgdir) == ((u_int) pgdir))
 				&& (sinfo->asid == asid)
 				&& (PTE_ADDR(sinfo->va) == PTE_ADDR(va))) {
 			LIST_REMOVE(sinfo, link);
 			LIST_INSERT_HEAD(&swapInfo_free_list, sinfo, link);
+			if (PTE_ADDR(sinfo->va) == 0x500000) { printk("#0 unregistered\n"); }
+			flag = 0;
 			break;
 		}
 	}
+	panic_on(flag); // no SwapInfo removed
 
 	if (LIST_EMPTY(ste)) {
-		if (pp->swap_link.tqe_next) {
+		if (pp->swap_link.tqe_next || pp->swap_link.tqe_prev) {
+			printk("all removed, sinfo: envid=%08x, pgdirkva=0x%x, sinfopgdir=0x%x, ppn=%d, va=0x%x\n", curenv->env_id, curenv->env_pgdir, sinfo->pgdir, page2ppn(pp), sinfo->va);
 			TAILQ_REMOVE(&page_swap_queue, pp, swap_link); // Remove the PPage from swappable queue.
 			pp->swap_link.tqe_next = NULL;
 			pp->swap_link.tqe_prev = NULL;
@@ -661,6 +669,9 @@ void swap_back(Pte cur_pte) {
 		Pde pde = sinfo->pgdir[PDX(sinfo->va)];
 		Pte *pte = (Pte *)KADDR( PTE_ADDR(pde) ) + PTX(sinfo->va);
 
+		if (PTE_ADDR(sinfo->va) == 0x500000) { printk("#0 swap back\n"); }
+		panic_on(*pte & PTE_V);
+		panic_on(!(*pte & PTE_SWAPPED));
 		*pte |= PTE_V;
 		*pte &= ~PTE_SWAPPED;
 		*pte = PTE_FLAGS(*pte);
@@ -701,15 +712,23 @@ void swap(void) {
 		Pde pde = sinfo->pgdir[PDX(sinfo->va)];
 		Pte *pte = (Pte *)KADDR( PTE_ADDR(pde) ) + PTX(sinfo->va);
 
-		//panic_on(!(*pte & PTE_V));
-		panic_on(*pte & PTE_SWAPPED);
+		panic_on(!(*pte & PTE_V));
+		if (*pte & PTE_SWAPPED) {
+			printk("Swapped out SwapInfo in swap_tbl: \n"
+				   "va = 0x%x, ppn = %d, pte = 0x%x\n"
+					, sinfo->va, page2ppn(pp), *pte);
+			panic("PTE_SWAPPED set");
+		}
 
+		if (PTE_ADDR(sinfo->va) == 0x500000) { printk("#0 swap out\n"); }
 		*pte &= ~PTE_V;  	 		// Unset V.
 		*pte |= PTE_SWAPPED; 		// Set soft-flag SWAPPED.
 		*pte = PTE_FLAGS(*pte); 	// Clear PTE's PAddr field.
 		*pte |= PTE_ADDR(sd_bno << PGSHIFT); // Set addr to sd_bno.
+		pp->pp_ref--;
 		tlb_invalidate(sinfo->asid, sinfo->va); // Invalidate corresponding TLB entry.
 	}
+	panic_on(pp->pp_ref != 0);
 
 	// Move sinfos from swap_tbl to bno_tbl.
 	SwapTableEntry *bno_ste = bno2ste(sd_bno);
@@ -720,7 +739,6 @@ void swap(void) {
 	}
 
 	// Free the PPage.
-	pp->pp_ref = 0;
 
 	TAILQ_REMOVE(&page_swap_queue, pp, swap_link);
 	pp->swap_link.tqe_next = NULL;

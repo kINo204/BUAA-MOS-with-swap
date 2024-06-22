@@ -2,6 +2,7 @@
 #include <io.h>
 #include <mmu.h>
 #include <pmap.h>
+#include <swap.h>
 #include <printk.h>
 #include <sched.h>
 #include <syscall.h>
@@ -143,12 +144,16 @@ int sys_mem_alloc(u_int envid, u_int va, u_int perm) {
 	/* Step 3: Allocate a physical page using 'page_alloc'. */
 	try(page_alloc(&pp));
 
-	if (1) { // condition not sure for now
-		swap_register(pp, env->env_pgdir, va, env->env_asid);
+	/* Step 4: Map the allocated page at 'va' with permission 'perm' using 'page_insert'. */
+	perm &= ~PTE_SWAPPED;
+	int r = page_insert(env->env_pgdir, env->env_asid, pp, va, perm);
+
+	if (va == UCOW) { // condition not sure for now
+		panic_on(pp == NULL);
+		swap_register(pp, env->env_pgdir, va, env->env_asid); // Set page swappable
 	}
 
-	/* Step 4: Map the allocated page at 'va' with permission 'perm' using 'page_insert'. */
-	return page_insert(env->env_pgdir, env->env_asid, pp, va, perm);
+	return r;
 }
 
 /* Overview:
@@ -188,15 +193,18 @@ int sys_mem_map(u_int srcid, u_int srcva, u_int dstid, u_int dstva, u_int perm) 
 	pp = page_lookup(srcenv->env_pgdir, srcva, NULL);
 	if (pp == NULL) { return -E_INVAL; };
 
+	/* Step 5: Map the physical page at 'dstva' in the address space of 'dstid'. */
+	// Note that the swap_unregister needed lies in the page_remove in this page_insert call.
+	perm &= ~PTE_SWAPPED;
+	int r = page_insert(dstenv->env_pgdir, dstenv->env_asid, pp, dstva, perm);
+
 	// Register new SwapInfo for VPage.
-	if ((pp->swap_link.tqe_next != NULL) // the original page should be swappable
-			&& ((srcid != dstid) || (srcva != dstva))) {
+	if ((!LIST_EMPTY(page2ste(pp))) // the original page should be swappable
+			&& ((srcid != dstid) || (PTE_ADDR(srcva) != PTE_ADDR(dstva)))) {
 		swap_register(pp, dstenv->env_pgdir, dstva, dstenv->env_asid);
 	}
 
-	/* Step 5: Map the physical page at 'dstva' in the address space of 'dstid'. */
-	// Note that the swap_unregister needed lies in the page_remove in this page_insert call.
-	return page_insert(dstenv->env_pgdir, dstenv->env_asid, pp, dstva, perm);
+	return r;
 }
 
 /* Overview:

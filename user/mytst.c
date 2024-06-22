@@ -1,26 +1,26 @@
 #include <lib.h>
-int page_num = 0;
-u_long va;
+int magic = 0x12345678;
 
 int main(int argc,char **argv){
 	debugf("------Enter my test------\n");
+	debugf("parent start\n");
+	
+	write_seg(0x500000, 0x500000 + 16000 * PAGE_SIZE); // Alloc swappable pages in parent.
+	debugf("writing done\n");
 
-	for (va = 0x500000; va < 0X7f3fd000; va += PAGE_SIZE) {
-		if (va >= USTACKTOP && va < USTACKTOP + PAGE_SIZE) { continue; }
-		if (va >= UENVS && va < UPAGES) { continue; }
-		if (va >= UPAGES && va < UVPT) { continue; }
-
-		*((int *) va) = 0x12345678;
-		page_num++;
-
-		// check check
-		if (page_num % 5000 == 0) {
-			//debugf("write va = 0x%x\n", va);
-			debugf("np=%d\n", page_num);
-			//debugf("first is still 0x%x\n", *((int *) 0x500000));
-		}
+	debugf("parent start forking\n");
+	if (fork() == 0) {	// child
+		while (1) {}
+	} else { 			// parent
+		//while (1) {}
+		debugf("parent ");
 	}
+	debugf("return from fork\n");
 
 	debugf("------Finish my test-----\n");
 	return 0;
+}
+
+void write_seg(u_int start, u_int end) {
+	for (u_int va = start; va < end; va += PAGE_SIZE) { *((int *)va) = magic; }
 }

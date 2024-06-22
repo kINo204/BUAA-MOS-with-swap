@@ -21,6 +21,7 @@
 static void __attribute__((noreturn)) cow_entry(struct Trapframe *tf) {
 	u_int va = tf->cp0_badvaddr;
 	u_int perm;
+	debugf("cow entry: envid=%08x, va=0x%x\n", env->env_id, PTE_ADDR(va));
 
 	/* Step 1: Find the 'perm' in which the faulting address 'va' is mapped. */
 	/* Hint: Use 'vpt' and 'VPN' to find the page table entry. If the 'perm' doesn't have
@@ -51,6 +52,8 @@ static void __attribute__((noreturn)) cow_entry(struct Trapframe *tf) {
 
 	// Step 6: Unmap the page at 'UCOW'.
 	try(syscall_mem_unmap(0, UCOW));
+
+	debugf("end cow entry\n");
 
 	// Step 7: Return to the faulting routine.
 	int r = syscall_set_trapframe(0, tf);
@@ -95,6 +98,9 @@ static void duppage(u_int envid, u_int vpn) {
 	/* Hint: The page should be first mapped to the child before remapped in the parent. (Why?)
 	 */
 	addr = vpn * PAGE_SIZE;
+	//debugf("duppage start, vpn=%d, addr=0x%x\n", vpn, addr);
+	try(syscall_mem_map(0, addr, 0, addr, perm)); // swap back
+	perm = PTE_FLAGS(pte);
 	if ((perm & PTE_D) && !(perm & PTE_LIBRARY) && !(perm & PTE_COW))
 	{
 		// Both: unset D(writable), set COW
@@ -105,6 +111,7 @@ static void duppage(u_int envid, u_int vpn) {
 	{
 		try(syscall_mem_map(0, addr, envid, addr, perm)); // Map child
 	}
+	//debugf("end duppage\n");
 }
 
 /* Overview:
@@ -139,6 +146,7 @@ int fork(void) {
 		// Initialize our env structure.
 		env = envs + ENVX(syscall_getenvid());
 		// We can set $ra in trapframe to customize the child's "starting" PC for fork-exec.
+		debugf("child fork end\n");
 		return 0;
 	}
 
@@ -148,6 +156,7 @@ int fork(void) {
 	{
 		duppage(child, VPN(va));
 	}
+	debugf("end dup pages\n");
 
 	/* Step 4: Set up the child's tlb mod handler and set child's 'env_status' to
 	 * 'ENV_RUNNABLE'. */
