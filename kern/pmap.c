@@ -305,7 +305,7 @@ struct Page *page_lookup(Pde *pgdir, u_long va, /* for efficiency */ Pte **ppte)
 
 	/* Step 2: Get the corresponding Page struct. */
 	/* Hint: Use function `pa2page`, defined in include/pmap.h . */
-	pp = pa2page(*pte); // TODO
+	pp = pa2page(*pte);
 	if (ppte) {
 		*ppte = pte;
 	}

@@ -88,9 +88,7 @@ static void duppage(u_int envid, u_int vpn) {
 	Pte pte = ((Pte*)vpt)[vpn];
 	perm = PTE_FLAGS(pte);
 	// No need to duplicate invalid page(no actual physical page here)
-	if (!(perm & PTE_V)) {
-		return;
-	} // not sure
+	if (!(perm & PTE_V) && !(perm & PTE_SWAPPED)) { return; }
 
 	/* Step 2: If the page is writable, and not shared with children, and not marked as COW yet,
 	 * then map it as copy-on-write, both in the parent (0) and the child (envid). */

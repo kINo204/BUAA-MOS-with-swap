@@ -143,6 +143,10 @@ int sys_mem_alloc(u_int envid, u_int va, u_int perm) {
 	/* Step 3: Allocate a physical page using 'page_alloc'. */
 	try(page_alloc(&pp));
 
+	if (1) { // condition not sure for now
+		swap_register(pp, env->env_pgdir, va, env->env_asid);
+	}
+
 	/* Step 4: Map the allocated page at 'va' with permission 'perm' using 'page_insert'. */
 	return page_insert(env->env_pgdir, env->env_asid, pp, va, perm);
 }
@@ -184,7 +188,14 @@ int sys_mem_map(u_int srcid, u_int srcva, u_int dstid, u_int dstva, u_int perm) 
 	pp = page_lookup(srcenv->env_pgdir, srcva, NULL);
 	if (pp == NULL) { return -E_INVAL; };
 
+	// Register new SwapInfo for VPage.
+	if ((pp->swap_link.tqe_next != NULL) // the original page should be swappable
+			&& ((srcid != dstid) || (srcva != dstva))) {
+		swap_register(pp, dstenv->env_pgdir, dstva, dstenv->env_asid);
+	}
+
 	/* Step 5: Map the physical page at 'dstva' in the address space of 'dstid'. */
+	// Note that the swap_unregister needed lies in the page_remove in this page_insert call.
 	return page_insert(dstenv->env_pgdir, dstenv->env_asid, pp, dstva, perm);
 }
 
