@@ -44,6 +44,12 @@ void swap_init(void) {
    Called when a VPage of swappable type is accessed, requiring a PPage.
  */
 void swap_register(struct Page *pp, Pde *pgdir, u_int va, u_int asid) {
+	if (PTE_ADDR(va) == 0x7f3fd000
+	//if (PTE_ADDR(va) == 0x7f3ff000
+			&& curenv->env_id == 0x1802
+			) {
+		printk("reg: ppn %d  va %08x  num_aft %d", page2ppn(pp), PTE_ADDR(va), pp->pp_ref);
+	}
 	// If it's the first time the PPage is mapped, insert it to swap_queue.
 	SwapTableEntry *pp_ste = page2ste(pp);
 	if (LIST_EMPTY(pp_ste)) {
@@ -64,6 +70,12 @@ void swap_register(struct Page *pp, Pde *pgdir, u_int va, u_int asid) {
 }
 
 void swap_unregister(struct Page *pp, Pde *pgdir, u_int va, u_int asid) {
+	if (PTE_ADDR(va) == 0x7f3fd000
+	//if (PTE_ADDR(va) == 0x7f3ff000
+			&& curenv->env_id == 0x1802
+			) {
+		printk("reg: ppn %d  va %08x  num_aft %d", page2ppn(pp), PTE_ADDR(va), pp->pp_ref);
+	}
 	// Find the corresponding SwapInfo from the swap_tbl and remove it.
 	struct SwapInfo *sinfo;
 	SwapTableEntry *ste = page2ste(pp);

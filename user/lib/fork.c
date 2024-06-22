@@ -21,7 +21,7 @@
 static void __attribute__((noreturn)) cow_entry(struct Trapframe *tf) {
 	u_int va = tf->cp0_badvaddr;
 	u_int perm;
-	debugf("cow entry: envid=%08x, va=0x%x\n", env->env_id, PTE_ADDR(va));
+	//debugf("cow entry: envid=%08x, va=0x%x\n", env->env_id, PTE_ADDR(va));
 
 	/* Step 1: Find the 'perm' in which the faulting address 'va' is mapped. */
 	/* Hint: Use 'vpt' and 'VPN' to find the page table entry. If the 'perm' doesn't have
@@ -53,7 +53,13 @@ static void __attribute__((noreturn)) cow_entry(struct Trapframe *tf) {
 	// Step 6: Unmap the page at 'UCOW'.
 	try(syscall_mem_unmap(0, UCOW));
 
-	debugf("end cow entry\n");
+	//debugf("end cow entry\n");
+
+	//perm = PTE_FLAGS(
+		//		((Pte*)vpt) [VPN(va)]
+			//);
+	//if (perm & PTE_COW)
+		//debugf("Error in cow_entry: still COW after handling\n");
 
 	// Step 7: Return to the faulting routine.
 	int r = syscall_set_trapframe(0, tf);
@@ -82,36 +88,25 @@ static void __attribute__((noreturn)) cow_entry(struct Trapframe *tf) {
  *     'sys_mem_map' in kernel.
  */
 static void duppage(u_int envid, u_int vpn) {
-	int r;
-	u_int addr;
-	u_int perm;
+	u_int va = vpn * PAGE_SIZE;
+	//if (env->env_id == 0x1802 && PTE_ADDR(va) == 0x531f000) {
+		//debugf("dupping page: va=%x\n", PTE_ADDR(va));
+	//}
 
-	/* Step 1: Get the permission of the page. */
-	/* Hint: Use 'vpt' to find the page table entry. */
 	Pte pte = ((Pte*)vpt)[vpn];
-	perm = PTE_FLAGS(pte);
-	// No need to duplicate invalid page(no actual physical page here)
-	if (!(perm & PTE_V) && !(perm & PTE_SWAPPED)) { return; }
-
-	/* Step 2: If the page is writable, and not shared with children, and not marked as COW yet,
-	 * then map it as copy-on-write, both in the parent (0) and the child (envid). */
-	/* Hint: The page should be first mapped to the child before remapped in the parent. (Why?)
-	 */
-	addr = vpn * PAGE_SIZE;
-	//debugf("duppage start, vpn=%d, addr=0x%x\n", vpn, addr);
-	try(syscall_mem_map(0, addr, 0, addr, perm)); // swap back
-	perm = PTE_FLAGS(pte);
-	if ((perm & PTE_D) && !(perm & PTE_LIBRARY) && !(perm & PTE_COW))
-	{
-		// Both: unset D(writable), set COW
-		try(syscall_mem_map(0, addr, envid, addr, perm & ~PTE_D | PTE_COW)); // Map child
-		try(syscall_mem_map(0, addr,     0, addr, perm & ~PTE_D | PTE_COW)); // Remap parent
+	u_int perm = PTE_FLAGS(pte);
+	if (!((perm & PTE_V) || (perm & PTE_SWAPPED))) { return; }
+	
+	if ((perm & PTE_D) && !(perm & PTE_LIBRARY) && !(perm & PTE_COW)) {
+		perm = (perm & ~PTE_D) | PTE_COW;
+		try(syscall_mem_map(0, va, envid, va, perm)); // Map child
+		try(syscall_mem_map(0, va,     0, va, perm)); // Remap parent
+	} else {
+		try(syscall_mem_map(0, va, envid, va, perm)); // Map child
 	}
-	else
-	{
-		try(syscall_mem_map(0, addr, envid, addr, perm)); // Map child
-	}
-	//debugf("end duppage\n");
+	//if (env->env_id == 0x1802 && PTE_ADDR(va) == 0x531f000) {
+		//debugf("end dupping\n");
+	//}
 }
 
 /* Overview:
@@ -126,44 +121,27 @@ static void duppage(u_int envid, u_int vpn) {
  *   Use 'syscall_set_tlb_mod_entry', 'syscall_getenvid', 'syscall_exofork',  and 'duppage'.
  */
 int fork(void) {
-	u_int child; // envid of the child process
-	u_int i;
 
-	/* Step 1: Set our TLB Mod user exception entry to 'cow_entry' if not done yet. */
 	if (env->env_user_tlb_mod_entry != (u_int)cow_entry) {
 		try(syscall_set_tlb_mod_entry(0, cow_entry));
 	}
 
-	/* Step 2: Create a child env that's not ready to be scheduled. */
-	// Hint: 'env' should always point to the current env itself, so we should fix it to the
-	// correct value.
-
-	// Note: The father and the child both start from here: sw $v0, x($sp) (writing return val)
-	// Both will write the `child` var, but only father calls the exofork.
-	child = syscall_exofork();
+	u_int child = syscall_exofork();
 	// Only the child env, when first scheduled, will enter this condition.
 	if (child == 0) {
-		// Initialize our env structure.
+		//debugf("change new env\n");
 		env = envs + ENVX(syscall_getenvid());
+		//debugf("child env generated: %x\n", env->env_id);
 		// We can set $ra in trapframe to customize the child's "starting" PC for fork-exec.
-		debugf("child fork end\n");
 		return 0;
 	}
 
-	/* Step 3: Map all MAPPED pages below 'USTACKTOP' into the child's address space. */
-	// Hint: You should use 'duppage'.
-	for (u_int va = UTEMP; va < USTACKTOP; va += PAGE_SIZE)
-	{
+	// Parent continue here:
+	for (u_int va = UTEMP; va < USTACKTOP; va += PAGE_SIZE) {
 		duppage(child, VPN(va));
 	}
-	debugf("end dup pages\n");
+	//debugf("duppages end\n");
 
-	/* Step 4: Set up the child's tlb mod handler and set child's 'env_status' to
-	 * 'ENV_RUNNABLE'. */
-	/* Hint:
-	 *   You may use 'syscall_set_tlb_mod_entry' and 'syscall_set_env_status'
-	 *   Child's TLB Mod user exception entry should handle COW, so set it to 'cow_entry'
-	 */
 	try(syscall_set_tlb_mod_entry(child, cow_entry));
 	try(syscall_set_env_status(child, ENV_RUNNABLE));
 

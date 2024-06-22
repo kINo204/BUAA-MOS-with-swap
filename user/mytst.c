@@ -5,12 +5,12 @@ int main(int argc,char **argv){
 	debugf("------Enter my test------\n");
 	debugf("parent start\n");
 	
-	write_seg(0x500000, 0x500000 + 16000 * PAGE_SIZE); // Alloc swappable pages in parent.
+	write_seg(0x500000, 0x500000 + 20000 * PAGE_SIZE); // Alloc swappable pages in parent.
 	debugf("writing done\n");
 
 	debugf("parent start forking\n");
 	if (fork() == 0) {	// child
-		while (1) {}
+		//while (1) { debugf("child run\n"); }
 	} else { 			// parent
 		//while (1) {}
 		debugf("parent ");

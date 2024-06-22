@@ -32,7 +32,10 @@ static void passive_alloc(u_int va, Pde *pgdir, u_int asid) {
 		panic("kernel address"); }
 
 	panic_on(page_alloc(&p));
-	panic_on(page_insert(pgdir, asid, p, PTE_ADDR(va), (va >= UVPT && va < ULIM) ? 0 : PTE_D));
+
+	u_int perm = (va >= UVPT && va < ULIM) ? 0 : PTE_D;
+	panic_on(page_insert(pgdir, asid, p, PTE_ADDR(va), perm));
+
 	swap_register(p, pgdir, PTE_ADDR(va), asid); // Register ppage for swap.
 }
 
@@ -93,7 +96,8 @@ void do_tlb_mod(struct Trapframe *tf) {
 		tf->regs[29] = UXSTACKTOP;
 	}
 	tf->regs[29] -= sizeof(struct Trapframe);
-	*(struct Trapframe *)tf->regs[29] = tmp_tf; // Copy the trapframe into UXSTACK
+	struct Trapframe *uxstack = (struct Trapframe *)tf->regs[29];
+	*uxstack = tmp_tf; // Copy the trapframe into UXSTACK
 
 	Pte *pte;
 	page_lookup(cur_pgdir, tf->cp0_badvaddr, &pte);

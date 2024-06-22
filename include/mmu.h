@@ -38,7 +38,7 @@
  * +-----------+---------------------------------------+------------+------------+
  *             |3 3 2 2 2 2 2 2 2 2 2 2 1 1 1 1 1 1 1 1|1 1 0 0 0 0 |0 0 0 0 0 0 |
  *             |1 0 9 8 7 6 5 4 3 2 1 0 9 8 7 6 5 4 3 2|1 0 9 8 7 6 |5 4 3 2 1 0 |
- *             |                                       |    C D V G |            |
+ *             |                                       |    C D V G |    S D L C |
  *             +---------------------------------------+------------+------------+
  *             |                Memory Page Table Entry Structure                |
  *             +-----------------------------------------------------------------+
@@ -66,7 +66,7 @@
 #define PTE_LIBRARY 0x0002
 
 // Swapped page. Reserved for software, used by swap.
-#define PTE_SWAPPED 0x0004
+#define PTE_SWAPPED 0x0008
 
 // Memory segments (32-bit kernel mode addresses)
 #define KUSEG 0x00000000U

@@ -145,10 +145,10 @@ int sys_mem_alloc(u_int envid, u_int va, u_int perm) {
 	try(page_alloc(&pp));
 
 	/* Step 4: Map the allocated page at 'va' with permission 'perm' using 'page_insert'. */
-	perm &= ~PTE_SWAPPED;
+	//perm &= ~PTE_SWAPPED;
 	int r = page_insert(env->env_pgdir, env->env_asid, pp, va, perm);
 
-	if (va == UCOW) { // condition not sure for now
+	if (1) { // condition not sure for now
 		panic_on(pp == NULL);
 		swap_register(pp, env->env_pgdir, va, env->env_asid); // Set page swappable
 	}
@@ -178,6 +178,9 @@ int sys_mem_map(u_int srcid, u_int srcva, u_int dstid, u_int dstva, u_int perm) 
 	struct Env *srcenv;
 	struct Env *dstenv;
 	struct Page *pp;
+	///if (PTE_ADDR(srcva) == 0x531f000 && dstid == 0x1802) {
+		//printk("mem_map ustack to 0x1802\n");
+	//}
 
 	/* Step 1: Check if 'srcva' and 'dstva' are legal user virtual addresses using
 	 * 'is_illegal_va'. */
@@ -195,7 +198,7 @@ int sys_mem_map(u_int srcid, u_int srcva, u_int dstid, u_int dstva, u_int perm) 
 
 	/* Step 5: Map the physical page at 'dstva' in the address space of 'dstid'. */
 	// Note that the swap_unregister needed lies in the page_remove in this page_insert call.
-	perm &= ~PTE_SWAPPED;
+	//perm &= ~PTE_SWAPPED;
 	int r = page_insert(dstenv->env_pgdir, dstenv->env_asid, pp, dstva, perm);
 
 	// Register new SwapInfo for VPage.
@@ -204,6 +207,9 @@ int sys_mem_map(u_int srcid, u_int srcva, u_int dstid, u_int dstva, u_int perm) 
 		swap_register(pp, dstenv->env_pgdir, dstva, dstenv->env_asid);
 	}
 
+	//if (PTE_ADDR(srcva) == 0x531f000 && dstid == 0x1802) {
+		//printk("end mem_map ustack to 0x1802\n");
+	//}
 	return r;
 }
 
@@ -255,6 +261,8 @@ int sys_exofork(void) {
 	// process to happen exactly here, and the current tf under KSTACKTOP has already been
 	// modified, thus different from the curenv->tf saved when entering exception.
 	e->env_tf = *((struct Trapframe*)KSTACKTOP - 1);
+	//if (e->env_id == 0x2803)
+		//printk("epc=%08x, ra=%08x\n", e->env_tf.cp0_epc, e->env_tf.regs[31]);
 
 	/* Step 3: Set the new env's 'env_tf.regs[2]' to 0 to indicate the return value in child. */
 	e->env_tf.regs[2] = 0; // $v0 = 0

@@ -210,7 +210,7 @@ static int pgdir_walk(Pde *pgdir, u_long va, int create, Pte **ppte) {
 			pp->pp_ref += 1;
 			*pgdir_entryp  = PTE_FLAGS(*pgdir_entryp);    // clear pgdir_entryp's PA field
 			*pgdir_entryp |= page2pa(pp); 		// write newly allocated PA to pgdir_entryp
-			*pgdir_entryp |= PTE_C_CACHEABLE | PTE_V;
+			*pgdir_entryp |= PTE_C_CACHEABLE | PTE_V & ~PTE_SWAPPED;
 		}
 		else
 		{
@@ -246,9 +246,8 @@ int page_insert(Pde *pgdir, u_int asid, struct Page *pp, u_long va, u_int perm) 
 	/* Step 1: Get PTE. */
 	pgdir_walk(pgdir, va, 0, &pte);
 
-	if (pte && !(*pte & PTE_V) && (*pte & PTE_SWAPPED)) {
-		swap_back(*pte);
-	}
+	// Guarantee the ORIGINAL VPage is in physical mem.
+	if (pte && !(*pte & PTE_V) && (*pte & PTE_SWAPPED)) { swap_back(*pte); }
 
 	// A valid pte exist
 	if (pte && (*pte & PTE_V)) {
@@ -257,7 +256,7 @@ int page_insert(Pde *pgdir, u_int asid, struct Page *pp, u_long va, u_int perm) 
 			page_remove(pgdir, asid, va);
 		} else { // Same physical page
 			tlb_invalidate(asid, va);
-			*pte = page2pa(pp) | perm | PTE_C_CACHEABLE | PTE_V;
+			*pte = page2pa(pp) | (perm & ~PTE_SWAPPED) | PTE_C_CACHEABLE | PTE_V;
 			return 0;
 		}
 	}
@@ -273,7 +272,7 @@ int page_insert(Pde *pgdir, u_int asid, struct Page *pp, u_long va, u_int perm) 
 
 	/* Step 4: Insert the page to the page table entry with 'perm | PTE_C_CACHEABLE | PTE_V'
 	 * and increase its 'pp_ref'. */
-	*pte = page2pa(pp) | perm | PTE_C_CACHEABLE | PTE_V;
+	*pte = page2pa(pp) | (perm & ~PTE_SWAPPED) | PTE_C_CACHEABLE | PTE_V;
 	pp->pp_ref++;
 
 	return 0;
@@ -588,7 +587,7 @@ void swap_init(void) {
 
 	// swap_tbl, swapInfos, swapInfo_free_list
 	swap_tbl = (SwapTableEntry *)alloc(npage * sizeof(SwapTableEntry), PAGE_SIZE, 1);
-	bno_tbl = (SwapTableEntry *)alloc((SD_MAX / BLOCK_SIZE) * sizeof(SwapTableEntry), PAGE_SIZE, 1);
+	bno_tbl = (SwapTableEntry *)alloc(SD_NBLK * sizeof(SwapTableEntry), PAGE_SIZE, 1);
 	LIST_INIT(&swapInfo_free_list);
 	for (int i = 0; i < MAX_SWAPINFO; i++) {
 		LIST_INSERT_HEAD(&swapInfo_free_list, &swapInfos[i], link);
@@ -599,11 +598,17 @@ void swap_init(void) {
    Called when a VPage of swappable type is accessed, requiring a PPage.
  */
 void swap_register(struct Page *pp, Pde *pgdir, u_int va, u_int asid) {
-	if (PTE_ADDR(va) == 0x500000) { printk("#0 registered\n"); }
+	//if ((PTE_ADDR(va) == 0x531f000 || PTE_ADDR(va) == UCOW)
+			//&& curenv->env_id == 0x1802
+			//) {
+	//if (PTE_ADDR(va) == 0x7f3ff000) {
+		//printk("register pgdir=%x, ppn=%d, va=0x%08x, num=%d\n", pgdir, page2ppn(pp), PTE_ADDR(va), pp->pp_ref);
+	//}
+
 	// If it's the first time the PPage is mapped, insert it to swap_queue.
 	SwapTableEntry *pp_ste = page2ste(pp);
 	if (LIST_EMPTY(pp_ste)) {
-		TAILQ_INSERT_TAIL(&page_swap_queue, pp, swap_link); // Add the PPage to swappable queue.
+		TAILQ_INSERT_TAIL(&page_swap_queue, pp, swap_link);
 	}
 
 	// Get a free SwapInfo and edit it.
@@ -621,27 +626,29 @@ void swap_register(struct Page *pp, Pde *pgdir, u_int va, u_int asid) {
 
 void swap_unregister(struct Page *pp, Pde *pgdir, u_int va, u_int asid) {
 	// Find the corresponding SwapInfo from the swap_tbl and remove it.
+	//if ((PTE_ADDR(va) == 0x531f000 || PTE_ADDR(va) == UCOW)
+			//&& curenv->env_id == 0x1802
+			//) {
+	//if (PTE_ADDR(va) == 0x7f3ff000) {
+	//if (curenv->env_id == 0x1802) {
+		//printk("unregister pgdir=%x ppn=%d, va=0x%08x, num=%d\n", pgdir, page2ppn(pp), PTE_ADDR(va), pp->pp_ref);
+	//}
 	struct SwapInfo *sinfo;
 	SwapTableEntry *ste = page2ste(pp);
 	if (LIST_EMPTY(ste)) { return; }
 
-	int flag = 1;
 	LIST_FOREACH(sinfo, ste, link) {
 		if ((((u_int) sinfo->pgdir) == ((u_int) pgdir))
 				&& (sinfo->asid == asid)
 				&& (PTE_ADDR(sinfo->va) == PTE_ADDR(va))) {
 			LIST_REMOVE(sinfo, link);
 			LIST_INSERT_HEAD(&swapInfo_free_list, sinfo, link);
-			if (PTE_ADDR(sinfo->va) == 0x500000) { printk("#0 unregistered\n"); }
-			flag = 0;
 			break;
 		}
 	}
-	panic_on(flag); // no SwapInfo removed
 
 	if (LIST_EMPTY(ste)) {
 		if (pp->swap_link.tqe_next || pp->swap_link.tqe_prev) {
-			printk("all removed, sinfo: envid=%08x, pgdirkva=0x%x, sinfopgdir=0x%x, ppn=%d, va=0x%x\n", curenv->env_id, curenv->env_pgdir, sinfo->pgdir, page2ppn(pp), sinfo->va);
 			TAILQ_REMOVE(&page_swap_queue, pp, swap_link); // Remove the PPage from swappable queue.
 			pp->swap_link.tqe_next = NULL;
 			pp->swap_link.tqe_prev = NULL;
@@ -657,7 +664,7 @@ void swap_back(Pte cur_pte) {
 
 	// Recover swapped data from the disk block.
 	u_int sd_bno = cur_pte >> PGSHIFT;
-	panic_on(sd_bno >= 0xfffff);
+	panic_on(sd_bno >= SD_NBLK);
 	read_page(p, sd_bno);
 	sd_block_free(sd_bno);
 
@@ -669,13 +676,15 @@ void swap_back(Pte cur_pte) {
 		Pde pde = sinfo->pgdir[PDX(sinfo->va)];
 		Pte *pte = (Pte *)KADDR( PTE_ADDR(pde) ) + PTX(sinfo->va);
 
-		if (PTE_ADDR(sinfo->va) == 0x500000) { printk("#0 swap back\n"); }
 		panic_on(*pte & PTE_V);
 		panic_on(!(*pte & PTE_SWAPPED));
+
 		*pte |= PTE_V;
 		*pte &= ~PTE_SWAPPED;
 		*pte = PTE_FLAGS(*pte);
 		*pte |= PTE_ADDR(page2pa(p));
+
+		tlb_invalidate(sinfo->asid, sinfo->va); // Invalidate corresponding TLB entry.
 
 		p->pp_ref++;
 	}
@@ -693,8 +702,6 @@ void swap_back(Pte cur_pte) {
 
 // Pick a page in memory and swap it out to the swapping disk.
 void swap(void) {
-	//printk("swap\n");
-
 	// Get a PPage from page_swap_queue.
 	if (TAILQ_EMPTY(&page_swap_queue)) { panic("no swappable page"); }
 	struct Page *pp = TAILQ_FIRST(&page_swap_queue);
@@ -713,20 +720,16 @@ void swap(void) {
 		Pte *pte = (Pte *)KADDR( PTE_ADDR(pde) ) + PTX(sinfo->va);
 
 		panic_on(!(*pte & PTE_V));
-		if (*pte & PTE_SWAPPED) {
-			printk("Swapped out SwapInfo in swap_tbl: \n"
-				   "va = 0x%x, ppn = %d, pte = 0x%x\n"
-					, sinfo->va, page2ppn(pp), *pte);
-			panic("PTE_SWAPPED set");
-		}
+		panic_on(*pte & PTE_SWAPPED);
 
-		if (PTE_ADDR(sinfo->va) == 0x500000) { printk("#0 swap out\n"); }
 		*pte &= ~PTE_V;  	 		// Unset V.
 		*pte |= PTE_SWAPPED; 		// Set soft-flag SWAPPED.
 		*pte = PTE_FLAGS(*pte); 	// Clear PTE's PAddr field.
 		*pte |= PTE_ADDR(sd_bno << PGSHIFT); // Set addr to sd_bno.
-		pp->pp_ref--;
+
 		tlb_invalidate(sinfo->asid, sinfo->va); // Invalidate corresponding TLB entry.
+
+		pp->pp_ref--;
 	}
 	panic_on(pp->pp_ref != 0);
 
