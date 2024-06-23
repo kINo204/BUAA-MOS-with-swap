@@ -149,7 +149,8 @@ int sys_mem_alloc(u_int envid, u_int va, u_int perm) {
 	//perm &= ~PTE_SWAPPED;
 	int r = page_insert(env->env_pgdir, env->env_asid, pp, va, perm);
 
-	if (va < USTACKTOP - PAGE_SIZE) { // condition not sure for now
+	// TODO Should syscall_mem_alloc() pages be swappable?
+	if (0) { // condition not sure for now
 		panic_on(pp == NULL);
 		swap_register(pp, env->env_pgdir, va, env->env_asid); // Set page swappable
 	}
@@ -214,8 +215,7 @@ int sys_mem_map(u_int srcid, u_int srcva, u_int dstid, u_int dstva, u_int perm) 
 	// Register new SwapInfo for VPage.
 	int swappable = srcva == UCOW ? swappable_org : swappable_src;
 	if (swappable  // the original page should be swappable
-			&& ((srcid != dstid) || (PTE_ADDR(srcva) != PTE_ADDR(dstva)))
-			&& dstva < UTOP) {
+			&& ((srcid != dstid) || (PTE_ADDR(srcva) != PTE_ADDR(dstva)))) {
 		swap_register(srcp, dstenv->env_pgdir, dstva, dstenv->env_asid);
 	}
 

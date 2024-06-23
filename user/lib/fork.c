@@ -92,7 +92,7 @@ static void duppage(u_int envid, u_int vpn) {
 
 	Pte pte = ((Pte*)vpt)[vpn];
 	//if (env->env_id == 0x1802 && PTE_ADDR(va) == 0x7f3fd000) {
-		//debugf("dupping page: va=%x, pte=%x\n", PTE_ADDR(va), pte);
+	//	debugf("dupping page: va=%x, pte=%x\n", PTE_ADDR(va), pte);
 	//}
 	u_int perm = PTE_FLAGS(pte);
 	if (!(perm & PTE_V) && !(perm & PTE_SWAPPED)) { return; }
@@ -108,7 +108,7 @@ static void duppage(u_int envid, u_int vpn) {
 	}
 
 	//if (env->env_id == 0x1802 && PTE_ADDR(va) == 0x7f3fd000) {
-		//debugf("end dupping\n");
+	//	debugf("end dupping\n");
 	//}
 }
 

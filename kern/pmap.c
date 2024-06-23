@@ -167,7 +167,6 @@ void page_free(struct Page *pp) {
 	assert(pp->pp_ref == 0);
 	/* Just insert it into 'page_free_list'. */
 	/* Exercise 2.5: Your code here. */
-	assert(LIST_EMPTY(page2ste(pp)));
 	LIST_INSERT_HEAD(&page_free_list, pp, pp_link);
 }
 
@@ -344,11 +343,11 @@ void page_remove(Pde *pgdir, u_int asid, u_long va) {
 	struct Page *pp = page_lookup(pgdir, va, &pte);
 	if (pp == NULL) { return; } // invalid VPage
 
-	// Unregister the pp in swap_tbl.
-	swap_unregister(pp, pgdir, va, asid);
-
 	/* Step 2: Decrease reference count on 'pp'. */
 	page_decref(pp);
+
+	// Unregister the pp in swap_tbl.
+	swap_unregister(pp, pgdir, va, asid);
 
 	/* Step 3: Flush TLB. */
 	*pte = 0; // PTE set to INVALID at the time.
@@ -603,12 +602,12 @@ void swap_init(void) {
    Called when a VPage of swappable type is accessed, requiring a PPage.
  */
 void swap_register(struct Page *pp, Pde *pgdir, u_int va, u_int asid) {
-	//if ((PTE_ADDR(va) == 0x7f3fd000 || PTE_ADDR(va) == UCOW)
-			//&& (curenv->env_id == 0x1802 || curenv->env_id == 0x2803)
-			//) {
+	/*if ((PTE_ADDR(va) == 0x60000000 || PTE_ADDR(va) == UCOW)
+			&& (curenv->env_id == 0x1802 || curenv->env_id == 0x2802)
+			) {
 	//if (PTE_ADDR(va) == 0x7f3ff000) {
-		//printk("register pgdir=%x, ppn=%d, va=0x%08x, num=%d\n", pgdir, page2ppn(pp), PTE_ADDR(va), pp->pp_ref);
-	//}
+		printk("register pgdir=%x, ppn=%d, va=0x%08x, num=%d\n", pgdir, page2ppn(pp), PTE_ADDR(va), pp->pp_ref);
+	}*/
 
 	// If it's the first time the PPage is mapped, insert it to swap_queue.
 	SwapTableEntry *pp_ste = page2ste(pp);
@@ -631,13 +630,13 @@ void swap_register(struct Page *pp, Pde *pgdir, u_int va, u_int asid) {
 
 void swap_unregister(struct Page *pp, Pde *pgdir, u_int va, u_int asid) {
 	// Find the corresponding SwapInfo from the swap_tbl and remove it.
-	//if ((PTE_ADDR(va) == 0x7f3fd000 || PTE_ADDR(va) == UCOW)
-			//&& (curenv->env_id == 0x1802 || curenv->env_id == 0x2803)
-			//) {
+	/*if ((PTE_ADDR(va) == 0x60000000 || PTE_ADDR(va) == UCOW)
+			&& (curenv->env_id == 0x1802 || curenv->env_id == 0x2802)
+			) {
 	//if (PTE_ADDR(va) == 0x7f3ff000) {
 	//if (curenv->env_id == 0x1802) {
-		//printk("unregister pgdir=%x ppn=%d, va=0x%08x, num=%d\n", pgdir, page2ppn(pp), PTE_ADDR(va), pp->pp_ref);
-	//}
+		printk("unregister pgdir=%x ppn=%d, va=0x%08x, num=%d\n", pgdir, page2ppn(pp), PTE_ADDR(va), pp->pp_ref);
+	}*/
 
 	struct SwapInfo *sinfo;
 	SwapTableEntry *ste = page2ste(pp);
@@ -691,10 +690,10 @@ void swap_back(Pte cur_pte) {
 		*pte |= PTE_ADDR(page2pa(p));
 
 		//tlb_invalidate(sinfo->asid, sinfo->va); // Invalidate corresponding TLB entry.
-		//if (sinfo->va == 0x7f3fd000 && (curenv->env_id == 0x2803 || curenv->env_id == 0x1802)) {
-			//printk("in:  ");
-			//_print_sinfo(sinfo); 
-		//}
+		/*if ((sinfo->va == 0x60000000) && (curenv->env_id == 0x2802 || curenv->env_id == 0x1802)) {
+			printk("in:  ");
+			_print_sinfo(sinfo); 
+		}*/
 
 		p->pp_ref++;
 	}
@@ -739,18 +738,17 @@ void swap(void) {
 
 		tlb_invalidate(sinfo->asid, sinfo->va); // Invalidate corresponding TLB entry.
 
-		//if (sinfo->va == 0x7f3fd000 && (curenv->env_id == 0x2803 || curenv->env_id == 0x1802)) {
-			//printk("out: ");
-			//_print_sinfo(sinfo);
-		//}
+		/*if ((sinfo->va == 0x60000000) && (curenv->env_id == 0x2802 || curenv->env_id == 0x1802)) {
+			printk("out: ");
+			_print_sinfo(sinfo);
+		}*/
 
 		pp->pp_ref--;
 	}
 
 	if (pp->pp_ref != 0) {
-		LIST_FOREACH(sinfo, ste, link) {
-			_print_sinfo();
-		}
+		printk("pp_ref=%d\n", pp->pp_ref);
+		LIST_FOREACH(sinfo, ste, link) { _print_sinfo(sinfo); }
 	}
 	panic_on(pp->pp_ref != 0);
 
@@ -774,15 +772,20 @@ void swap(void) {
 }
 
 void _print_sinfo(struct SwapInfo *sinfo) {
+	if (!sinfo) {
+		printk("SwapInfo: null\n"); 
+		return;
+	}
+
 	Pde pde = sinfo->pgdir[PDX(sinfo->va)];
 	Pte *pte = (Pte *)KADDR( PTE_ADDR(pde) ) + PTX(sinfo->va);
 	printk(
-	"SwapInfo:\t"
-	"vaddr=%x  "
-	"pgdir=%x  "
-	"pte=%x\n"
-	, sinfo->va, sinfo->pgdir, *pte
-			);
+			"SwapInfo:\t"
+			"vaddr=%x  "
+			"pgdir=%x  "
+			"pte=%x\n"
+			, sinfo->va, sinfo->pgdir, *pte
+		  );
 }
 
 
@@ -798,9 +801,7 @@ int sd_block_alloc() {
 	for (bno = 0; bno < SD_NBLK; bno++) {
 		if ((sd_bitmap[bno / 32] & (1 << (bno % 32))) == 0) {
 			sd_bitmap[bno / 32] |= (1 << (bno % 32));
-			if (bno >= 0xfffff) {
-				panic("sd_bno too big");
-			}
+			if (bno >= 0xfffff) { panic("sd_bno too big"); }
 			return bno;
 		}
 	}
@@ -812,20 +813,21 @@ void sd_block_free(u_int bno) {
 }
 
 void sd_bitmap_init() {
+	// Clear sd_bitmap to 0.
 	for (int i = 0; i < SD_NBLK / 32 + 1; i++) {
 		sd_bitmap[i] = 0;
 	}
 }
 
 static int read_sd(u_int va, u_int pa, u_int len) {
-	// Check length.
+	// Check length, only byte, half-word and word.
 	if (len != 1 && len != 2 && len != 4) { return -E_INVAL; }
 	// Check pa.
 	int valid_pa = 0;
-	valid_pa |= (0x18000170 <= pa && pa + len <= 0x18000170 + 0x8)  ? 1 : 0; // swap disk
+	valid_pa |= (0x18000170 <= pa && pa + len <= 0x18000170 + 0x8) ? 1 : 0; // swap disk
 	if (valid_pa == 0) { return -E_INVAL; };
 
-	// Perform write and return.
+	// Perform read and return.
 	memcpy((void*)va, (void*)(KSEG1 + pa), (size_t)len);
 	return 0;
 }
@@ -835,7 +837,7 @@ static int write_sd(u_int va, u_int pa, u_int len) {
 	if (len != 1 && len != 2 && len != 4) { return -E_INVAL; }
 	// Check pa.
 	int valid_pa = 0;
-	valid_pa |= (0x18000170 <= pa && pa + len <= 0x18000170 + 0x8)  ? 1 : 0; // swap disk
+	valid_pa |= (0x18000170 <= pa && pa + len <= 0x18000170 + 0x8) ? 1 : 0; // swap disk
 	if (valid_pa == 0) { return -E_INVAL; };
 
 	// Perform write and return.
@@ -942,11 +944,13 @@ void sd_write(u_int diskno, u_int secno, void *src, u_int nsecs) {
 void write_page(struct Page *pp, u_int bno) {
 	u_long kva = page2kva(pp);
 	sd_write(2, bno * SECT2BLK, kva, SECT2BLK);
+	//printk("value 1st byte to bno %x: %x\n", bno, *((int *)kva));
 }
 
 void read_page(struct Page *pp, u_int bno) {
 	u_long kva = page2kva(pp);
 	sd_read(2, bno * SECT2BLK, kva, SECT2BLK);
+	//printk("value 1st byte at bno %x: %x\n", bno, *((int *)kva));
 }
 
 void test_sdisk() {

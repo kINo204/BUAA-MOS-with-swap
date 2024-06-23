@@ -20,6 +20,7 @@
 typedef struct Super Super;
 typedef struct File File;
 
+// Disk space of 1GB.
 #define NBLOCK 1024 // The number of blocks in the disk.
 uint32_t nbitblock; // The number of bitmap blocks.
 uint32_t nextbno;   // Next availiable block.
@@ -157,7 +158,7 @@ void finish_fs(char *name) {
 
 	// Dump data in `disk` to target image file.
 	fd = open(name, O_RDWR | O_CREAT, 0666);
-	for (i = 0; i < 1024; ++i) {
+	for (i = 0; i < NBLOCK; ++i) {
 #ifdef CONFIG_REVERSE_ENDIAN
 		reverse_block(disk + i);
 #endif
