@@ -790,10 +790,6 @@ mips-linux-gnu-ld -o testbss.b -EL -G 0 -static -n -nostdlib --fatal-warnings -E
 mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG -I../include -Iinclude -c -o testfdsharing.o testfdsharing.c
 mips-linux-gnu-ld -o testfdsharing.b -EL -G 0 -static -n -nostdlib --fatal-warnings -EL -G 0 -static -n -nostdlib --fatal-warnings -T ./user.lds testfdsharing.o lib/entry.o lib/syscall_wrap.o lib/debugf.o lib/libos.o lib/fork.o lib/syscall_lib.o lib/ipc.o lib/fd.o lib/pageref.o lib/file.o lib/fsipc.o lib/console.o lib/fprintf.o lib/wait.o lib/spawn.o lib/pipe.o ../lib/elfloader.o ../lib/print.o ../lib/string.o
 mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG -I../include -Iinclude -c -o init.o init.c
-init.c: In function ‘main’:
-init.c:65:1: warning: control reaches end of non-void function [-Wreturn-type]
-   65 | }
-      | ^
 mips-linux-gnu-ld -o init.b -EL -G 0 -static -n -nostdlib --fatal-warnings -EL -G 0 -static -n -nostdlib --fatal-warnings -T ./user.lds init.o lib/entry.o lib/syscall_wrap.o lib/debugf.o lib/libos.o lib/fork.o lib/syscall_lib.o lib/ipc.o lib/fd.o lib/pageref.o lib/file.o lib/fsipc.o lib/console.o lib/fprintf.o lib/wait.o lib/spawn.o lib/pipe.o ../lib/elfloader.o ../lib/print.o ../lib/string.o
 rm testbss.o tltest.o hello.o testfdsharing.o pingpong.o echo.o icode.o halt.o cat.o devtst.o init.o testptelibrary.o fktest.o mytst.o testarg.o sh.o testpiperace.o testpipe.o fstest.o ls.o num.o
 make[2]: Leaving directory '/home/kino/workdir/mos_lab/22371281/user'
