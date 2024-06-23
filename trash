@@ -109,254 +109,265 @@ mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -f
 mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG -I../include/ -c -o panic.o panic.c
 mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG -I../include/ -c -o pmap.o pmap.c
 pmap.c: In function ‘pgdir_walk’:
-pmap.c:213:37: warning: suggest parentheses around arithmetic in operand of ‘|’ [-Wparentheses]
-  213 |    *pgdir_entryp |= PTE_C_CACHEABLE | PTE_V & ~PTE_SWAPPED;
+pmap.c:215:37: warning: suggest parentheses around arithmetic in operand of ‘|’ [-Wparentheses]
+  215 |    *pgdir_entryp |= PTE_C_CACHEABLE | PTE_V & ~PTE_SWAPPED;
       |                                     ^
+pmap.c: In function ‘swap’:
+pmap.c:752:4: warning: implicit declaration of function ‘_print_sinfo’ [-Wimplicit-function-declaration]
+  752 |    _print_sinfo();
+      |    ^~~~~~~~~~~~
+pmap.c: At top level:
+pmap.c:776:6: warning: conflicting types for ‘_print_sinfo’
+  776 | void _print_sinfo(struct SwapInfo *sinfo) {
+      |      ^~~~~~~~~~~~
+pmap.c:752:4: note: previous implicit declaration of ‘_print_sinfo’ was here
+  752 |    _print_sinfo();
+      |    ^~~~~~~~~~~~
 In file included from ../include/pmap.h:5,
                  from pmap.c:5:
 pmap.c: In function ‘wait_sd_ready’:
-pmap.c:817:20: warning: passing argument 1 of ‘read_sd’ makes integer from pointer without a cast [-Wint-conversion]
-  817 |   panic_on(read_sd(&flag, MALTA_SWAP_STATUS, 1));
+pmap.c:850:20: warning: passing argument 1 of ‘read_sd’ makes integer from pointer without a cast [-Wint-conversion]
+  850 |   panic_on(read_sd(&flag, MALTA_SWAP_STATUS, 1));
       |                    ^~~~~
       |                    |
       |                    uint8_t * {aka unsigned char *}
 ../include/printk.h:19:13: note: in definition of macro ‘panic_on’
    19 |   int _r = (expr);                                                                   \
       |             ^~~~
-pmap.c:787:26: note: expected ‘u_int’ {aka ‘unsigned int’} but argument is of type ‘uint8_t *’ {aka ‘unsigned char *’}
-  787 | static int read_sd(u_int va, u_int pa, u_int len) {
+pmap.c:820:26: note: expected ‘u_int’ {aka ‘unsigned int’} but argument is of type ‘uint8_t *’ {aka ‘unsigned char *’}
+  820 | static int read_sd(u_int va, u_int pa, u_int len) {
       |                    ~~~~~~^~
 In file included from ../include/pmap.h:5,
                  from pmap.c:5:
 pmap.c: In function ‘sd_read’:
-pmap.c:835:21: warning: passing argument 1 of ‘write_sd’ makes integer from pointer without a cast [-Wint-conversion]
-  835 |   panic_on(write_sd(&temp, MALTA_SWAP_NSECT, 1));
+pmap.c:868:21: warning: passing argument 1 of ‘write_sd’ makes integer from pointer without a cast [-Wint-conversion]
+  868 |   panic_on(write_sd(&temp, MALTA_SWAP_NSECT, 1));
       |                     ^~~~~
       |                     |
       |                     uint8_t * {aka unsigned char *}
 ../include/printk.h:19:13: note: in definition of macro ‘panic_on’
    19 |   int _r = (expr);                                                                   \
       |             ^~~~
-pmap.c:800:27: note: expected ‘u_int’ {aka ‘unsigned int’} but argument is of type ‘uint8_t *’ {aka ‘unsigned char *’}
-  800 | static int write_sd(u_int va, u_int pa, u_int len) {
+pmap.c:833:27: note: expected ‘u_int’ {aka ‘unsigned int’} but argument is of type ‘uint8_t *’ {aka ‘unsigned char *’}
+  833 | static int write_sd(u_int va, u_int pa, u_int len) {
       |                     ~~~~~~^~
 In file included from ../include/pmap.h:5,
                  from pmap.c:5:
-pmap.c:838:21: warning: passing argument 1 of ‘write_sd’ makes integer from pointer without a cast [-Wint-conversion]
-  838 |   panic_on(write_sd(&temp, MALTA_SWAP_LBAL, 1));
+pmap.c:871:21: warning: passing argument 1 of ‘write_sd’ makes integer from pointer without a cast [-Wint-conversion]
+  871 |   panic_on(write_sd(&temp, MALTA_SWAP_LBAL, 1));
       |                     ^~~~~
       |                     |
       |                     uint8_t * {aka unsigned char *}
 ../include/printk.h:19:13: note: in definition of macro ‘panic_on’
    19 |   int _r = (expr);                                                                   \
       |             ^~~~
-pmap.c:800:27: note: expected ‘u_int’ {aka ‘unsigned int’} but argument is of type ‘uint8_t *’ {aka ‘unsigned char *’}
-  800 | static int write_sd(u_int va, u_int pa, u_int len) {
+pmap.c:833:27: note: expected ‘u_int’ {aka ‘unsigned int’} but argument is of type ‘uint8_t *’ {aka ‘unsigned char *’}
+  833 | static int write_sd(u_int va, u_int pa, u_int len) {
       |                     ~~~~~~^~
 In file included from ../include/pmap.h:5,
                  from pmap.c:5:
-pmap.c:841:21: warning: passing argument 1 of ‘write_sd’ makes integer from pointer without a cast [-Wint-conversion]
-  841 |   panic_on(write_sd(&temp, MALTA_SWAP_LBAM, 1));
+pmap.c:874:21: warning: passing argument 1 of ‘write_sd’ makes integer from pointer without a cast [-Wint-conversion]
+  874 |   panic_on(write_sd(&temp, MALTA_SWAP_LBAM, 1));
       |                     ^~~~~
       |                     |
       |                     uint8_t * {aka unsigned char *}
 ../include/printk.h:19:13: note: in definition of macro ‘panic_on’
    19 |   int _r = (expr);                                                                   \
       |             ^~~~
-pmap.c:800:27: note: expected ‘u_int’ {aka ‘unsigned int’} but argument is of type ‘uint8_t *’ {aka ‘unsigned char *’}
-  800 | static int write_sd(u_int va, u_int pa, u_int len) {
+pmap.c:833:27: note: expected ‘u_int’ {aka ‘unsigned int’} but argument is of type ‘uint8_t *’ {aka ‘unsigned char *’}
+  833 | static int write_sd(u_int va, u_int pa, u_int len) {
       |                     ~~~~~~^~
 In file included from ../include/pmap.h:5,
                  from pmap.c:5:
-pmap.c:844:21: warning: passing argument 1 of ‘write_sd’ makes integer from pointer without a cast [-Wint-conversion]
-  844 |   panic_on(write_sd(&temp, MALTA_SWAP_LBAH, 1));
+pmap.c:877:21: warning: passing argument 1 of ‘write_sd’ makes integer from pointer without a cast [-Wint-conversion]
+  877 |   panic_on(write_sd(&temp, MALTA_SWAP_LBAH, 1));
       |                     ^~~~~
       |                     |
       |                     uint8_t * {aka unsigned char *}
 ../include/printk.h:19:13: note: in definition of macro ‘panic_on’
    19 |   int _r = (expr);                                                                   \
       |             ^~~~
-pmap.c:800:27: note: expected ‘u_int’ {aka ‘unsigned int’} but argument is of type ‘uint8_t *’ {aka ‘unsigned char *’}
-  800 | static int write_sd(u_int va, u_int pa, u_int len) {
+pmap.c:833:27: note: expected ‘u_int’ {aka ‘unsigned int’} but argument is of type ‘uint8_t *’ {aka ‘unsigned char *’}
+  833 | static int write_sd(u_int va, u_int pa, u_int len) {
       |                     ~~~~~~^~
 In file included from ../include/pmap.h:5,
                  from pmap.c:5:
-pmap.c:848:21: warning: passing argument 1 of ‘write_sd’ makes integer from pointer without a cast [-Wint-conversion]
-  848 |   panic_on(write_sd(&temp, MALTA_SWAP_DEVICE, 1));
+pmap.c:881:21: warning: passing argument 1 of ‘write_sd’ makes integer from pointer without a cast [-Wint-conversion]
+  881 |   panic_on(write_sd(&temp, MALTA_SWAP_DEVICE, 1));
       |                     ^~~~~
       |                     |
       |                     uint8_t * {aka unsigned char *}
 ../include/printk.h:19:13: note: in definition of macro ‘panic_on’
    19 |   int _r = (expr);                                                                   \
       |             ^~~~
-pmap.c:800:27: note: expected ‘u_int’ {aka ‘unsigned int’} but argument is of type ‘uint8_t *’ {aka ‘unsigned char *’}
-  800 | static int write_sd(u_int va, u_int pa, u_int len) {
+pmap.c:833:27: note: expected ‘u_int’ {aka ‘unsigned int’} but argument is of type ‘uint8_t *’ {aka ‘unsigned char *’}
+  833 | static int write_sd(u_int va, u_int pa, u_int len) {
       |                     ~~~~~~^~
 In file included from ../include/pmap.h:5,
                  from pmap.c:5:
-pmap.c:851:21: warning: passing argument 1 of ‘write_sd’ makes integer from pointer without a cast [-Wint-conversion]
-  851 |   panic_on(write_sd(&temp, MALTA_SWAP_STATUS, 1));
+pmap.c:884:21: warning: passing argument 1 of ‘write_sd’ makes integer from pointer without a cast [-Wint-conversion]
+  884 |   panic_on(write_sd(&temp, MALTA_SWAP_STATUS, 1));
       |                     ^~~~~
       |                     |
       |                     uint8_t * {aka unsigned char *}
 ../include/printk.h:19:13: note: in definition of macro ‘panic_on’
    19 |   int _r = (expr);                                                                   \
       |             ^~~~
-pmap.c:800:27: note: expected ‘u_int’ {aka ‘unsigned int’} but argument is of type ‘uint8_t *’ {aka ‘unsigned char *’}
-  800 | static int write_sd(u_int va, u_int pa, u_int len) {
+pmap.c:833:27: note: expected ‘u_int’ {aka ‘unsigned int’} but argument is of type ‘uint8_t *’ {aka ‘unsigned char *’}
+  833 | static int write_sd(u_int va, u_int pa, u_int len) {
       |                     ~~~~~~^~
 In file included from ../include/pmap.h:5,
                  from pmap.c:5:
-pmap.c:857:34: warning: passing argument 1 of ‘read_sd’ makes integer from pointer without a cast [-Wint-conversion]
-  857 |    panic_on(read_sd(dst + offset + i * 4, MALTA_SWAP_DATA, 4));
+pmap.c:890:34: warning: passing argument 1 of ‘read_sd’ makes integer from pointer without a cast [-Wint-conversion]
+  890 |    panic_on(read_sd(dst + offset + i * 4, MALTA_SWAP_DATA, 4));
       |                     ~~~~~~~~~~~~~^~~~~~~
       |                                  |
       |                                  void *
 ../include/printk.h:19:13: note: in definition of macro ‘panic_on’
    19 |   int _r = (expr);                                                                   \
       |             ^~~~
-pmap.c:787:26: note: expected ‘u_int’ {aka ‘unsigned int’} but argument is of type ‘void *’
-  787 | static int read_sd(u_int va, u_int pa, u_int len) {
+pmap.c:820:26: note: expected ‘u_int’ {aka ‘unsigned int’} but argument is of type ‘void *’
+  820 | static int read_sd(u_int va, u_int pa, u_int len) {
       |                    ~~~~~~^~
 In file included from ../include/pmap.h:5,
                  from pmap.c:5:
-pmap.c:860:20: warning: passing argument 1 of ‘read_sd’ makes integer from pointer without a cast [-Wint-conversion]
-  860 |   panic_on(read_sd(&temp, MALTA_SWAP_STATUS, 1));
+pmap.c:893:20: warning: passing argument 1 of ‘read_sd’ makes integer from pointer without a cast [-Wint-conversion]
+  893 |   panic_on(read_sd(&temp, MALTA_SWAP_STATUS, 1));
       |                    ^~~~~
       |                    |
       |                    uint8_t * {aka unsigned char *}
 ../include/printk.h:19:13: note: in definition of macro ‘panic_on’
    19 |   int _r = (expr);                                                                   \
       |             ^~~~
-pmap.c:787:26: note: expected ‘u_int’ {aka ‘unsigned int’} but argument is of type ‘uint8_t *’ {aka ‘unsigned char *’}
-  787 | static int read_sd(u_int va, u_int pa, u_int len) {
+pmap.c:820:26: note: expected ‘u_int’ {aka ‘unsigned int’} but argument is of type ‘uint8_t *’ {aka ‘unsigned char *’}
+  820 | static int read_sd(u_int va, u_int pa, u_int len) {
       |                    ~~~~~~^~
 In file included from ../include/pmap.h:5,
                  from pmap.c:5:
 pmap.c: In function ‘sd_write’:
-pmap.c:877:21: warning: passing argument 1 of ‘write_sd’ makes integer from pointer without a cast [-Wint-conversion]
-  877 |   panic_on(write_sd(&temp, MALTA_SWAP_NSECT, 1));
+pmap.c:910:21: warning: passing argument 1 of ‘write_sd’ makes integer from pointer without a cast [-Wint-conversion]
+  910 |   panic_on(write_sd(&temp, MALTA_SWAP_NSECT, 1));
       |                     ^~~~~
       |                     |
       |                     uint8_t * {aka unsigned char *}
 ../include/printk.h:19:13: note: in definition of macro ‘panic_on’
    19 |   int _r = (expr);                                                                   \
       |             ^~~~
-pmap.c:800:27: note: expected ‘u_int’ {aka ‘unsigned int’} but argument is of type ‘uint8_t *’ {aka ‘unsigned char *’}
-  800 | static int write_sd(u_int va, u_int pa, u_int len) {
+pmap.c:833:27: note: expected ‘u_int’ {aka ‘unsigned int’} but argument is of type ‘uint8_t *’ {aka ‘unsigned char *’}
+  833 | static int write_sd(u_int va, u_int pa, u_int len) {
       |                     ~~~~~~^~
 In file included from ../include/pmap.h:5,
                  from pmap.c:5:
-pmap.c:880:21: warning: passing argument 1 of ‘write_sd’ makes integer from pointer without a cast [-Wint-conversion]
-  880 |   panic_on(write_sd(&temp, MALTA_SWAP_LBAL, 1));
+pmap.c:913:21: warning: passing argument 1 of ‘write_sd’ makes integer from pointer without a cast [-Wint-conversion]
+  913 |   panic_on(write_sd(&temp, MALTA_SWAP_LBAL, 1));
       |                     ^~~~~
       |                     |
       |                     uint8_t * {aka unsigned char *}
 ../include/printk.h:19:13: note: in definition of macro ‘panic_on’
    19 |   int _r = (expr);                                                                   \
       |             ^~~~
-pmap.c:800:27: note: expected ‘u_int’ {aka ‘unsigned int’} but argument is of type ‘uint8_t *’ {aka ‘unsigned char *’}
-  800 | static int write_sd(u_int va, u_int pa, u_int len) {
+pmap.c:833:27: note: expected ‘u_int’ {aka ‘unsigned int’} but argument is of type ‘uint8_t *’ {aka ‘unsigned char *’}
+  833 | static int write_sd(u_int va, u_int pa, u_int len) {
       |                     ~~~~~~^~
 In file included from ../include/pmap.h:5,
                  from pmap.c:5:
-pmap.c:883:21: warning: passing argument 1 of ‘write_sd’ makes integer from pointer without a cast [-Wint-conversion]
-  883 |   panic_on(write_sd(&temp, MALTA_SWAP_LBAM, 1));
+pmap.c:916:21: warning: passing argument 1 of ‘write_sd’ makes integer from pointer without a cast [-Wint-conversion]
+  916 |   panic_on(write_sd(&temp, MALTA_SWAP_LBAM, 1));
       |                     ^~~~~
       |                     |
       |                     uint8_t * {aka unsigned char *}
 ../include/printk.h:19:13: note: in definition of macro ‘panic_on’
    19 |   int _r = (expr);                                                                   \
       |             ^~~~
-pmap.c:800:27: note: expected ‘u_int’ {aka ‘unsigned int’} but argument is of type ‘uint8_t *’ {aka ‘unsigned char *’}
-  800 | static int write_sd(u_int va, u_int pa, u_int len) {
+pmap.c:833:27: note: expected ‘u_int’ {aka ‘unsigned int’} but argument is of type ‘uint8_t *’ {aka ‘unsigned char *’}
+  833 | static int write_sd(u_int va, u_int pa, u_int len) {
       |                     ~~~~~~^~
 In file included from ../include/pmap.h:5,
                  from pmap.c:5:
-pmap.c:886:21: warning: passing argument 1 of ‘write_sd’ makes integer from pointer without a cast [-Wint-conversion]
-  886 |   panic_on(write_sd(&temp, MALTA_SWAP_LBAH, 1));
+pmap.c:919:21: warning: passing argument 1 of ‘write_sd’ makes integer from pointer without a cast [-Wint-conversion]
+  919 |   panic_on(write_sd(&temp, MALTA_SWAP_LBAH, 1));
       |                     ^~~~~
       |                     |
       |                     uint8_t * {aka unsigned char *}
 ../include/printk.h:19:13: note: in definition of macro ‘panic_on’
    19 |   int _r = (expr);                                                                   \
       |             ^~~~
-pmap.c:800:27: note: expected ‘u_int’ {aka ‘unsigned int’} but argument is of type ‘uint8_t *’ {aka ‘unsigned char *’}
-  800 | static int write_sd(u_int va, u_int pa, u_int len) {
+pmap.c:833:27: note: expected ‘u_int’ {aka ‘unsigned int’} but argument is of type ‘uint8_t *’ {aka ‘unsigned char *’}
+  833 | static int write_sd(u_int va, u_int pa, u_int len) {
       |                     ~~~~~~^~
 In file included from ../include/pmap.h:5,
                  from pmap.c:5:
-pmap.c:890:21: warning: passing argument 1 of ‘write_sd’ makes integer from pointer without a cast [-Wint-conversion]
-  890 |   panic_on(write_sd(&temp, MALTA_SWAP_DEVICE, 1));
+pmap.c:923:21: warning: passing argument 1 of ‘write_sd’ makes integer from pointer without a cast [-Wint-conversion]
+  923 |   panic_on(write_sd(&temp, MALTA_SWAP_DEVICE, 1));
       |                     ^~~~~
       |                     |
       |                     uint8_t * {aka unsigned char *}
 ../include/printk.h:19:13: note: in definition of macro ‘panic_on’
    19 |   int _r = (expr);                                                                   \
       |             ^~~~
-pmap.c:800:27: note: expected ‘u_int’ {aka ‘unsigned int’} but argument is of type ‘uint8_t *’ {aka ‘unsigned char *’}
-  800 | static int write_sd(u_int va, u_int pa, u_int len) {
+pmap.c:833:27: note: expected ‘u_int’ {aka ‘unsigned int’} but argument is of type ‘uint8_t *’ {aka ‘unsigned char *’}
+  833 | static int write_sd(u_int va, u_int pa, u_int len) {
       |                     ~~~~~~^~
 In file included from ../include/pmap.h:5,
                  from pmap.c:5:
-pmap.c:893:21: warning: passing argument 1 of ‘write_sd’ makes integer from pointer without a cast [-Wint-conversion]
-  893 |   panic_on(write_sd(&temp, MALTA_SWAP_STATUS, 1));
+pmap.c:926:21: warning: passing argument 1 of ‘write_sd’ makes integer from pointer without a cast [-Wint-conversion]
+  926 |   panic_on(write_sd(&temp, MALTA_SWAP_STATUS, 1));
       |                     ^~~~~
       |                     |
       |                     uint8_t * {aka unsigned char *}
 ../include/printk.h:19:13: note: in definition of macro ‘panic_on’
    19 |   int _r = (expr);                                                                   \
       |             ^~~~
-pmap.c:800:27: note: expected ‘u_int’ {aka ‘unsigned int’} but argument is of type ‘uint8_t *’ {aka ‘unsigned char *’}
-  800 | static int write_sd(u_int va, u_int pa, u_int len) {
+pmap.c:833:27: note: expected ‘u_int’ {aka ‘unsigned int’} but argument is of type ‘uint8_t *’ {aka ‘unsigned char *’}
+  833 | static int write_sd(u_int va, u_int pa, u_int len) {
       |                     ~~~~~~^~
 In file included from ../include/pmap.h:5,
                  from pmap.c:5:
-pmap.c:899:35: warning: passing argument 1 of ‘write_sd’ makes integer from pointer without a cast [-Wint-conversion]
-  899 |    panic_on(write_sd(src + offset + i * 4, MALTA_SWAP_DATA, 4));
+pmap.c:932:35: warning: passing argument 1 of ‘write_sd’ makes integer from pointer without a cast [-Wint-conversion]
+  932 |    panic_on(write_sd(src + offset + i * 4, MALTA_SWAP_DATA, 4));
       |                      ~~~~~~~~~~~~~^~~~~~~
       |                                   |
       |                                   void *
 ../include/printk.h:19:13: note: in definition of macro ‘panic_on’
    19 |   int _r = (expr);                                                                   \
       |             ^~~~
-pmap.c:800:27: note: expected ‘u_int’ {aka ‘unsigned int’} but argument is of type ‘void *’
-  800 | static int write_sd(u_int va, u_int pa, u_int len) {
+pmap.c:833:27: note: expected ‘u_int’ {aka ‘unsigned int’} but argument is of type ‘void *’
+  833 | static int write_sd(u_int va, u_int pa, u_int len) {
       |                     ~~~~~~^~
 In file included from ../include/pmap.h:5,
                  from pmap.c:5:
-pmap.c:902:20: warning: passing argument 1 of ‘read_sd’ makes integer from pointer without a cast [-Wint-conversion]
-  902 |   panic_on(read_sd(&temp, MALTA_SWAP_STATUS, 1));
+pmap.c:935:20: warning: passing argument 1 of ‘read_sd’ makes integer from pointer without a cast [-Wint-conversion]
+  935 |   panic_on(read_sd(&temp, MALTA_SWAP_STATUS, 1));
       |                    ^~~~~
       |                    |
       |                    uint8_t * {aka unsigned char *}
 ../include/printk.h:19:13: note: in definition of macro ‘panic_on’
    19 |   int _r = (expr);                                                                   \
       |             ^~~~
-pmap.c:787:26: note: expected ‘u_int’ {aka ‘unsigned int’} but argument is of type ‘uint8_t *’ {aka ‘unsigned char *’}
-  787 | static int read_sd(u_int va, u_int pa, u_int len) {
+pmap.c:820:26: note: expected ‘u_int’ {aka ‘unsigned int’} but argument is of type ‘uint8_t *’ {aka ‘unsigned char *’}
+  820 | static int read_sd(u_int va, u_int pa, u_int len) {
       |                    ~~~~~~^~
 pmap.c: In function ‘write_page’:
-pmap.c:911:30: warning: passing argument 3 of ‘sd_write’ makes pointer from integer without a cast [-Wint-conversion]
-  911 |  sd_write(2, bno * SECT2BLK, kva, SECT2BLK);
+pmap.c:944:30: warning: passing argument 3 of ‘sd_write’ makes pointer from integer without a cast [-Wint-conversion]
+  944 |  sd_write(2, bno * SECT2BLK, kva, SECT2BLK);
       |                              ^~~
       |                              |
       |                              u_long {aka long unsigned int}
-pmap.c:867:48: note: expected ‘void *’ but argument is of type ‘u_long’ {aka ‘long unsigned int’}
-  867 | void sd_write(u_int diskno, u_int secno, void *src, u_int nsecs) {
+pmap.c:900:48: note: expected ‘void *’ but argument is of type ‘u_long’ {aka ‘long unsigned int’}
+  900 | void sd_write(u_int diskno, u_int secno, void *src, u_int nsecs) {
       |                                          ~~~~~~^~~
 pmap.c: In function ‘read_page’:
-pmap.c:916:29: warning: passing argument 3 of ‘sd_read’ makes pointer from integer without a cast [-Wint-conversion]
-  916 |  sd_read(2, bno * SECT2BLK, kva, SECT2BLK);
+pmap.c:949:29: warning: passing argument 3 of ‘sd_read’ makes pointer from integer without a cast [-Wint-conversion]
+  949 |  sd_read(2, bno * SECT2BLK, kva, SECT2BLK);
       |                             ^~~
       |                             |
       |                             u_long {aka long unsigned int}
-pmap.c:825:47: note: expected ‘void *’ but argument is of type ‘u_long’ {aka ‘long unsigned int’}
-  825 | void sd_read(u_int diskno, u_int secno, void *dst, u_int nsecs) {
+pmap.c:858:47: note: expected ‘void *’ but argument is of type ‘u_long’ {aka ‘long unsigned int’}
+  858 | void sd_read(u_int diskno, u_int secno, void *dst, u_int nsecs) {
       |                                         ~~~~~~^~~
 pmap.c: In function ‘sd_block_alloc’:
-pmap.c:775:1: warning: control reaches end of non-void function [-Wreturn-type]
-  775 | }
+pmap.c:808:1: warning: control reaches end of non-void function [-Wreturn-type]
+  808 | }
       | ^
 mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG -I../include/ -c -o tlb_asm.o tlb_asm.S
 mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG -I../include/ -c -o tlbex.o tlbex.c
@@ -364,10 +375,6 @@ mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -f
 env.c: In function ‘env_alloc’:
 env.c:260:6: warning: unused variable ‘r’ [-Wunused-variable]
   260 |  int r;
-      |      ^
-env.c: In function ‘load_icode_mapper’:
-env.c:325:6: warning: unused variable ‘r’ [-Wunused-variable]
-  325 |  int r;
       |      ^
 mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG -I../include/ -c -o env_asm.o env_asm.S
 mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG -I../include/ -c -o sched.o sched.c
@@ -448,7 +455,7 @@ In file included from ../include/env.h:4,
       |              |
       |              int
 lib/fork.c:48:9: note: in expansion of macro ‘UCOW’
-   48 |  memcpy(UCOW, va - (va % PAGE_SIZE), PAGE_SIZE); // A substitution of ROUNDDOWN, maybe ...
+   48 |  memcpy(UCOW, PTE_ADDR(va), PAGE_SIZE);
       |         ^~~~
 In file included from ../include/mmu.h:149,
                  from ../include/env.h:4,
@@ -456,15 +463,20 @@ In file included from ../include/mmu.h:149,
 ../include/string.h:6:20: note: expected ‘void *’ but argument is of type ‘int’
     6 | void *memcpy(void *dst, const void *src, size_t n);
       |              ~~~~~~^~~
-lib/fork.c:48:18: warning: passing argument 2 of ‘memcpy’ makes pointer from integer without a cast [-Wint-conversion]
-   48 |  memcpy(UCOW, va - (va % PAGE_SIZE), PAGE_SIZE); // A substitution of ROUNDDOWN, maybe ...
-      |               ~~~^~~~~~~~~~~~~~~~~~
-      |                  |
-      |                  u_int {aka unsigned int}
+In file included from ../include/env.h:4,
+                 from lib/fork.c:1:
+../include/mmu.h:16:40: warning: passing argument 2 of ‘memcpy’ makes pointer from integer without a cast [-Wint-conversion]
+   16 | #define PTE_ADDR(pte) (((u_long)(pte)) & ~0xFFF)
+      |                       ~~~~~~~~~~~~~~~~~^~~~~~~~~
+      |                                        |
+      |                                        long unsigned int
+lib/fork.c:48:15: note: in expansion of macro ‘PTE_ADDR’
+   48 |  memcpy(UCOW, PTE_ADDR(va), PAGE_SIZE);
+      |               ^~~~~~~~
 In file included from ../include/mmu.h:149,
                  from ../include/env.h:4,
                  from lib/fork.c:1:
-../include/string.h:6:37: note: expected ‘const void *’ but argument is of type ‘u_int’ {aka ‘unsigned int’}
+../include/string.h:6:37: note: expected ‘const void *’ but argument is of type ‘long unsigned int’
     6 | void *memcpy(void *dst, const void *src, size_t n);
       |                         ~~~~~~~~~~~~^~~
 In file included from ../include/mmu.h:148,
@@ -558,50 +570,8 @@ In file included from ../include/mmu.h:148,
                  from ../include/env.h:4,
                  from lib/fork.c:1:
 lib/fork.c: In function ‘duppage’:
-lib/fork.c:102:26: warning: passing argument 2 of ‘syscall_mem_map’ makes pointer from integer without a cast [-Wint-conversion]
-  102 |   try(syscall_mem_map(0, va, envid, va, perm)); // Map child
-      |                          ^~
-      |                          |
-      |                          u_int {aka unsigned int}
-../include/error.h:53:13: note: in definition of macro ‘try’
-   53 |   int _r = (expr);                                                                   \
-      |             ^~~~
-In file included from lib/fork.c:2:
-include/lib.h:59:40: note: expected ‘void *’ but argument is of type ‘u_int’ {aka ‘unsigned int’}
-   59 | int syscall_mem_map(u_int srcid, void *srcva, u_int dstid, void *dstva, u_int perm);
-      |                                  ~~~~~~^~~~~
-In file included from ../include/mmu.h:148,
-                 from ../include/env.h:4,
-                 from lib/fork.c:1:
-lib/fork.c:102:37: warning: passing argument 4 of ‘syscall_mem_map’ makes pointer from integer without a cast [-Wint-conversion]
-  102 |   try(syscall_mem_map(0, va, envid, va, perm)); // Map child
-      |                                     ^~
-      |                                     |
-      |                                     u_int {aka unsigned int}
-../include/error.h:53:13: note: in definition of macro ‘try’
-   53 |   int _r = (expr);                                                                   \
-      |             ^~~~
-In file included from lib/fork.c:2:
-include/lib.h:59:66: note: expected ‘void *’ but argument is of type ‘u_int’ {aka ‘unsigned int’}
-   59 | int syscall_mem_map(u_int srcid, void *srcva, u_int dstid, void *dstva, u_int perm);
-      |                                                            ~~~~~~^~~~~
-In file included from ../include/mmu.h:148,
-                 from ../include/env.h:4,
-                 from lib/fork.c:1:
-../include/error.h:55:11: warning: ‘return’ with a value, in function returning void [-Wreturn-type]
-   55 |    return _r;                                                                 \
-      |           ^~
-lib/fork.c:102:3: note: in expansion of macro ‘try’
-  102 |   try(syscall_mem_map(0, va, envid, va, perm)); // Map child
-      |   ^~~
-lib/fork.c:90:13: note: declared here
-   90 | static void duppage(u_int envid, u_int vpn) {
-      |             ^~~~~~~
-In file included from ../include/mmu.h:148,
-                 from ../include/env.h:4,
-                 from lib/fork.c:1:
 lib/fork.c:103:26: warning: passing argument 2 of ‘syscall_mem_map’ makes pointer from integer without a cast [-Wint-conversion]
-  103 |   try(syscall_mem_map(0, va,     0, va, perm)); // Remap parent
+  103 |   try(syscall_mem_map(0, va, envid, va, perm));
       |                          ^~
       |                          |
       |                          u_int {aka unsigned int}
@@ -616,7 +586,7 @@ In file included from ../include/mmu.h:148,
                  from ../include/env.h:4,
                  from lib/fork.c:1:
 lib/fork.c:103:37: warning: passing argument 4 of ‘syscall_mem_map’ makes pointer from integer without a cast [-Wint-conversion]
-  103 |   try(syscall_mem_map(0, va,     0, va, perm)); // Remap parent
+  103 |   try(syscall_mem_map(0, va, envid, va, perm));
       |                                     ^~
       |                                     |
       |                                     u_int {aka unsigned int}
@@ -634,7 +604,7 @@ In file included from ../include/mmu.h:148,
    55 |    return _r;                                                                 \
       |           ^~
 lib/fork.c:103:3: note: in expansion of macro ‘try’
-  103 |   try(syscall_mem_map(0, va,     0, va, perm)); // Remap parent
+  103 |   try(syscall_mem_map(0, va, envid, va, perm));
       |   ^~~
 lib/fork.c:90:13: note: declared here
    90 | static void duppage(u_int envid, u_int vpn) {
@@ -643,7 +613,7 @@ In file included from ../include/mmu.h:148,
                  from ../include/env.h:4,
                  from lib/fork.c:1:
 lib/fork.c:105:26: warning: passing argument 2 of ‘syscall_mem_map’ makes pointer from integer without a cast [-Wint-conversion]
-  105 |   try(syscall_mem_map(0, va, envid, va, perm)); // Map child
+  105 |   try(syscall_mem_map(0, va,     0, va, perm));
       |                          ^~
       |                          |
       |                          u_int {aka unsigned int}
@@ -658,7 +628,7 @@ In file included from ../include/mmu.h:148,
                  from ../include/env.h:4,
                  from lib/fork.c:1:
 lib/fork.c:105:37: warning: passing argument 4 of ‘syscall_mem_map’ makes pointer from integer without a cast [-Wint-conversion]
-  105 |   try(syscall_mem_map(0, va, envid, va, perm)); // Map child
+  105 |   try(syscall_mem_map(0, va,     0, va, perm));
       |                                     ^~
       |                                     |
       |                                     u_int {aka unsigned int}
@@ -676,7 +646,49 @@ In file included from ../include/mmu.h:148,
    55 |    return _r;                                                                 \
       |           ^~
 lib/fork.c:105:3: note: in expansion of macro ‘try’
-  105 |   try(syscall_mem_map(0, va, envid, va, perm)); // Map child
+  105 |   try(syscall_mem_map(0, va,     0, va, perm));
+      |   ^~~
+lib/fork.c:90:13: note: declared here
+   90 | static void duppage(u_int envid, u_int vpn) {
+      |             ^~~~~~~
+In file included from ../include/mmu.h:148,
+                 from ../include/env.h:4,
+                 from lib/fork.c:1:
+lib/fork.c:107:26: warning: passing argument 2 of ‘syscall_mem_map’ makes pointer from integer without a cast [-Wint-conversion]
+  107 |   try(syscall_mem_map(0, va, envid, va, perm));
+      |                          ^~
+      |                          |
+      |                          u_int {aka unsigned int}
+../include/error.h:53:13: note: in definition of macro ‘try’
+   53 |   int _r = (expr);                                                                   \
+      |             ^~~~
+In file included from lib/fork.c:2:
+include/lib.h:59:40: note: expected ‘void *’ but argument is of type ‘u_int’ {aka ‘unsigned int’}
+   59 | int syscall_mem_map(u_int srcid, void *srcva, u_int dstid, void *dstva, u_int perm);
+      |                                  ~~~~~~^~~~~
+In file included from ../include/mmu.h:148,
+                 from ../include/env.h:4,
+                 from lib/fork.c:1:
+lib/fork.c:107:37: warning: passing argument 4 of ‘syscall_mem_map’ makes pointer from integer without a cast [-Wint-conversion]
+  107 |   try(syscall_mem_map(0, va, envid, va, perm));
+      |                                     ^~
+      |                                     |
+      |                                     u_int {aka unsigned int}
+../include/error.h:53:13: note: in definition of macro ‘try’
+   53 |   int _r = (expr);                                                                   \
+      |             ^~~~
+In file included from lib/fork.c:2:
+include/lib.h:59:66: note: expected ‘void *’ but argument is of type ‘u_int’ {aka ‘unsigned int’}
+   59 | int syscall_mem_map(u_int srcid, void *srcva, u_int dstid, void *dstva, u_int perm);
+      |                                                            ~~~~~~^~~~~
+In file included from ../include/mmu.h:148,
+                 from ../include/env.h:4,
+                 from lib/fork.c:1:
+../include/error.h:55:11: warning: ‘return’ with a value, in function returning void [-Wreturn-type]
+   55 |    return _r;                                                                 \
+      |           ^~
+lib/fork.c:107:3: note: in expansion of macro ‘try’
+  107 |   try(syscall_mem_map(0, va, envid, va, perm));
       |   ^~~
 lib/fork.c:90:13: note: declared here
    90 | static void duppage(u_int envid, u_int vpn) {
@@ -718,15 +730,15 @@ mips-linux-gnu-ld -o hello.b -EL -G 0 -static -n -nostdlib --fatal-warnings -EL 
 mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG -c -o hello.x hello.b.c
 mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG -I../include -Iinclude -c -o mytst.o mytst.c
 mytst.c: In function ‘main’:
-mytst.c:8:2: warning: implicit declaration of function ‘write_seg’ [-Wimplicit-function-declaration]
-    8 |  write_seg(0x500000, 0x500000 + 20000 * PAGE_SIZE); // Alloc swappable pages in parent.
+mytst.c:7:2: warning: implicit declaration of function ‘write_seg’ [-Wimplicit-function-declaration]
+    7 |  write_seg(0x500000, 20000);
       |  ^~~~~~~~~
 mytst.c: At top level:
-mytst.c:24:6: warning: conflicting types for ‘write_seg’
-   24 | void write_seg(u_int start, u_int end) {
+mytst.c:21:6: warning: conflicting types for ‘write_seg’
+   21 | void write_seg(u_int start, int npage) {
       |      ^~~~~~~~~
-mytst.c:8:2: note: previous implicit declaration of ‘write_seg’ was here
-    8 |  write_seg(0x500000, 0x500000 + 20000 * PAGE_SIZE); // Alloc swappable pages in parent.
+mytst.c:7:2: note: previous implicit declaration of ‘write_seg’ was here
+    7 |  write_seg(0x500000, 20000);
       |  ^~~~~~~~~
 mips-linux-gnu-ld -o mytst.b -EL -G 0 -static -n -nostdlib --fatal-warnings -EL -G 0 -static -n -nostdlib --fatal-warnings -T ./user.lds mytst.o lib/entry.o lib/syscall_wrap.o lib/debugf.o lib/libos.o lib/fork.o lib/syscall_lib.o lib/ipc.o lib/fd.o lib/pageref.o lib/file.o lib/fsipc.o lib/console.o lib/fprintf.o lib/wait.o lib/spawn.o lib/pipe.o ../lib/elfloader.o ../lib/print.o ../lib/string.o
 ../tools/bintoc -f mytst.b -o mytst.b.c -p user
@@ -778,6 +790,10 @@ mips-linux-gnu-ld -o testbss.b -EL -G 0 -static -n -nostdlib --fatal-warnings -E
 mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG -I../include -Iinclude -c -o testfdsharing.o testfdsharing.c
 mips-linux-gnu-ld -o testfdsharing.b -EL -G 0 -static -n -nostdlib --fatal-warnings -EL -G 0 -static -n -nostdlib --fatal-warnings -T ./user.lds testfdsharing.o lib/entry.o lib/syscall_wrap.o lib/debugf.o lib/libos.o lib/fork.o lib/syscall_lib.o lib/ipc.o lib/fd.o lib/pageref.o lib/file.o lib/fsipc.o lib/console.o lib/fprintf.o lib/wait.o lib/spawn.o lib/pipe.o ../lib/elfloader.o ../lib/print.o ../lib/string.o
 mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG -I../include -Iinclude -c -o init.o init.c
+init.c: In function ‘main’:
+init.c:65:1: warning: control reaches end of non-void function [-Wreturn-type]
+   65 | }
+      | ^
 mips-linux-gnu-ld -o init.b -EL -G 0 -static -n -nostdlib --fatal-warnings -EL -G 0 -static -n -nostdlib --fatal-warnings -T ./user.lds init.o lib/entry.o lib/syscall_wrap.o lib/debugf.o lib/libos.o lib/fork.o lib/syscall_lib.o lib/ipc.o lib/fd.o lib/pageref.o lib/file.o lib/fsipc.o lib/console.o lib/fprintf.o lib/wait.o lib/spawn.o lib/pipe.o ../lib/elfloader.o ../lib/print.o ../lib/string.o
 rm testbss.o tltest.o hello.o testfdsharing.o pingpong.o echo.o icode.o halt.o cat.o devtst.o init.o testptelibrary.o fktest.o mytst.o testarg.o sh.o testpiperace.o testpipe.o fstest.o ls.o num.o
 make[2]: Leaving directory '/home/kino/workdir/mos_lab/22371281/user'

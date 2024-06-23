@@ -104,6 +104,7 @@ int sys_set_tlb_mod_entry(u_int envid, u_int func) {
  *   Check 'va' is illegal or not, according to include/mmu.h
  */
 static inline int is_illegal_va(u_long va) {
+	// UVPT not allowed.
 	return va < UTEMP || va >= UTOP;
 }
 
@@ -148,7 +149,7 @@ int sys_mem_alloc(u_int envid, u_int va, u_int perm) {
 	//perm &= ~PTE_SWAPPED;
 	int r = page_insert(env->env_pgdir, env->env_asid, pp, va, perm);
 
-	if (1) { // condition not sure for now
+	if (va < USTACKTOP - PAGE_SIZE) { // condition not sure for now
 		panic_on(pp == NULL);
 		swap_register(pp, env->env_pgdir, va, env->env_asid); // Set page swappable
 	}
@@ -177,34 +178,45 @@ int sys_mem_alloc(u_int envid, u_int va, u_int perm) {
 int sys_mem_map(u_int srcid, u_int srcva, u_int dstid, u_int dstva, u_int perm) {
 	struct Env *srcenv;
 	struct Env *dstenv;
-	struct Page *pp;
+	//printk("sys_mem_map: dstid %x\n", dstid);
 	///if (PTE_ADDR(srcva) == 0x531f000 && dstid == 0x1802) {
 		//printk("mem_map ustack to 0x1802\n");
 	//}
 
-	/* Step 1: Check if 'srcva' and 'dstva' are legal user virtual addresses using
-	 * 'is_illegal_va'. */
 	if (is_illegal_va(srcva) || is_illegal_va(dstva)) { return -E_INVAL; }
-
-	/* Step 2: Convert the 'srcid' to its corresponding 'struct Env *' using 'envid2env'. */
 	try(envid2env(srcid, &srcenv, 1));
-	/* Step 3: Convert the 'dstid' to its corresponding 'struct Env *' using 'envid2env'. */
 	try(envid2env(dstid, &dstenv, 1));
+
+
+	// Maintain swappable attribute of ???.
+	struct Page *orgp = page_lookup(dstenv->env_pgdir, dstva, NULL);
+	int swappable_org = 0;
+	if (orgp != NULL) { swappable_org = !LIST_EMPTY(page2ste(orgp)); }
 
 	/* Step 4: Find the physical page mapped at 'srcva' in the address space of 'srcid'. */
 	/* Return -E_INVAL if 'srcva' is not mapped. */
-	pp = page_lookup(srcenv->env_pgdir, srcva, NULL);
-	if (pp == NULL) { return -E_INVAL; };
+	Pte *pte;
+	struct Page *srcp = page_lookup(srcenv->env_pgdir, srcva, &pte);
+	if (srcp == NULL) { return -E_INVAL; };
+	int swappable_src = !LIST_EMPTY(page2ste(srcp));
+
+	//if (srcva == 0x7f3fd000 && dstid == 0x2803) { printk("origin page: pgdir=%x, pte=%x, ppn=%d\n", srcenv->env_pgdir, *pte, page2ppn(srcp)); }
 
 	/* Step 5: Map the physical page at 'dstva' in the address space of 'dstid'. */
 	// Note that the swap_unregister needed lies in the page_remove in this page_insert call.
 	//perm &= ~PTE_SWAPPED;
-	int r = page_insert(dstenv->env_pgdir, dstenv->env_asid, pp, dstva, perm);
+	int r = page_insert(dstenv->env_pgdir, dstenv->env_asid, srcp, dstva, perm);
+
+	//struct Page *dstp = page_lookup(dstenv->env_pgdir, dstva, &pte);
+	//panic_on(srcp != dstp);
+	//if (srcva == 0x7f3fd000 && dstid == 0x2803) { printk("mapped page: pgdir=%x, pte=%x, ppn=%d\n", dstenv->env_pgdir, *pte, page2ppn(dstp)); }
 
 	// Register new SwapInfo for VPage.
-	if ((!LIST_EMPTY(page2ste(pp))) // the original page should be swappable
-			&& ((srcid != dstid) || (PTE_ADDR(srcva) != PTE_ADDR(dstva)))) {
-		swap_register(pp, dstenv->env_pgdir, dstva, dstenv->env_asid);
+	int swappable = srcva == UCOW ? swappable_org : swappable_src;
+	if (swappable  // the original page should be swappable
+			&& ((srcid != dstid) || (PTE_ADDR(srcva) != PTE_ADDR(dstva)))
+			&& dstva < UTOP) {
+		swap_register(srcp, dstenv->env_pgdir, dstva, dstenv->env_asid);
 	}
 
 	//if (PTE_ADDR(srcva) == 0x531f000 && dstid == 0x1802) {

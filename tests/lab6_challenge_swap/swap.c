@@ -19,7 +19,7 @@ int main() {
         if (i != v) {
             debugf("failed on page %d, va=0x%x\n", i, va);
             debugf("%d expected but %d found\n", i, v);
-			debugf("PTE=%d\n", vpt[i]);
+			debugf("PTE = %x\n", vpt[i]);
             panic_on(i != v);
         }
     }

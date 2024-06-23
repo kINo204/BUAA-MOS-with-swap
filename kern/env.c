@@ -334,10 +334,13 @@ static int load_icode_mapper(void *data, u_long va, size_t offset, u_int perm, c
 	if (src != NULL) {
 		/* Exercise 3.5: Your code here. (2/2) */
 		memcpy((void*)page2kva(p) + offset, src, len);
+		// Through KVA, passive alloc not triggered.
 	}
 
 	/* Step 3: Insert 'p' into 'env->env_pgdir' at 'va' with 'perm'. */
-	return page_insert(env->env_pgdir, env->env_asid, p, va, perm);
+	r = page_insert(env->env_pgdir, env->env_asid, p, va, perm);
+
+	return r;
 }
 
 /* Overview:
@@ -409,28 +412,30 @@ void env_free(struct Env *e) {
 	printk("[%08x] free env %08x\n", curenv ? curenv->env_id : 0, e->env_id);
 
 	/* Hint: Flush all mapped pages in the user portion of the address space */
-	for (pdeno = 0; pdeno < PDX(UTOP); pdeno++) {
+	// Note: UVPT not included!!!
+	for (pdeno = 0; pdeno < PDX(UTOP/*UTOP*/); pdeno++) {
 		/* Hint: only look at mapped page tables. */
-		if (!(e->env_pgdir[pdeno] & PTE_V)) {
-			// Page tables won't be swapped out.
-			continue;
-		}
+		// Page tables won't be swapped out.
+		if (!(e->env_pgdir[pdeno] & PTE_V)) { continue; }
+
 		/* Hint: find the pa and va of the page table. */
 		pa = PTE_ADDR(e->env_pgdir[pdeno]);
 		pt = (Pte *)KADDR(pa);
 		/* Hint: Unmap all PTEs in this page table. */
 		for (pteno = 0; pteno <= PTX(~0); pteno++) {
-			if (pt[pteno] & PTE_V || pt[pteno] & PTE_SWAPPED) {
+			if ((pt[pteno] & PTE_V) || (pt[pteno] & PTE_SWAPPED)) {
 				page_remove(e->env_pgdir, e->env_asid,
 					    (pdeno << PDSHIFT) | (pteno << PGSHIFT));
 			}
 		}
+
 		/* Hint: free the page table itself. */
 		e->env_pgdir[pdeno] = 0;
 		page_decref(pa2page(pa));
 		/* Hint: invalidate page table in TLB */
 		tlb_invalidate(e->env_asid, UVPT + (pdeno << PGSHIFT));
 	}
+
 	/* Hint: free the page directory. */
 	page_decref(pa2page(PADDR(e->env_pgdir)));
 	/* Hint: free the ASID */

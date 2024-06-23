@@ -36,7 +36,10 @@ static void passive_alloc(u_int va, Pde *pgdir, u_int asid) {
 	u_int perm = (va >= UVPT && va < ULIM) ? 0 : PTE_D;
 	panic_on(page_insert(pgdir, asid, p, PTE_ADDR(va), perm));
 
-	swap_register(p, pgdir, PTE_ADDR(va), asid); // Register ppage for swap.
+	if (va < USTACKTOP - PAGE_SIZE/*UTOP*/) {
+		//if (va == 0x443ffffc) { printk("register!\n"); }
+		swap_register(p, pgdir, PTE_ADDR(va), asid); // Register ppage for swap.
+	}
 }
 
 /* Overview:
@@ -54,12 +57,12 @@ void _do_tlb_refill(u_long *pentrylo, u_int va, u_int asid) {
 	 */
 
 	while (page_lookup(cur_pgdir, va, &ppte) == NULL) {
-		if ((ppte != NULL) && ((*ppte) & PTE_SWAPPED)) {
+		//if ((ppte != NULL) && ((*ppte) & PTE_SWAPPED)) {
 			//printk("swapped out page\n");
-			swap_back(*ppte);
-		} else {
+			//swap_back(*ppte);
+		//} else {
 			passive_alloc(va, cur_pgdir, asid);
-		}
+		//}
 	}
 
 	ppte = (Pte *)((u_long)ppte & ~0x7); // 0x7: 2 for a 32bit u_long, 1 for odd/even

@@ -9,7 +9,7 @@
 #include <syscall.h>
 #include <trap.h>
 
-//#define SUSP_SH
+#define SUSP_SH
 
 #define vpt ((const volatile Pte *)UVPT)
 #define vpd ((const volatile Pde *)(UVPT + (PDX(UVPT) << PGSHIFT)))

@@ -139,7 +139,8 @@ int page_alloc(struct Page **new) {
 	struct Page *pp;
 	if (LIST_EMPTY(&page_free_list))
 	{
-		swap();
+#define NSWAP 1
+		for (int i = 0; i < NSWAP; i++) { swap(); }
 		if (LIST_EMPTY(&page_free_list)) {
 			panic("swap err: no PPage available after swapping");
 		} 
@@ -166,6 +167,7 @@ void page_free(struct Page *pp) {
 	assert(pp->pp_ref == 0);
 	/* Just insert it into 'page_free_list'. */
 	/* Exercise 2.5: Your code here. */
+	assert(LIST_EMPTY(page2ste(pp)));
 	LIST_INSERT_HEAD(&page_free_list, pp, pp_link);
 }
 
@@ -247,7 +249,9 @@ int page_insert(Pde *pgdir, u_int asid, struct Page *pp, u_long va, u_int perm) 
 	pgdir_walk(pgdir, va, 0, &pte);
 
 	// Guarantee the ORIGINAL VPage is in physical mem.
-	if (pte && !(*pte & PTE_V) && (*pte & PTE_SWAPPED)) { swap_back(*pte); }
+	if (pte && !(*pte & PTE_V) && (*pte & PTE_SWAPPED)) {
+		swap_back(*pte);
+	}
 
 	// A valid pte exist
 	if (pte && (*pte & PTE_V)) {
@@ -292,14 +296,17 @@ struct Page *page_lookup(Pde *pgdir, u_long va, /* for efficiency */ Pte **ppte)
 	/* Step 1: Get the page table entry. */
 	pgdir_walk(pgdir, va, 0, &pte);
 
+	// Swap back if data is on disk.
+	if (pte && !(*pte & PTE_V) && (*pte & PTE_SWAPPED)) {
+		swap_back(*pte);
+	}
+
 	/* Hint: Check if the page table entry doesn't exist or is not valid. */
 	if (pte == NULL || (*pte & PTE_V) == 0) {
-		if (pte && (*pte & PTE_SWAPPED)) {
-			swap_back(*pte);
-		} else if (ppte) {
+		if (ppte) {
 			*ppte = pte;
-			return NULL;
 		}
+		return NULL;
 	}
 
 	/* Step 2: Get the corresponding Page struct. */
@@ -335,15 +342,13 @@ void page_remove(Pde *pgdir, u_int asid, u_long va) {
 
 	/* Step 1: Get the page table entry, and check if the page table entry is valid. */
 	struct Page *pp = page_lookup(pgdir, va, &pte);
-	if (pp == NULL) {
-		return;
-	}
-
-	/* Step 2: Decrease reference count on 'pp'. */
-	page_decref(pp);
+	if (pp == NULL) { return; } // invalid VPage
 
 	// Unregister the pp in swap_tbl.
 	swap_unregister(pp, pgdir, va, asid);
+
+	/* Step 2: Decrease reference count on 'pp'. */
+	page_decref(pp);
 
 	/* Step 3: Flush TLB. */
 	*pte = 0; // PTE set to INVALID at the time.
@@ -598,8 +603,8 @@ void swap_init(void) {
    Called when a VPage of swappable type is accessed, requiring a PPage.
  */
 void swap_register(struct Page *pp, Pde *pgdir, u_int va, u_int asid) {
-	//if ((PTE_ADDR(va) == 0x531f000 || PTE_ADDR(va) == UCOW)
-			//&& curenv->env_id == 0x1802
+	//if ((PTE_ADDR(va) == 0x7f3fd000 || PTE_ADDR(va) == UCOW)
+			//&& (curenv->env_id == 0x1802 || curenv->env_id == 0x2803)
 			//) {
 	//if (PTE_ADDR(va) == 0x7f3ff000) {
 		//printk("register pgdir=%x, ppn=%d, va=0x%08x, num=%d\n", pgdir, page2ppn(pp), PTE_ADDR(va), pp->pp_ref);
@@ -626,13 +631,14 @@ void swap_register(struct Page *pp, Pde *pgdir, u_int va, u_int asid) {
 
 void swap_unregister(struct Page *pp, Pde *pgdir, u_int va, u_int asid) {
 	// Find the corresponding SwapInfo from the swap_tbl and remove it.
-	//if ((PTE_ADDR(va) == 0x531f000 || PTE_ADDR(va) == UCOW)
-			//&& curenv->env_id == 0x1802
+	//if ((PTE_ADDR(va) == 0x7f3fd000 || PTE_ADDR(va) == UCOW)
+			//&& (curenv->env_id == 0x1802 || curenv->env_id == 0x2803)
 			//) {
 	//if (PTE_ADDR(va) == 0x7f3ff000) {
 	//if (curenv->env_id == 0x1802) {
 		//printk("unregister pgdir=%x ppn=%d, va=0x%08x, num=%d\n", pgdir, page2ppn(pp), PTE_ADDR(va), pp->pp_ref);
 	//}
+
 	struct SwapInfo *sinfo;
 	SwapTableEntry *ste = page2ste(pp);
 	if (LIST_EMPTY(ste)) { return; }
@@ -684,7 +690,11 @@ void swap_back(Pte cur_pte) {
 		*pte = PTE_FLAGS(*pte);
 		*pte |= PTE_ADDR(page2pa(p));
 
-		tlb_invalidate(sinfo->asid, sinfo->va); // Invalidate corresponding TLB entry.
+		//tlb_invalidate(sinfo->asid, sinfo->va); // Invalidate corresponding TLB entry.
+		//if (sinfo->va == 0x7f3fd000 && (curenv->env_id == 0x2803 || curenv->env_id == 0x1802)) {
+			//printk("in:  ");
+			//_print_sinfo(sinfo); 
+		//}
 
 		p->pp_ref++;
 	}
@@ -715,11 +725,11 @@ void swap(void) {
 	// Refresh the PTE of all VPage mapping the swapped PPage and flush all TLB entries.
 	struct SwapInfo *sinfo;
 	SwapTableEntry *ste = page2ste(pp);
-	LIST_FOREACH(sinfo, ste, link){
+	LIST_FOREACH(sinfo, ste, link) {
 		Pde pde = sinfo->pgdir[PDX(sinfo->va)];
 		Pte *pte = (Pte *)KADDR( PTE_ADDR(pde) ) + PTX(sinfo->va);
 
-		//panic_on(!(*pte & PTE_V));
+		panic_on(!(*pte & PTE_V));
 		panic_on(*pte & PTE_SWAPPED);
 
 		*pte &= ~PTE_V;  	 		// Unset V.
@@ -729,9 +739,20 @@ void swap(void) {
 
 		tlb_invalidate(sinfo->asid, sinfo->va); // Invalidate corresponding TLB entry.
 
+		//if (sinfo->va == 0x7f3fd000 && (curenv->env_id == 0x2803 || curenv->env_id == 0x1802)) {
+			//printk("out: ");
+			//_print_sinfo(sinfo);
+		//}
+
+		pp->pp_ref--;
 	}
-	pp->pp_ref = 0;
-	//panic_on(pp->pp_ref != 0);
+
+	if (pp->pp_ref != 0) {
+		LIST_FOREACH(sinfo, ste, link) {
+			_print_sinfo();
+		}
+	}
+	panic_on(pp->pp_ref != 0);
 
 	// Move sinfos from swap_tbl to bno_tbl.
 	SwapTableEntry *bno_ste = bno2ste(sd_bno);
@@ -750,6 +771,18 @@ void swap(void) {
 	LIST_INSERT_HEAD(&page_free_list, pp, pp_link);
 
 	//printk("end swap\n");
+}
+
+void _print_sinfo(struct SwapInfo *sinfo) {
+	Pde pde = sinfo->pgdir[PDX(sinfo->va)];
+	Pte *pte = (Pte *)KADDR( PTE_ADDR(pde) ) + PTX(sinfo->va);
+	printk(
+	"SwapInfo:\t"
+	"vaddr=%x  "
+	"pgdir=%x  "
+	"pte=%x\n"
+	, sinfo->va, sinfo->pgdir, *pte
+			);
 }
 
 
