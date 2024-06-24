@@ -591,7 +591,7 @@ void swap_init(void) {
 	//swap_tbl = (SwapTableEntry *)alloc(npage * sizeof(SwapTableEntry), PAGE_SIZE, 1);
 	//bno_tbl = (SwapTableEntry *)alloc(SD_NBLK * sizeof(SwapTableEntry), PAGE_SIZE, 1);
 	swapInfos = (struct SwapInfo *)alloc(MAX_SWAPINFO * sizeof(struct SwapInfo), PAGE_SIZE, 1);
-	printk("to memory %x for struct SwapInfos.\n", freemem);
+	//printk("to memory %x for struct SwapInfos.\n", freemem);
 	LIST_INIT(&swapInfo_free_list);
 	for (int i = 0; i < MAX_SWAPINFO; i++) {
 		LIST_INSERT_HEAD(&swapInfo_free_list, &swapInfos[i], link);
