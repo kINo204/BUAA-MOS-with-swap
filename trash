@@ -93,323 +93,37 @@ fsformat.c:222:29: warning: assignment to ‘int’ from ‘uint32_t *’ {aka �
 make[2]: Leaving directory '/home/kino/workdir/mos_lab/22371281/tools'
 make --directory=lib
 make[2]: Entering directory '/home/kino/workdir/mos_lab/22371281/lib'
-mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG -I../include/ -c -o elfloader.o elfloader.c
-mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG -I../include/ -c -o print.o print.c
-mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG -I../include/ -c -o string.o string.c
+mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O2 --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -DMOS_NSWAP=1023 -DMOS_INIT_OVERRIDDEN -O2 -I../include/ -c -o elfloader.o elfloader.c
+mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O2 --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -DMOS_NSWAP=1023 -DMOS_INIT_OVERRIDDEN -O2 -I../include/ -c -o print.o print.c
+mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O2 --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -DMOS_NSWAP=1023 -DMOS_INIT_OVERRIDDEN -O2 -I../include/ -c -o string.o string.c
 make[2]: Leaving directory '/home/kino/workdir/mos_lab/22371281/lib'
-make --directory=init
-make[2]: Entering directory '/home/kino/workdir/mos_lab/22371281/init'
-mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG -I../include/ -c start.S
-mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG -I../include/ -c init.c
-make[2]: Leaving directory '/home/kino/workdir/mos_lab/22371281/init'
-make --directory=kern
-make[2]: Entering directory '/home/kino/workdir/mos_lab/22371281/kern'
-mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG -I../include/ -c -o machine.o machine.c
-mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG -I../include/ -c -o printk.o printk.c
-mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG -I../include/ -c -o panic.o panic.c
-mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG -I../include/ -c -o pmap.o pmap.c
-pmap.c: In function ‘pgdir_walk’:
-pmap.c:214:37: warning: suggest parentheses around arithmetic in operand of ‘|’ [-Wparentheses]
-  214 |    *pgdir_entryp |= PTE_C_CACHEABLE | PTE_V & ~PTE_SWAPPED;
-      |                                     ^
-pmap.c: In function ‘swap’:
-pmap.c:752:36: warning: implicit declaration of function ‘_print_sinfo’ [-Wimplicit-function-declaration]
-  752 |   LIST_FOREACH(sinfo, ste, link) { _print_sinfo(sinfo); }
-      |                                    ^~~~~~~~~~~~
-pmap.c: At top level:
-pmap.c:775:6: warning: conflicting types for ‘_print_sinfo’
-  775 | void _print_sinfo(struct SwapInfo *sinfo) {
-      |      ^~~~~~~~~~~~
-pmap.c:752:36: note: previous implicit declaration of ‘_print_sinfo’ was here
-  752 |   LIST_FOREACH(sinfo, ste, link) { _print_sinfo(sinfo); }
-      |                                    ^~~~~~~~~~~~
-In file included from ../include/pmap.h:5,
-                 from pmap.c:5:
-pmap.c: In function ‘wait_sd_ready’:
-pmap.c:853:20: warning: passing argument 1 of ‘read_sd’ makes integer from pointer without a cast [-Wint-conversion]
-  853 |   panic_on(read_sd(&flag, MALTA_SWAP_STATUS, 1));
-      |                    ^~~~~
-      |                    |
-      |                    uint8_t * {aka unsigned char *}
-../include/printk.h:19:13: note: in definition of macro ‘panic_on’
-   19 |   int _r = (expr);                                                                   \
-      |             ^~~~
-pmap.c:823:26: note: expected ‘u_int’ {aka ‘unsigned int’} but argument is of type ‘uint8_t *’ {aka ‘unsigned char *’}
-  823 | static int read_sd(u_int va, u_int pa, u_int len) {
-      |                    ~~~~~~^~
-In file included from ../include/pmap.h:5,
-                 from pmap.c:5:
-pmap.c: In function ‘sd_read’:
-pmap.c:871:21: warning: passing argument 1 of ‘write_sd’ makes integer from pointer without a cast [-Wint-conversion]
-  871 |   panic_on(write_sd(&temp, MALTA_SWAP_NSECT, 1));
-      |                     ^~~~~
-      |                     |
-      |                     uint8_t * {aka unsigned char *}
-../include/printk.h:19:13: note: in definition of macro ‘panic_on’
-   19 |   int _r = (expr);                                                                   \
-      |             ^~~~
-pmap.c:836:27: note: expected ‘u_int’ {aka ‘unsigned int’} but argument is of type ‘uint8_t *’ {aka ‘unsigned char *’}
-  836 | static int write_sd(u_int va, u_int pa, u_int len) {
-      |                     ~~~~~~^~
-In file included from ../include/pmap.h:5,
-                 from pmap.c:5:
-pmap.c:874:21: warning: passing argument 1 of ‘write_sd’ makes integer from pointer without a cast [-Wint-conversion]
-  874 |   panic_on(write_sd(&temp, MALTA_SWAP_LBAL, 1));
-      |                     ^~~~~
-      |                     |
-      |                     uint8_t * {aka unsigned char *}
-../include/printk.h:19:13: note: in definition of macro ‘panic_on’
-   19 |   int _r = (expr);                                                                   \
-      |             ^~~~
-pmap.c:836:27: note: expected ‘u_int’ {aka ‘unsigned int’} but argument is of type ‘uint8_t *’ {aka ‘unsigned char *’}
-  836 | static int write_sd(u_int va, u_int pa, u_int len) {
-      |                     ~~~~~~^~
-In file included from ../include/pmap.h:5,
-                 from pmap.c:5:
-pmap.c:877:21: warning: passing argument 1 of ‘write_sd’ makes integer from pointer without a cast [-Wint-conversion]
-  877 |   panic_on(write_sd(&temp, MALTA_SWAP_LBAM, 1));
-      |                     ^~~~~
-      |                     |
-      |                     uint8_t * {aka unsigned char *}
-../include/printk.h:19:13: note: in definition of macro ‘panic_on’
-   19 |   int _r = (expr);                                                                   \
-      |             ^~~~
-pmap.c:836:27: note: expected ‘u_int’ {aka ‘unsigned int’} but argument is of type ‘uint8_t *’ {aka ‘unsigned char *’}
-  836 | static int write_sd(u_int va, u_int pa, u_int len) {
-      |                     ~~~~~~^~
-In file included from ../include/pmap.h:5,
-                 from pmap.c:5:
-pmap.c:880:21: warning: passing argument 1 of ‘write_sd’ makes integer from pointer without a cast [-Wint-conversion]
-  880 |   panic_on(write_sd(&temp, MALTA_SWAP_LBAH, 1));
-      |                     ^~~~~
-      |                     |
-      |                     uint8_t * {aka unsigned char *}
-../include/printk.h:19:13: note: in definition of macro ‘panic_on’
-   19 |   int _r = (expr);                                                                   \
-      |             ^~~~
-pmap.c:836:27: note: expected ‘u_int’ {aka ‘unsigned int’} but argument is of type ‘uint8_t *’ {aka ‘unsigned char *’}
-  836 | static int write_sd(u_int va, u_int pa, u_int len) {
-      |                     ~~~~~~^~
-In file included from ../include/pmap.h:5,
-                 from pmap.c:5:
-pmap.c:884:21: warning: passing argument 1 of ‘write_sd’ makes integer from pointer without a cast [-Wint-conversion]
-  884 |   panic_on(write_sd(&temp, MALTA_SWAP_DEVICE, 1));
-      |                     ^~~~~
-      |                     |
-      |                     uint8_t * {aka unsigned char *}
-../include/printk.h:19:13: note: in definition of macro ‘panic_on’
-   19 |   int _r = (expr);                                                                   \
-      |             ^~~~
-pmap.c:836:27: note: expected ‘u_int’ {aka ‘unsigned int’} but argument is of type ‘uint8_t *’ {aka ‘unsigned char *’}
-  836 | static int write_sd(u_int va, u_int pa, u_int len) {
-      |                     ~~~~~~^~
-In file included from ../include/pmap.h:5,
-                 from pmap.c:5:
-pmap.c:887:21: warning: passing argument 1 of ‘write_sd’ makes integer from pointer without a cast [-Wint-conversion]
-  887 |   panic_on(write_sd(&temp, MALTA_SWAP_STATUS, 1));
-      |                     ^~~~~
-      |                     |
-      |                     uint8_t * {aka unsigned char *}
-../include/printk.h:19:13: note: in definition of macro ‘panic_on’
-   19 |   int _r = (expr);                                                                   \
-      |             ^~~~
-pmap.c:836:27: note: expected ‘u_int’ {aka ‘unsigned int’} but argument is of type ‘uint8_t *’ {aka ‘unsigned char *’}
-  836 | static int write_sd(u_int va, u_int pa, u_int len) {
-      |                     ~~~~~~^~
-In file included from ../include/pmap.h:5,
-                 from pmap.c:5:
-pmap.c:893:34: warning: passing argument 1 of ‘read_sd’ makes integer from pointer without a cast [-Wint-conversion]
-  893 |    panic_on(read_sd(dst + offset + i * 4, MALTA_SWAP_DATA, 4));
-      |                     ~~~~~~~~~~~~~^~~~~~~
-      |                                  |
-      |                                  void *
-../include/printk.h:19:13: note: in definition of macro ‘panic_on’
-   19 |   int _r = (expr);                                                                   \
-      |             ^~~~
-pmap.c:823:26: note: expected ‘u_int’ {aka ‘unsigned int’} but argument is of type ‘void *’
-  823 | static int read_sd(u_int va, u_int pa, u_int len) {
-      |                    ~~~~~~^~
-In file included from ../include/pmap.h:5,
-                 from pmap.c:5:
-pmap.c:896:20: warning: passing argument 1 of ‘read_sd’ makes integer from pointer without a cast [-Wint-conversion]
-  896 |   panic_on(read_sd(&temp, MALTA_SWAP_STATUS, 1));
-      |                    ^~~~~
-      |                    |
-      |                    uint8_t * {aka unsigned char *}
-../include/printk.h:19:13: note: in definition of macro ‘panic_on’
-   19 |   int _r = (expr);                                                                   \
-      |             ^~~~
-pmap.c:823:26: note: expected ‘u_int’ {aka ‘unsigned int’} but argument is of type ‘uint8_t *’ {aka ‘unsigned char *’}
-  823 | static int read_sd(u_int va, u_int pa, u_int len) {
-      |                    ~~~~~~^~
-In file included from ../include/pmap.h:5,
-                 from pmap.c:5:
-pmap.c: In function ‘sd_write’:
-pmap.c:913:21: warning: passing argument 1 of ‘write_sd’ makes integer from pointer without a cast [-Wint-conversion]
-  913 |   panic_on(write_sd(&temp, MALTA_SWAP_NSECT, 1));
-      |                     ^~~~~
-      |                     |
-      |                     uint8_t * {aka unsigned char *}
-../include/printk.h:19:13: note: in definition of macro ‘panic_on’
-   19 |   int _r = (expr);                                                                   \
-      |             ^~~~
-pmap.c:836:27: note: expected ‘u_int’ {aka ‘unsigned int’} but argument is of type ‘uint8_t *’ {aka ‘unsigned char *’}
-  836 | static int write_sd(u_int va, u_int pa, u_int len) {
-      |                     ~~~~~~^~
-In file included from ../include/pmap.h:5,
-                 from pmap.c:5:
-pmap.c:916:21: warning: passing argument 1 of ‘write_sd’ makes integer from pointer without a cast [-Wint-conversion]
-  916 |   panic_on(write_sd(&temp, MALTA_SWAP_LBAL, 1));
-      |                     ^~~~~
-      |                     |
-      |                     uint8_t * {aka unsigned char *}
-../include/printk.h:19:13: note: in definition of macro ‘panic_on’
-   19 |   int _r = (expr);                                                                   \
-      |             ^~~~
-pmap.c:836:27: note: expected ‘u_int’ {aka ‘unsigned int’} but argument is of type ‘uint8_t *’ {aka ‘unsigned char *’}
-  836 | static int write_sd(u_int va, u_int pa, u_int len) {
-      |                     ~~~~~~^~
-In file included from ../include/pmap.h:5,
-                 from pmap.c:5:
-pmap.c:919:21: warning: passing argument 1 of ‘write_sd’ makes integer from pointer without a cast [-Wint-conversion]
-  919 |   panic_on(write_sd(&temp, MALTA_SWAP_LBAM, 1));
-      |                     ^~~~~
-      |                     |
-      |                     uint8_t * {aka unsigned char *}
-../include/printk.h:19:13: note: in definition of macro ‘panic_on’
-   19 |   int _r = (expr);                                                                   \
-      |             ^~~~
-pmap.c:836:27: note: expected ‘u_int’ {aka ‘unsigned int’} but argument is of type ‘uint8_t *’ {aka ‘unsigned char *’}
-  836 | static int write_sd(u_int va, u_int pa, u_int len) {
-      |                     ~~~~~~^~
-In file included from ../include/pmap.h:5,
-                 from pmap.c:5:
-pmap.c:922:21: warning: passing argument 1 of ‘write_sd’ makes integer from pointer without a cast [-Wint-conversion]
-  922 |   panic_on(write_sd(&temp, MALTA_SWAP_LBAH, 1));
-      |                     ^~~~~
-      |                     |
-      |                     uint8_t * {aka unsigned char *}
-../include/printk.h:19:13: note: in definition of macro ‘panic_on’
-   19 |   int _r = (expr);                                                                   \
-      |             ^~~~
-pmap.c:836:27: note: expected ‘u_int’ {aka ‘unsigned int’} but argument is of type ‘uint8_t *’ {aka ‘unsigned char *’}
-  836 | static int write_sd(u_int va, u_int pa, u_int len) {
-      |                     ~~~~~~^~
-In file included from ../include/pmap.h:5,
-                 from pmap.c:5:
-pmap.c:926:21: warning: passing argument 1 of ‘write_sd’ makes integer from pointer without a cast [-Wint-conversion]
-  926 |   panic_on(write_sd(&temp, MALTA_SWAP_DEVICE, 1));
-      |                     ^~~~~
-      |                     |
-      |                     uint8_t * {aka unsigned char *}
-../include/printk.h:19:13: note: in definition of macro ‘panic_on’
-   19 |   int _r = (expr);                                                                   \
-      |             ^~~~
-pmap.c:836:27: note: expected ‘u_int’ {aka ‘unsigned int’} but argument is of type ‘uint8_t *’ {aka ‘unsigned char *’}
-  836 | static int write_sd(u_int va, u_int pa, u_int len) {
-      |                     ~~~~~~^~
-In file included from ../include/pmap.h:5,
-                 from pmap.c:5:
-pmap.c:929:21: warning: passing argument 1 of ‘write_sd’ makes integer from pointer without a cast [-Wint-conversion]
-  929 |   panic_on(write_sd(&temp, MALTA_SWAP_STATUS, 1));
-      |                     ^~~~~
-      |                     |
-      |                     uint8_t * {aka unsigned char *}
-../include/printk.h:19:13: note: in definition of macro ‘panic_on’
-   19 |   int _r = (expr);                                                                   \
-      |             ^~~~
-pmap.c:836:27: note: expected ‘u_int’ {aka ‘unsigned int’} but argument is of type ‘uint8_t *’ {aka ‘unsigned char *’}
-  836 | static int write_sd(u_int va, u_int pa, u_int len) {
-      |                     ~~~~~~^~
-In file included from ../include/pmap.h:5,
-                 from pmap.c:5:
-pmap.c:935:35: warning: passing argument 1 of ‘write_sd’ makes integer from pointer without a cast [-Wint-conversion]
-  935 |    panic_on(write_sd(src + offset + i * 4, MALTA_SWAP_DATA, 4));
-      |                      ~~~~~~~~~~~~~^~~~~~~
-      |                                   |
-      |                                   void *
-../include/printk.h:19:13: note: in definition of macro ‘panic_on’
-   19 |   int _r = (expr);                                                                   \
-      |             ^~~~
-pmap.c:836:27: note: expected ‘u_int’ {aka ‘unsigned int’} but argument is of type ‘void *’
-  836 | static int write_sd(u_int va, u_int pa, u_int len) {
-      |                     ~~~~~~^~
-In file included from ../include/pmap.h:5,
-                 from pmap.c:5:
-pmap.c:938:20: warning: passing argument 1 of ‘read_sd’ makes integer from pointer without a cast [-Wint-conversion]
-  938 |   panic_on(read_sd(&temp, MALTA_SWAP_STATUS, 1));
-      |                    ^~~~~
-      |                    |
-      |                    uint8_t * {aka unsigned char *}
-../include/printk.h:19:13: note: in definition of macro ‘panic_on’
-   19 |   int _r = (expr);                                                                   \
-      |             ^~~~
-pmap.c:823:26: note: expected ‘u_int’ {aka ‘unsigned int’} but argument is of type ‘uint8_t *’ {aka ‘unsigned char *’}
-  823 | static int read_sd(u_int va, u_int pa, u_int len) {
-      |                    ~~~~~~^~
-pmap.c: In function ‘write_page’:
-pmap.c:947:30: warning: passing argument 3 of ‘sd_write’ makes pointer from integer without a cast [-Wint-conversion]
-  947 |  sd_write(2, bno * SECT2BLK, kva, SECT2BLK);
-      |                              ^~~
-      |                              |
-      |                              u_long {aka long unsigned int}
-pmap.c:903:48: note: expected ‘void *’ but argument is of type ‘u_long’ {aka ‘long unsigned int’}
-  903 | void sd_write(u_int diskno, u_int secno, void *src, u_int nsecs) {
-      |                                          ~~~~~~^~~
-pmap.c: In function ‘read_page’:
-pmap.c:953:29: warning: passing argument 3 of ‘sd_read’ makes pointer from integer without a cast [-Wint-conversion]
-  953 |  sd_read(2, bno * SECT2BLK, kva, SECT2BLK);
-      |                             ^~~
-      |                             |
-      |                             u_long {aka long unsigned int}
-pmap.c:861:47: note: expected ‘void *’ but argument is of type ‘u_long’ {aka ‘long unsigned int’}
-  861 | void sd_read(u_int diskno, u_int secno, void *dst, u_int nsecs) {
-      |                                         ~~~~~~^~~
-pmap.c: In function ‘sd_block_alloc’:
-pmap.c:810:1: warning: control reaches end of non-void function [-Wreturn-type]
-  810 | }
-      | ^
-mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG -I../include/ -c -o tlb_asm.o tlb_asm.S
-mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG -I../include/ -c -o tlbex.o tlbex.c
-mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG -I../include/ -c -o env.o env.c
-env.c: In function ‘env_alloc’:
-env.c:260:6: warning: unused variable ‘r’ [-Wunused-variable]
-  260 |  int r;
-      |      ^
-mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG -I../include/ -c -o env_asm.o env_asm.S
-mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG -I../include/ -c -o sched.o sched.c
-mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG -I../include/ -c -o entry.o entry.S
-mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG -I../include/ -c -o genex.o genex.S
-mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG -I../include/ -c -o traps.o traps.c
-mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG -I../include/ -c -o syscall_all.o syscall_all.c
-make[2]: Leaving directory '/home/kino/workdir/mos_lab/22371281/kern'
 make --directory=user/bare
 make[2]: Entering directory '/home/kino/workdir/mos_lab/22371281/user/bare'
-mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG -I../../include -c -o loop.o loop.S
-mips-linux-gnu-ld -o loop.b -EL -G 0 -static -n -nostdlib --fatal-warnings -EL -G 0 -static -n -nostdlib --fatal-warnings -T ../user.lds loop.o
+mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O2 --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -DMOS_NSWAP=1023 -DMOS_INIT_OVERRIDDEN -O2 -I../../include -c -o loop.o loop.S
+mips-linux-gnu-ld -o loop.b -EL -G 0 -static -n -nostdlib --fatal-warnings -O --gc-sections -EL -G 0 -static -n -nostdlib --fatal-warnings -O --gc-sections -T ../user.lds loop.o
 ../../tools/bintoc -f loop.b -o loop.b.c -p user_bare
-mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG -c -o loop.x loop.b.c
-mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG -I../../include -c -o overflow.o overflow.S
-mips-linux-gnu-ld -o overflow.b -EL -G 0 -static -n -nostdlib --fatal-warnings -EL -G 0 -static -n -nostdlib --fatal-warnings -T ../user.lds overflow.o
+mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O2 --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -DMOS_NSWAP=1023 -DMOS_INIT_OVERRIDDEN -O2 -c -o loop.x loop.b.c
+mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O2 --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -DMOS_NSWAP=1023 -DMOS_INIT_OVERRIDDEN -O2 -I../../include -c -o overflow.o overflow.S
+mips-linux-gnu-ld -o overflow.b -EL -G 0 -static -n -nostdlib --fatal-warnings -O --gc-sections -EL -G 0 -static -n -nostdlib --fatal-warnings -O --gc-sections -T ../user.lds overflow.o
 ../../tools/bintoc -f overflow.b -o overflow.b.c -p user_bare
-mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG -c -o overflow.x overflow.b.c
-mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG -I../../include -c -o put_a.o put_a.c
-mips-linux-gnu-ld -o put_a.b -EL -G 0 -static -n -nostdlib --fatal-warnings -EL -G 0 -static -n -nostdlib --fatal-warnings -T ../user.lds put_a.o
+mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O2 --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -DMOS_NSWAP=1023 -DMOS_INIT_OVERRIDDEN -O2 -c -o overflow.x overflow.b.c
+mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O2 --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -DMOS_NSWAP=1023 -DMOS_INIT_OVERRIDDEN -O2 -I../../include -c -o put_a.o put_a.c
+mips-linux-gnu-ld -o put_a.b -EL -G 0 -static -n -nostdlib --fatal-warnings -O --gc-sections -EL -G 0 -static -n -nostdlib --fatal-warnings -O --gc-sections -T ../user.lds put_a.o
 ../../tools/bintoc -f put_a.b -o put_a.b.c -p user_bare
-mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG -c -o put_a.x put_a.b.c
-mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG -I../../include -c -o put_b.o put_b.c
-mips-linux-gnu-ld -o put_b.b -EL -G 0 -static -n -nostdlib --fatal-warnings -EL -G 0 -static -n -nostdlib --fatal-warnings -T ../user.lds put_b.o
+mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O2 --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -DMOS_NSWAP=1023 -DMOS_INIT_OVERRIDDEN -O2 -c -o put_a.x put_a.b.c
+mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O2 --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -DMOS_NSWAP=1023 -DMOS_INIT_OVERRIDDEN -O2 -I../../include -c -o put_b.o put_b.c
+mips-linux-gnu-ld -o put_b.b -EL -G 0 -static -n -nostdlib --fatal-warnings -O --gc-sections -EL -G 0 -static -n -nostdlib --fatal-warnings -O --gc-sections -T ../user.lds put_b.o
 ../../tools/bintoc -f put_b.b -o put_b.b.c -p user_bare
-mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG -c -o put_b.x put_b.b.c
+mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O2 --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -DMOS_NSWAP=1023 -DMOS_INIT_OVERRIDDEN -O2 -c -o put_b.x put_b.b.c
 rm loop.o overflow.o put_b.o put_a.o
 make[2]: Leaving directory '/home/kino/workdir/mos_lab/22371281/user/bare'
 make --directory=user
 make[2]: Entering directory '/home/kino/workdir/mos_lab/22371281/user'
-mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG -I../include -Iinclude -c -o lib/entry.o lib/entry.S
-mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG -I../include -Iinclude -c -o lib/syscall_wrap.o lib/syscall_wrap.S
-mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG -I../include -Iinclude -c -o lib/debugf.o lib/debugf.c
-mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG -I../include -Iinclude -c -o lib/libos.o lib/libos.c
-mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG -I../include -Iinclude -c -o lib/fork.o lib/fork.c
+mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O2 --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -DMOS_NSWAP=1023 -DMOS_INIT_OVERRIDDEN -O2 -I../include -Iinclude -c -o lib/entry.o lib/entry.S
+mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O2 --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -DMOS_NSWAP=1023 -DMOS_INIT_OVERRIDDEN -O2 -I../include -Iinclude -c -o lib/syscall_wrap.o lib/syscall_wrap.S
+mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O2 --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -DMOS_NSWAP=1023 -DMOS_INIT_OVERRIDDEN -O2 -I../include -Iinclude -c -o lib/debugf.o lib/debugf.c
+mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O2 --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -DMOS_NSWAP=1023 -DMOS_INIT_OVERRIDDEN -O2 -I../include -Iinclude -c -o lib/libos.o lib/libos.c
+mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O2 --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -DMOS_NSWAP=1023 -DMOS_INIT_OVERRIDDEN -O2 -I../include -Iinclude -c -o lib/fork.o lib/fork.c
 In file included from ../include/mmu.h:148,
                  from ../include/env.h:4,
                  from lib/fork.c:1:
@@ -697,38 +411,38 @@ lib/fork.c: In function ‘cow_entry’:
 lib/fork.c:67:1: warning: ‘noreturn’ function does return
    67 | }
       | ^
-mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG -I../include -Iinclude -c -o lib/syscall_lib.o lib/syscall_lib.c
-mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG -I../include -Iinclude -c -o lib/ipc.o lib/ipc.c
-mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG -I../include -Iinclude -c -o lib/fd.o lib/fd.c
-mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG -I../include -Iinclude -c -o lib/pageref.o lib/pageref.c
-mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG -I../include -Iinclude -c -o lib/file.o lib/file.c
+mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O2 --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -DMOS_NSWAP=1023 -DMOS_INIT_OVERRIDDEN -O2 -I../include -Iinclude -c -o lib/syscall_lib.o lib/syscall_lib.c
+mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O2 --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -DMOS_NSWAP=1023 -DMOS_INIT_OVERRIDDEN -O2 -I../include -Iinclude -c -o lib/ipc.o lib/ipc.c
+mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O2 --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -DMOS_NSWAP=1023 -DMOS_INIT_OVERRIDDEN -O2 -I../include -Iinclude -c -o lib/fd.o lib/fd.c
+mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O2 --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -DMOS_NSWAP=1023 -DMOS_INIT_OVERRIDDEN -O2 -I../include -Iinclude -c -o lib/pageref.o lib/pageref.c
+mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O2 --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -DMOS_NSWAP=1023 -DMOS_INIT_OVERRIDDEN -O2 -I../include -Iinclude -c -o lib/file.o lib/file.c
 lib/file.c: In function ‘open’:
 lib/file.c:31:6: warning: unused variable ‘r’ [-Wunused-variable]
    31 |  int r;
       |      ^
-mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG -I../include -Iinclude -c -o lib/fsipc.o lib/fsipc.c
-mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG -I../include -Iinclude -c -o lib/console.o lib/console.c
-mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG -I../include -Iinclude -c -o lib/fprintf.o lib/fprintf.c
-mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG -I../include -Iinclude -c -o lib/wait.o lib/wait.c
-mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG -I../include -Iinclude -c -o lib/spawn.o lib/spawn.c
-mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG -I../include -Iinclude -c -o lib/pipe.o lib/pipe.c
-mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG -I../include -Iinclude -c -o tltest.o tltest.c
-mips-linux-gnu-ld -o tltest.b -EL -G 0 -static -n -nostdlib --fatal-warnings -EL -G 0 -static -n -nostdlib --fatal-warnings -T ./user.lds tltest.o lib/entry.o lib/syscall_wrap.o lib/debugf.o lib/libos.o lib/fork.o lib/syscall_lib.o lib/ipc.o lib/fd.o lib/pageref.o lib/file.o lib/fsipc.o lib/console.o lib/fprintf.o lib/wait.o lib/spawn.o lib/pipe.o ../lib/elfloader.o ../lib/print.o ../lib/string.o
+mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O2 --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -DMOS_NSWAP=1023 -DMOS_INIT_OVERRIDDEN -O2 -I../include -Iinclude -c -o lib/fsipc.o lib/fsipc.c
+mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O2 --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -DMOS_NSWAP=1023 -DMOS_INIT_OVERRIDDEN -O2 -I../include -Iinclude -c -o lib/console.o lib/console.c
+mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O2 --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -DMOS_NSWAP=1023 -DMOS_INIT_OVERRIDDEN -O2 -I../include -Iinclude -c -o lib/fprintf.o lib/fprintf.c
+mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O2 --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -DMOS_NSWAP=1023 -DMOS_INIT_OVERRIDDEN -O2 -I../include -Iinclude -c -o lib/wait.o lib/wait.c
+mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O2 --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -DMOS_NSWAP=1023 -DMOS_INIT_OVERRIDDEN -O2 -I../include -Iinclude -c -o lib/spawn.o lib/spawn.c
+mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O2 --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -DMOS_NSWAP=1023 -DMOS_INIT_OVERRIDDEN -O2 -I../include -Iinclude -c -o lib/pipe.o lib/pipe.c
+mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O2 --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -DMOS_NSWAP=1023 -DMOS_INIT_OVERRIDDEN -O2 -I../include -Iinclude -c -o tltest.o tltest.c
+mips-linux-gnu-ld -o tltest.b -EL -G 0 -static -n -nostdlib --fatal-warnings -O --gc-sections -EL -G 0 -static -n -nostdlib --fatal-warnings -O --gc-sections -T ./user.lds tltest.o lib/entry.o lib/syscall_wrap.o lib/debugf.o lib/libos.o lib/fork.o lib/syscall_lib.o lib/ipc.o lib/fd.o lib/pageref.o lib/file.o lib/fsipc.o lib/console.o lib/fprintf.o lib/wait.o lib/spawn.o lib/pipe.o ../lib/elfloader.o ../lib/print.o ../lib/string.o
 ../tools/bintoc -f tltest.b -o tltest.b.c -p user
-mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG -c -o tltest.x tltest.b.c
-mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG -I../include -Iinclude -c -o fktest.o fktest.c
-mips-linux-gnu-ld -o fktest.b -EL -G 0 -static -n -nostdlib --fatal-warnings -EL -G 0 -static -n -nostdlib --fatal-warnings -T ./user.lds fktest.o lib/entry.o lib/syscall_wrap.o lib/debugf.o lib/libos.o lib/fork.o lib/syscall_lib.o lib/ipc.o lib/fd.o lib/pageref.o lib/file.o lib/fsipc.o lib/console.o lib/fprintf.o lib/wait.o lib/spawn.o lib/pipe.o ../lib/elfloader.o ../lib/print.o ../lib/string.o
+mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O2 --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -DMOS_NSWAP=1023 -DMOS_INIT_OVERRIDDEN -O2 -c -o tltest.x tltest.b.c
+mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O2 --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -DMOS_NSWAP=1023 -DMOS_INIT_OVERRIDDEN -O2 -I../include -Iinclude -c -o fktest.o fktest.c
+mips-linux-gnu-ld -o fktest.b -EL -G 0 -static -n -nostdlib --fatal-warnings -O --gc-sections -EL -G 0 -static -n -nostdlib --fatal-warnings -O --gc-sections -T ./user.lds fktest.o lib/entry.o lib/syscall_wrap.o lib/debugf.o lib/libos.o lib/fork.o lib/syscall_lib.o lib/ipc.o lib/fd.o lib/pageref.o lib/file.o lib/fsipc.o lib/console.o lib/fprintf.o lib/wait.o lib/spawn.o lib/pipe.o ../lib/elfloader.o ../lib/print.o ../lib/string.o
 ../tools/bintoc -f fktest.b -o fktest.b.c -p user
-mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG -c -o fktest.x fktest.b.c
-mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG -I../include -Iinclude -c -o pingpong.o pingpong.c
-mips-linux-gnu-ld -o pingpong.b -EL -G 0 -static -n -nostdlib --fatal-warnings -EL -G 0 -static -n -nostdlib --fatal-warnings -T ./user.lds pingpong.o lib/entry.o lib/syscall_wrap.o lib/debugf.o lib/libos.o lib/fork.o lib/syscall_lib.o lib/ipc.o lib/fd.o lib/pageref.o lib/file.o lib/fsipc.o lib/console.o lib/fprintf.o lib/wait.o lib/spawn.o lib/pipe.o ../lib/elfloader.o ../lib/print.o ../lib/string.o
+mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O2 --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -DMOS_NSWAP=1023 -DMOS_INIT_OVERRIDDEN -O2 -c -o fktest.x fktest.b.c
+mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O2 --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -DMOS_NSWAP=1023 -DMOS_INIT_OVERRIDDEN -O2 -I../include -Iinclude -c -o pingpong.o pingpong.c
+mips-linux-gnu-ld -o pingpong.b -EL -G 0 -static -n -nostdlib --fatal-warnings -O --gc-sections -EL -G 0 -static -n -nostdlib --fatal-warnings -O --gc-sections -T ./user.lds pingpong.o lib/entry.o lib/syscall_wrap.o lib/debugf.o lib/libos.o lib/fork.o lib/syscall_lib.o lib/ipc.o lib/fd.o lib/pageref.o lib/file.o lib/fsipc.o lib/console.o lib/fprintf.o lib/wait.o lib/spawn.o lib/pipe.o ../lib/elfloader.o ../lib/print.o ../lib/string.o
 ../tools/bintoc -f pingpong.b -o pingpong.b.c -p user
-mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG -c -o pingpong.x pingpong.b.c
-mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG -I../include -Iinclude -c -o hello.o hello.c
-mips-linux-gnu-ld -o hello.b -EL -G 0 -static -n -nostdlib --fatal-warnings -EL -G 0 -static -n -nostdlib --fatal-warnings -T ./user.lds hello.o lib/entry.o lib/syscall_wrap.o lib/debugf.o lib/libos.o lib/fork.o lib/syscall_lib.o lib/ipc.o lib/fd.o lib/pageref.o lib/file.o lib/fsipc.o lib/console.o lib/fprintf.o lib/wait.o lib/spawn.o lib/pipe.o ../lib/elfloader.o ../lib/print.o ../lib/string.o
+mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O2 --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -DMOS_NSWAP=1023 -DMOS_INIT_OVERRIDDEN -O2 -c -o pingpong.x pingpong.b.c
+mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O2 --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -DMOS_NSWAP=1023 -DMOS_INIT_OVERRIDDEN -O2 -I../include -Iinclude -c -o hello.o hello.c
+mips-linux-gnu-ld -o hello.b -EL -G 0 -static -n -nostdlib --fatal-warnings -O --gc-sections -EL -G 0 -static -n -nostdlib --fatal-warnings -O --gc-sections -T ./user.lds hello.o lib/entry.o lib/syscall_wrap.o lib/debugf.o lib/libos.o lib/fork.o lib/syscall_lib.o lib/ipc.o lib/fd.o lib/pageref.o lib/file.o lib/fsipc.o lib/console.o lib/fprintf.o lib/wait.o lib/spawn.o lib/pipe.o ../lib/elfloader.o ../lib/print.o ../lib/string.o
 ../tools/bintoc -f hello.b -o hello.b.c -p user
-mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG -c -o hello.x hello.b.c
-mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG -I../include -Iinclude -c -o mytst.o mytst.c
+mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O2 --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -DMOS_NSWAP=1023 -DMOS_INIT_OVERRIDDEN -O2 -c -o hello.x hello.b.c
+mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O2 --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -DMOS_NSWAP=1023 -DMOS_INIT_OVERRIDDEN -O2 -I../include -Iinclude -c -o mytst.o mytst.c
 mytst.c: In function ‘main’:
 mytst.c:7:2: warning: implicit declaration of function ‘write_seg’ [-Wimplicit-function-declaration]
     7 |  write_seg(0x500000, 8000);
@@ -740,66 +454,62 @@ mytst.c:25:6: warning: conflicting types for ‘write_seg’
 mytst.c:7:2: note: previous implicit declaration of ‘write_seg’ was here
     7 |  write_seg(0x500000, 8000);
       |  ^~~~~~~~~
-mips-linux-gnu-ld -o mytst.b -EL -G 0 -static -n -nostdlib --fatal-warnings -EL -G 0 -static -n -nostdlib --fatal-warnings -T ./user.lds mytst.o lib/entry.o lib/syscall_wrap.o lib/debugf.o lib/libos.o lib/fork.o lib/syscall_lib.o lib/ipc.o lib/fd.o lib/pageref.o lib/file.o lib/fsipc.o lib/console.o lib/fprintf.o lib/wait.o lib/spawn.o lib/pipe.o ../lib/elfloader.o ../lib/print.o ../lib/string.o
+mips-linux-gnu-ld -o mytst.b -EL -G 0 -static -n -nostdlib --fatal-warnings -O --gc-sections -EL -G 0 -static -n -nostdlib --fatal-warnings -O --gc-sections -T ./user.lds mytst.o lib/entry.o lib/syscall_wrap.o lib/debugf.o lib/libos.o lib/fork.o lib/syscall_lib.o lib/ipc.o lib/fd.o lib/pageref.o lib/file.o lib/fsipc.o lib/console.o lib/fprintf.o lib/wait.o lib/spawn.o lib/pipe.o ../lib/elfloader.o ../lib/print.o ../lib/string.o
 ../tools/bintoc -f mytst.b -o mytst.b.c -p user
-mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG -c -o mytst.x mytst.b.c
-mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG -I../include -Iinclude -c -o devtst.o devtst.c
-mips-linux-gnu-ld -o devtst.b -EL -G 0 -static -n -nostdlib --fatal-warnings -EL -G 0 -static -n -nostdlib --fatal-warnings -T ./user.lds devtst.o lib/entry.o lib/syscall_wrap.o lib/debugf.o lib/libos.o lib/fork.o lib/syscall_lib.o lib/ipc.o lib/fd.o lib/pageref.o lib/file.o lib/fsipc.o lib/console.o lib/fprintf.o lib/wait.o lib/spawn.o lib/pipe.o ../lib/elfloader.o ../lib/print.o ../lib/string.o
+mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O2 --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -DMOS_NSWAP=1023 -DMOS_INIT_OVERRIDDEN -O2 -c -o mytst.x mytst.b.c
+mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O2 --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -DMOS_NSWAP=1023 -DMOS_INIT_OVERRIDDEN -O2 -I../include -Iinclude -c -o devtst.o devtst.c
+mips-linux-gnu-ld -o devtst.b -EL -G 0 -static -n -nostdlib --fatal-warnings -O --gc-sections -EL -G 0 -static -n -nostdlib --fatal-warnings -O --gc-sections -T ./user.lds devtst.o lib/entry.o lib/syscall_wrap.o lib/debugf.o lib/libos.o lib/fork.o lib/syscall_lib.o lib/ipc.o lib/fd.o lib/pageref.o lib/file.o lib/fsipc.o lib/console.o lib/fprintf.o lib/wait.o lib/spawn.o lib/pipe.o ../lib/elfloader.o ../lib/print.o ../lib/string.o
 ../tools/bintoc -f devtst.b -o devtst.b.c -p user
-mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG -c -o devtst.x devtst.b.c
-mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG -I../include -Iinclude -c -o fstest.o fstest.c
-mips-linux-gnu-ld -o fstest.b -EL -G 0 -static -n -nostdlib --fatal-warnings -EL -G 0 -static -n -nostdlib --fatal-warnings -T ./user.lds fstest.o lib/entry.o lib/syscall_wrap.o lib/debugf.o lib/libos.o lib/fork.o lib/syscall_lib.o lib/ipc.o lib/fd.o lib/pageref.o lib/file.o lib/fsipc.o lib/console.o lib/fprintf.o lib/wait.o lib/spawn.o lib/pipe.o ../lib/elfloader.o ../lib/print.o ../lib/string.o
+mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O2 --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -DMOS_NSWAP=1023 -DMOS_INIT_OVERRIDDEN -O2 -c -o devtst.x devtst.b.c
+mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O2 --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -DMOS_NSWAP=1023 -DMOS_INIT_OVERRIDDEN -O2 -I../include -Iinclude -c -o fstest.o fstest.c
+mips-linux-gnu-ld -o fstest.b -EL -G 0 -static -n -nostdlib --fatal-warnings -O --gc-sections -EL -G 0 -static -n -nostdlib --fatal-warnings -O --gc-sections -T ./user.lds fstest.o lib/entry.o lib/syscall_wrap.o lib/debugf.o lib/libos.o lib/fork.o lib/syscall_lib.o lib/ipc.o lib/fd.o lib/pageref.o lib/file.o lib/fsipc.o lib/console.o lib/fprintf.o lib/wait.o lib/spawn.o lib/pipe.o ../lib/elfloader.o ../lib/print.o ../lib/string.o
 ../tools/bintoc -f fstest.b -o fstest.b.c -p user
-mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG -c -o fstest.x fstest.b.c
-mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG -I../include -Iinclude -c -o icode.o icode.c
-mips-linux-gnu-ld -o icode.b -EL -G 0 -static -n -nostdlib --fatal-warnings -EL -G 0 -static -n -nostdlib --fatal-warnings -T ./user.lds icode.o lib/entry.o lib/syscall_wrap.o lib/debugf.o lib/libos.o lib/fork.o lib/syscall_lib.o lib/ipc.o lib/fd.o lib/pageref.o lib/file.o lib/fsipc.o lib/console.o lib/fprintf.o lib/wait.o lib/spawn.o lib/pipe.o ../lib/elfloader.o ../lib/print.o ../lib/string.o
+mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O2 --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -DMOS_NSWAP=1023 -DMOS_INIT_OVERRIDDEN -O2 -c -o fstest.x fstest.b.c
+mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O2 --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -DMOS_NSWAP=1023 -DMOS_INIT_OVERRIDDEN -O2 -I../include -Iinclude -c -o icode.o icode.c
+mips-linux-gnu-ld -o icode.b -EL -G 0 -static -n -nostdlib --fatal-warnings -O --gc-sections -EL -G 0 -static -n -nostdlib --fatal-warnings -O --gc-sections -T ./user.lds icode.o lib/entry.o lib/syscall_wrap.o lib/debugf.o lib/libos.o lib/fork.o lib/syscall_lib.o lib/ipc.o lib/fd.o lib/pageref.o lib/file.o lib/fsipc.o lib/console.o lib/fprintf.o lib/wait.o lib/spawn.o lib/pipe.o ../lib/elfloader.o ../lib/print.o ../lib/string.o
 ../tools/bintoc -f icode.b -o icode.b.c -p user
-mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG -c -o icode.x icode.b.c
-mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG -I../include -Iinclude -c -o testpipe.o testpipe.c
-mips-linux-gnu-ld -o testpipe.b -EL -G 0 -static -n -nostdlib --fatal-warnings -EL -G 0 -static -n -nostdlib --fatal-warnings -T ./user.lds testpipe.o lib/entry.o lib/syscall_wrap.o lib/debugf.o lib/libos.o lib/fork.o lib/syscall_lib.o lib/ipc.o lib/fd.o lib/pageref.o lib/file.o lib/fsipc.o lib/console.o lib/fprintf.o lib/wait.o lib/spawn.o lib/pipe.o ../lib/elfloader.o ../lib/print.o ../lib/string.o
+mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O2 --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -DMOS_NSWAP=1023 -DMOS_INIT_OVERRIDDEN -O2 -c -o icode.x icode.b.c
+mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O2 --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -DMOS_NSWAP=1023 -DMOS_INIT_OVERRIDDEN -O2 -I../include -Iinclude -c -o testpipe.o testpipe.c
+mips-linux-gnu-ld -o testpipe.b -EL -G 0 -static -n -nostdlib --fatal-warnings -O --gc-sections -EL -G 0 -static -n -nostdlib --fatal-warnings -O --gc-sections -T ./user.lds testpipe.o lib/entry.o lib/syscall_wrap.o lib/debugf.o lib/libos.o lib/fork.o lib/syscall_lib.o lib/ipc.o lib/fd.o lib/pageref.o lib/file.o lib/fsipc.o lib/console.o lib/fprintf.o lib/wait.o lib/spawn.o lib/pipe.o ../lib/elfloader.o ../lib/print.o ../lib/string.o
 ../tools/bintoc -f testpipe.b -o testpipe.b.c -p user
-mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG -c -o testpipe.x testpipe.b.c
-mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG -I../include -Iinclude -c -o testpiperace.o testpiperace.c
-mips-linux-gnu-ld -o testpiperace.b -EL -G 0 -static -n -nostdlib --fatal-warnings -EL -G 0 -static -n -nostdlib --fatal-warnings -T ./user.lds testpiperace.o lib/entry.o lib/syscall_wrap.o lib/debugf.o lib/libos.o lib/fork.o lib/syscall_lib.o lib/ipc.o lib/fd.o lib/pageref.o lib/file.o lib/fsipc.o lib/console.o lib/fprintf.o lib/wait.o lib/spawn.o lib/pipe.o ../lib/elfloader.o ../lib/print.o ../lib/string.o
+mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O2 --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -DMOS_NSWAP=1023 -DMOS_INIT_OVERRIDDEN -O2 -c -o testpipe.x testpipe.b.c
+mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O2 --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -DMOS_NSWAP=1023 -DMOS_INIT_OVERRIDDEN -O2 -I../include -Iinclude -c -o testpiperace.o testpiperace.c
+mips-linux-gnu-ld -o testpiperace.b -EL -G 0 -static -n -nostdlib --fatal-warnings -O --gc-sections -EL -G 0 -static -n -nostdlib --fatal-warnings -O --gc-sections -T ./user.lds testpiperace.o lib/entry.o lib/syscall_wrap.o lib/debugf.o lib/libos.o lib/fork.o lib/syscall_lib.o lib/ipc.o lib/fd.o lib/pageref.o lib/file.o lib/fsipc.o lib/console.o lib/fprintf.o lib/wait.o lib/spawn.o lib/pipe.o ../lib/elfloader.o ../lib/print.o ../lib/string.o
 ../tools/bintoc -f testpiperace.b -o testpiperace.b.c -p user
-mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG -c -o testpiperace.x testpiperace.b.c
-mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG -I../include -Iinclude -c -o testptelibrary.o testptelibrary.c
-mips-linux-gnu-ld -o testptelibrary.b -EL -G 0 -static -n -nostdlib --fatal-warnings -EL -G 0 -static -n -nostdlib --fatal-warnings -T ./user.lds testptelibrary.o lib/entry.o lib/syscall_wrap.o lib/debugf.o lib/libos.o lib/fork.o lib/syscall_lib.o lib/ipc.o lib/fd.o lib/pageref.o lib/file.o lib/fsipc.o lib/console.o lib/fprintf.o lib/wait.o lib/spawn.o lib/pipe.o ../lib/elfloader.o ../lib/print.o ../lib/string.o
+mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O2 --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -DMOS_NSWAP=1023 -DMOS_INIT_OVERRIDDEN -O2 -c -o testpiperace.x testpiperace.b.c
+mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O2 --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -DMOS_NSWAP=1023 -DMOS_INIT_OVERRIDDEN -O2 -I../include -Iinclude -c -o testptelibrary.o testptelibrary.c
+mips-linux-gnu-ld -o testptelibrary.b -EL -G 0 -static -n -nostdlib --fatal-warnings -O --gc-sections -EL -G 0 -static -n -nostdlib --fatal-warnings -O --gc-sections -T ./user.lds testptelibrary.o lib/entry.o lib/syscall_wrap.o lib/debugf.o lib/libos.o lib/fork.o lib/syscall_lib.o lib/ipc.o lib/fd.o lib/pageref.o lib/file.o lib/fsipc.o lib/console.o lib/fprintf.o lib/wait.o lib/spawn.o lib/pipe.o ../lib/elfloader.o ../lib/print.o ../lib/string.o
 ../tools/bintoc -f testptelibrary.b -o testptelibrary.b.c -p user
-mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG -c -o testptelibrary.x testptelibrary.b.c
-mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG -I../include -Iinclude -c -o num.o num.c
-mips-linux-gnu-ld -o num.b -EL -G 0 -static -n -nostdlib --fatal-warnings -EL -G 0 -static -n -nostdlib --fatal-warnings -T ./user.lds num.o lib/entry.o lib/syscall_wrap.o lib/debugf.o lib/libos.o lib/fork.o lib/syscall_lib.o lib/ipc.o lib/fd.o lib/pageref.o lib/file.o lib/fsipc.o lib/console.o lib/fprintf.o lib/wait.o lib/spawn.o lib/pipe.o ../lib/elfloader.o ../lib/print.o ../lib/string.o
-mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG -I../include -Iinclude -c -o echo.o echo.c
-mips-linux-gnu-ld -o echo.b -EL -G 0 -static -n -nostdlib --fatal-warnings -EL -G 0 -static -n -nostdlib --fatal-warnings -T ./user.lds echo.o lib/entry.o lib/syscall_wrap.o lib/debugf.o lib/libos.o lib/fork.o lib/syscall_lib.o lib/ipc.o lib/fd.o lib/pageref.o lib/file.o lib/fsipc.o lib/console.o lib/fprintf.o lib/wait.o lib/spawn.o lib/pipe.o ../lib/elfloader.o ../lib/print.o ../lib/string.o
-mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG -I../include -Iinclude -c -o halt.o halt.c
-mips-linux-gnu-ld -o halt.b -EL -G 0 -static -n -nostdlib --fatal-warnings -EL -G 0 -static -n -nostdlib --fatal-warnings -T ./user.lds halt.o lib/entry.o lib/syscall_wrap.o lib/debugf.o lib/libos.o lib/fork.o lib/syscall_lib.o lib/ipc.o lib/fd.o lib/pageref.o lib/file.o lib/fsipc.o lib/console.o lib/fprintf.o lib/wait.o lib/spawn.o lib/pipe.o ../lib/elfloader.o ../lib/print.o ../lib/string.o
-mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG -I../include -Iinclude -c -o ls.o ls.c
-mips-linux-gnu-ld -o ls.b -EL -G 0 -static -n -nostdlib --fatal-warnings -EL -G 0 -static -n -nostdlib --fatal-warnings -T ./user.lds ls.o lib/entry.o lib/syscall_wrap.o lib/debugf.o lib/libos.o lib/fork.o lib/syscall_lib.o lib/ipc.o lib/fd.o lib/pageref.o lib/file.o lib/fsipc.o lib/console.o lib/fprintf.o lib/wait.o lib/spawn.o lib/pipe.o ../lib/elfloader.o ../lib/print.o ../lib/string.o
-mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG -I../include -Iinclude -c -o sh.o sh.c
+mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O2 --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -DMOS_NSWAP=1023 -DMOS_INIT_OVERRIDDEN -O2 -c -o testptelibrary.x testptelibrary.b.c
+mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O2 --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -DMOS_NSWAP=1023 -DMOS_INIT_OVERRIDDEN -O2 -I../include -Iinclude -c -o num.o num.c
+mips-linux-gnu-ld -o num.b -EL -G 0 -static -n -nostdlib --fatal-warnings -O --gc-sections -EL -G 0 -static -n -nostdlib --fatal-warnings -O --gc-sections -T ./user.lds num.o lib/entry.o lib/syscall_wrap.o lib/debugf.o lib/libos.o lib/fork.o lib/syscall_lib.o lib/ipc.o lib/fd.o lib/pageref.o lib/file.o lib/fsipc.o lib/console.o lib/fprintf.o lib/wait.o lib/spawn.o lib/pipe.o ../lib/elfloader.o ../lib/print.o ../lib/string.o
+mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O2 --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -DMOS_NSWAP=1023 -DMOS_INIT_OVERRIDDEN -O2 -I../include -Iinclude -c -o echo.o echo.c
+mips-linux-gnu-ld -o echo.b -EL -G 0 -static -n -nostdlib --fatal-warnings -O --gc-sections -EL -G 0 -static -n -nostdlib --fatal-warnings -O --gc-sections -T ./user.lds echo.o lib/entry.o lib/syscall_wrap.o lib/debugf.o lib/libos.o lib/fork.o lib/syscall_lib.o lib/ipc.o lib/fd.o lib/pageref.o lib/file.o lib/fsipc.o lib/console.o lib/fprintf.o lib/wait.o lib/spawn.o lib/pipe.o ../lib/elfloader.o ../lib/print.o ../lib/string.o
+mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O2 --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -DMOS_NSWAP=1023 -DMOS_INIT_OVERRIDDEN -O2 -I../include -Iinclude -c -o halt.o halt.c
+mips-linux-gnu-ld -o halt.b -EL -G 0 -static -n -nostdlib --fatal-warnings -O --gc-sections -EL -G 0 -static -n -nostdlib --fatal-warnings -O --gc-sections -T ./user.lds halt.o lib/entry.o lib/syscall_wrap.o lib/debugf.o lib/libos.o lib/fork.o lib/syscall_lib.o lib/ipc.o lib/fd.o lib/pageref.o lib/file.o lib/fsipc.o lib/console.o lib/fprintf.o lib/wait.o lib/spawn.o lib/pipe.o ../lib/elfloader.o ../lib/print.o ../lib/string.o
+mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O2 --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -DMOS_NSWAP=1023 -DMOS_INIT_OVERRIDDEN -O2 -I../include -Iinclude -c -o ls.o ls.c
+mips-linux-gnu-ld -o ls.b -EL -G 0 -static -n -nostdlib --fatal-warnings -O --gc-sections -EL -G 0 -static -n -nostdlib --fatal-warnings -O --gc-sections -T ./user.lds ls.o lib/entry.o lib/syscall_wrap.o lib/debugf.o lib/libos.o lib/fork.o lib/syscall_lib.o lib/ipc.o lib/fd.o lib/pageref.o lib/file.o lib/fsipc.o lib/console.o lib/fprintf.o lib/wait.o lib/spawn.o lib/pipe.o ../lib/elfloader.o ../lib/print.o ../lib/string.o
+mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O2 --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -DMOS_NSWAP=1023 -DMOS_INIT_OVERRIDDEN -O2 -I../include -Iinclude -c -o sh.o sh.c
 sh.c: In function ‘parsecmd’:
 sh.c:72:11: warning: unused variable ‘r’ [-Wunused-variable]
    72 |   int fd, r;
       |           ^
-mips-linux-gnu-ld -o sh.b -EL -G 0 -static -n -nostdlib --fatal-warnings -EL -G 0 -static -n -nostdlib --fatal-warnings -T ./user.lds sh.o lib/entry.o lib/syscall_wrap.o lib/debugf.o lib/libos.o lib/fork.o lib/syscall_lib.o lib/ipc.o lib/fd.o lib/pageref.o lib/file.o lib/fsipc.o lib/console.o lib/fprintf.o lib/wait.o lib/spawn.o lib/pipe.o ../lib/elfloader.o ../lib/print.o ../lib/string.o
-mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG -I../include -Iinclude -c -o cat.o cat.c
-mips-linux-gnu-ld -o cat.b -EL -G 0 -static -n -nostdlib --fatal-warnings -EL -G 0 -static -n -nostdlib --fatal-warnings -T ./user.lds cat.o lib/entry.o lib/syscall_wrap.o lib/debugf.o lib/libos.o lib/fork.o lib/syscall_lib.o lib/ipc.o lib/fd.o lib/pageref.o lib/file.o lib/fsipc.o lib/console.o lib/fprintf.o lib/wait.o lib/spawn.o lib/pipe.o ../lib/elfloader.o ../lib/print.o ../lib/string.o
-mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG -I../include -Iinclude -c -o testarg.o testarg.c
-mips-linux-gnu-ld -o testarg.b -EL -G 0 -static -n -nostdlib --fatal-warnings -EL -G 0 -static -n -nostdlib --fatal-warnings -T ./user.lds testarg.o lib/entry.o lib/syscall_wrap.o lib/debugf.o lib/libos.o lib/fork.o lib/syscall_lib.o lib/ipc.o lib/fd.o lib/pageref.o lib/file.o lib/fsipc.o lib/console.o lib/fprintf.o lib/wait.o lib/spawn.o lib/pipe.o ../lib/elfloader.o ../lib/print.o ../lib/string.o
-mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG -I../include -Iinclude -c -o testbss.o testbss.c
-mips-linux-gnu-ld -o testbss.b -EL -G 0 -static -n -nostdlib --fatal-warnings -EL -G 0 -static -n -nostdlib --fatal-warnings -T ./user.lds testbss.o lib/entry.o lib/syscall_wrap.o lib/debugf.o lib/libos.o lib/fork.o lib/syscall_lib.o lib/ipc.o lib/fd.o lib/pageref.o lib/file.o lib/fsipc.o lib/console.o lib/fprintf.o lib/wait.o lib/spawn.o lib/pipe.o ../lib/elfloader.o ../lib/print.o ../lib/string.o
-mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG -I../include -Iinclude -c -o testfdsharing.o testfdsharing.c
-mips-linux-gnu-ld -o testfdsharing.b -EL -G 0 -static -n -nostdlib --fatal-warnings -EL -G 0 -static -n -nostdlib --fatal-warnings -T ./user.lds testfdsharing.o lib/entry.o lib/syscall_wrap.o lib/debugf.o lib/libos.o lib/fork.o lib/syscall_lib.o lib/ipc.o lib/fd.o lib/pageref.o lib/file.o lib/fsipc.o lib/console.o lib/fprintf.o lib/wait.o lib/spawn.o lib/pipe.o ../lib/elfloader.o ../lib/print.o ../lib/string.o
-mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG -I../include -Iinclude -c -o init.o init.c
-init.c: In function ‘main’:
-init.c:65:1: warning: control reaches end of non-void function [-Wreturn-type]
-   65 | }
-      | ^
-mips-linux-gnu-ld -o init.b -EL -G 0 -static -n -nostdlib --fatal-warnings -EL -G 0 -static -n -nostdlib --fatal-warnings -T ./user.lds init.o lib/entry.o lib/syscall_wrap.o lib/debugf.o lib/libos.o lib/fork.o lib/syscall_lib.o lib/ipc.o lib/fd.o lib/pageref.o lib/file.o lib/fsipc.o lib/console.o lib/fprintf.o lib/wait.o lib/spawn.o lib/pipe.o ../lib/elfloader.o ../lib/print.o ../lib/string.o
+mips-linux-gnu-ld -o sh.b -EL -G 0 -static -n -nostdlib --fatal-warnings -O --gc-sections -EL -G 0 -static -n -nostdlib --fatal-warnings -O --gc-sections -T ./user.lds sh.o lib/entry.o lib/syscall_wrap.o lib/debugf.o lib/libos.o lib/fork.o lib/syscall_lib.o lib/ipc.o lib/fd.o lib/pageref.o lib/file.o lib/fsipc.o lib/console.o lib/fprintf.o lib/wait.o lib/spawn.o lib/pipe.o ../lib/elfloader.o ../lib/print.o ../lib/string.o
+mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O2 --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -DMOS_NSWAP=1023 -DMOS_INIT_OVERRIDDEN -O2 -I../include -Iinclude -c -o cat.o cat.c
+mips-linux-gnu-ld -o cat.b -EL -G 0 -static -n -nostdlib --fatal-warnings -O --gc-sections -EL -G 0 -static -n -nostdlib --fatal-warnings -O --gc-sections -T ./user.lds cat.o lib/entry.o lib/syscall_wrap.o lib/debugf.o lib/libos.o lib/fork.o lib/syscall_lib.o lib/ipc.o lib/fd.o lib/pageref.o lib/file.o lib/fsipc.o lib/console.o lib/fprintf.o lib/wait.o lib/spawn.o lib/pipe.o ../lib/elfloader.o ../lib/print.o ../lib/string.o
+mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O2 --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -DMOS_NSWAP=1023 -DMOS_INIT_OVERRIDDEN -O2 -I../include -Iinclude -c -o testarg.o testarg.c
+mips-linux-gnu-ld -o testarg.b -EL -G 0 -static -n -nostdlib --fatal-warnings -O --gc-sections -EL -G 0 -static -n -nostdlib --fatal-warnings -O --gc-sections -T ./user.lds testarg.o lib/entry.o lib/syscall_wrap.o lib/debugf.o lib/libos.o lib/fork.o lib/syscall_lib.o lib/ipc.o lib/fd.o lib/pageref.o lib/file.o lib/fsipc.o lib/console.o lib/fprintf.o lib/wait.o lib/spawn.o lib/pipe.o ../lib/elfloader.o ../lib/print.o ../lib/string.o
+mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O2 --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -DMOS_NSWAP=1023 -DMOS_INIT_OVERRIDDEN -O2 -I../include -Iinclude -c -o testbss.o testbss.c
+mips-linux-gnu-ld -o testbss.b -EL -G 0 -static -n -nostdlib --fatal-warnings -O --gc-sections -EL -G 0 -static -n -nostdlib --fatal-warnings -O --gc-sections -T ./user.lds testbss.o lib/entry.o lib/syscall_wrap.o lib/debugf.o lib/libos.o lib/fork.o lib/syscall_lib.o lib/ipc.o lib/fd.o lib/pageref.o lib/file.o lib/fsipc.o lib/console.o lib/fprintf.o lib/wait.o lib/spawn.o lib/pipe.o ../lib/elfloader.o ../lib/print.o ../lib/string.o
+mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O2 --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -DMOS_NSWAP=1023 -DMOS_INIT_OVERRIDDEN -O2 -I../include -Iinclude -c -o testfdsharing.o testfdsharing.c
+mips-linux-gnu-ld -o testfdsharing.b -EL -G 0 -static -n -nostdlib --fatal-warnings -O --gc-sections -EL -G 0 -static -n -nostdlib --fatal-warnings -O --gc-sections -T ./user.lds testfdsharing.o lib/entry.o lib/syscall_wrap.o lib/debugf.o lib/libos.o lib/fork.o lib/syscall_lib.o lib/ipc.o lib/fd.o lib/pageref.o lib/file.o lib/fsipc.o lib/console.o lib/fprintf.o lib/wait.o lib/spawn.o lib/pipe.o ../lib/elfloader.o ../lib/print.o ../lib/string.o
+mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O2 --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -DMOS_NSWAP=1023 -DMOS_INIT_OVERRIDDEN -O2 -I../include -Iinclude -c -o init.o init.c
+mips-linux-gnu-ld -o init.b -EL -G 0 -static -n -nostdlib --fatal-warnings -O --gc-sections -EL -G 0 -static -n -nostdlib --fatal-warnings -O --gc-sections -T ./user.lds init.o lib/entry.o lib/syscall_wrap.o lib/debugf.o lib/libos.o lib/fork.o lib/syscall_lib.o lib/ipc.o lib/fd.o lib/pageref.o lib/file.o lib/fsipc.o lib/console.o lib/fprintf.o lib/wait.o lib/spawn.o lib/pipe.o ../lib/elfloader.o ../lib/print.o ../lib/string.o
 rm testbss.o tltest.o hello.o testfdsharing.o pingpong.o echo.o icode.o halt.o cat.o devtst.o init.o testptelibrary.o fktest.o mytst.o testarg.o sh.o testpiperace.o testpipe.o fstest.o ls.o num.o
 make[2]: Leaving directory '/home/kino/workdir/mos_lab/22371281/user'
 make --directory=fs
 make[2]: Entering directory '/home/kino/workdir/mos_lab/22371281/fs'
-mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG -I../include -I../user/include -c -o fs.o fs.c
+mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O2 --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -DMOS_NSWAP=1023 -DMOS_INIT_OVERRIDDEN -O2 -I../include -I../user/include -c -o fs.o fs.c
 In file included from ../include/mmu.h:148,
                  from ../include/env.h:4,
                  from ../user/include/lib.h:4,
@@ -815,19 +525,321 @@ fs.c:170:2: note: in expansion of macro ‘try’
 fs.c:153:6: note: declared here
   153 | void unmap_block(u_int blockno) {
       |      ^~~~~~~~~~~
-mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG -I../include -I../user/include -c -o ide.o ide.c
-mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG -I../include -I../user/include -c -o serv.o serv.c
-mips-linux-gnu-ld -o serv.b -EL -G 0 -static -n -nostdlib --fatal-warnings -EL -G 0 -static -n -nostdlib --fatal-warnings -T ../user/user.lds serv.o ../user/lib/entry.o ../user/lib/syscall_wrap.o ../user/lib/debugf.o ../user/lib/libos.o ../user/lib/fork.o ../user/lib/syscall_lib.o ../user/lib/ipc.o ../user/lib/fd.o ../user/lib/pageref.o ../user/lib/file.o ../user/lib/fsipc.o ../user/lib/console.o ../user/lib/fprintf.o ../user/lib/wait.o ../user/lib/spawn.o ../user/lib/pipe.o ../user/../lib/elfloader.o ../user/../lib/print.o ../user/../lib/string.o fs.o ide.o
+mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O2 --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -DMOS_NSWAP=1023 -DMOS_INIT_OVERRIDDEN -O2 -I../include -I../user/include -c -o ide.o ide.c
+mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O2 --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -DMOS_NSWAP=1023 -DMOS_INIT_OVERRIDDEN -O2 -I../include -I../user/include -c -o serv.o serv.c
+mips-linux-gnu-ld -o serv.b -EL -G 0 -static -n -nostdlib --fatal-warnings -O --gc-sections -EL -G 0 -static -n -nostdlib --fatal-warnings -O --gc-sections -T ../user/user.lds serv.o ../user/lib/entry.o ../user/lib/syscall_wrap.o ../user/lib/debugf.o ../user/lib/libos.o ../user/lib/fork.o ../user/lib/syscall_lib.o ../user/lib/ipc.o ../user/lib/fd.o ../user/lib/pageref.o ../user/lib/file.o ../user/lib/fsipc.o ../user/lib/console.o ../user/lib/fprintf.o ../user/lib/wait.o ../user/lib/spawn.o ../user/lib/pipe.o ../user/../lib/elfloader.o ../user/../lib/print.o ../user/../lib/string.o fs.o ide.o
 ../tools/bintoc -f serv.b -o serv.b.c -p fs
-mips-linux-gnu-gcc -I../include -I../user/include --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG -c -o serv.x serv.b.c
-mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG -I../include -I../user/include -c -o check.o check.c
-mips-linux-gnu-ld -o check.b -EL -G 0 -static -n -nostdlib --fatal-warnings -EL -G 0 -static -n -nostdlib --fatal-warnings -T ../user/user.lds check.o ../user/lib/entry.o ../user/lib/syscall_wrap.o ../user/lib/debugf.o ../user/lib/libos.o ../user/lib/fork.o ../user/lib/syscall_lib.o ../user/lib/ipc.o ../user/lib/fd.o ../user/lib/pageref.o ../user/lib/file.o ../user/lib/fsipc.o ../user/lib/console.o ../user/lib/fprintf.o ../user/lib/wait.o ../user/lib/spawn.o ../user/lib/pipe.o ../user/../lib/elfloader.o ../user/../lib/print.o ../user/../lib/string.o fs.o ide.o
+mips-linux-gnu-gcc -I../include -I../user/include --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O2 --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -DMOS_NSWAP=1023 -DMOS_INIT_OVERRIDDEN -O2 -c -o serv.x serv.b.c
+mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O2 --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -DMOS_NSWAP=1023 -DMOS_INIT_OVERRIDDEN -O2 -I../include -I../user/include -c -o check.o check.c
+mips-linux-gnu-ld -o check.b -EL -G 0 -static -n -nostdlib --fatal-warnings -O --gc-sections -EL -G 0 -static -n -nostdlib --fatal-warnings -O --gc-sections -T ../user/user.lds check.o ../user/lib/entry.o ../user/lib/syscall_wrap.o ../user/lib/debugf.o ../user/lib/libos.o ../user/lib/fork.o ../user/lib/syscall_lib.o ../user/lib/ipc.o ../user/lib/fd.o ../user/lib/pageref.o ../user/lib/file.o ../user/lib/fsipc.o ../user/lib/console.o ../user/lib/fprintf.o ../user/lib/wait.o ../user/lib/spawn.o ../user/lib/pipe.o ../user/../lib/elfloader.o ../user/../lib/print.o ../user/../lib/string.o fs.o ide.o
 ../tools/bintoc -f check.b -o check.b.c -p fs
-mips-linux-gnu-gcc -I../include -I../user/include --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG -c -o check.x check.b.c
+mips-linux-gnu-gcc -I../include -I../user/include --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O2 --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -DMOS_NSWAP=1023 -DMOS_INIT_OVERRIDDEN -O2 -c -o check.x check.b.c
 rm serv.o check.o
 make[2]: Leaving directory '/home/kino/workdir/mos_lab/22371281/fs'
+make --directory=tests/lab6_challenge_swap
+make[2]: Entering directory '/home/kino/workdir/mos_lab/22371281/tests/lab6_challenge_swap'
+mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O2 --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -DMOS_NSWAP=1023 -DMOS_INIT_OVERRIDDEN -O2 -I../../include -I../../user/include -c -o swap.o swap.c
+shopt -s nullglob && mips-linux-gnu-ld -o swap.b -EL -G 0 -static -n -nostdlib --fatal-warnings -O --gc-sections -EL -G 0 -static -n -nostdlib --fatal-warnings -O --gc-sections -T ../../user/user.lds swap.o \
+../../user/lib/*.o ../../fs/*.o ../../lib/*.o
+../../tools/bintoc -f swap.b -o swap.b.c -p test
+mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O2 --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -DMOS_NSWAP=1023 -DMOS_INIT_OVERRIDDEN -O2 -c -o swap.x swap.b.c
+mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O2 --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -DMOS_NSWAP=1023 -DMOS_INIT_OVERRIDDEN -O2 -I../../include -I../../user/include -c -o xorshift.o xorshift.c
+shopt -s nullglob && mips-linux-gnu-ld -o xorshift.b -EL -G 0 -static -n -nostdlib --fatal-warnings -O --gc-sections -EL -G 0 -static -n -nostdlib --fatal-warnings -O --gc-sections -T ../../user/user.lds xorshift.o \
+../../user/lib/*.o ../../fs/*.o ../../lib/*.o
+../../tools/bintoc -f xorshift.b -o xorshift.b.c -p test
+mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O2 --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -DMOS_NSWAP=1023 -DMOS_INIT_OVERRIDDEN -O2 -c -o xorshift.x xorshift.b.c
+rm swap.o xorshift.o
+make[2]: Leaving directory '/home/kino/workdir/mos_lab/22371281/tests/lab6_challenge_swap'
+mkdir -p include/generated
+tools/init-gen swap/8 xorshift
+make --directory=init
+make[2]: Entering directory '/home/kino/workdir/mos_lab/22371281/init'
+mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O2 --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -DMOS_NSWAP=1023 -DMOS_INIT_OVERRIDDEN -O2 -I../include/ -c start.S
+mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O2 --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -DMOS_NSWAP=1023 -DMOS_INIT_OVERRIDDEN -O2 -I../include/ -c init.c
+make[2]: Leaving directory '/home/kino/workdir/mos_lab/22371281/init'
+make --directory=kern
+make[2]: Entering directory '/home/kino/workdir/mos_lab/22371281/kern'
+mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O2 --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -DMOS_NSWAP=1023 -DMOS_INIT_OVERRIDDEN -O2 -I../include/ -c -o machine.o machine.c
+mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O2 --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -DMOS_NSWAP=1023 -DMOS_INIT_OVERRIDDEN -O2 -I../include/ -c -o printk.o printk.c
+mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O2 --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -DMOS_NSWAP=1023 -DMOS_INIT_OVERRIDDEN -O2 -I../include/ -c -o panic.o panic.c
+mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O2 --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -DMOS_NSWAP=1023 -DMOS_INIT_OVERRIDDEN -O2 -I../include/ -c -o pmap.o pmap.c
+pmap.c: In function ‘pgdir_walk’:
+pmap.c:214:37: warning: suggest parentheses around arithmetic in operand of ‘|’ [-Wparentheses]
+  214 |    *pgdir_entryp |= PTE_C_CACHEABLE | PTE_V & ~PTE_SWAPPED;
+      |                                     ^
+pmap.c: In function ‘swap’:
+pmap.c:752:36: warning: implicit declaration of function ‘_print_sinfo’ [-Wimplicit-function-declaration]
+  752 |   LIST_FOREACH(sinfo, ste, link) { _print_sinfo(sinfo); }
+      |                                    ^~~~~~~~~~~~
+pmap.c: At top level:
+pmap.c:775:6: warning: conflicting types for ‘_print_sinfo’
+  775 | void _print_sinfo(struct SwapInfo *sinfo) {
+      |      ^~~~~~~~~~~~
+pmap.c:752:36: note: previous implicit declaration of ‘_print_sinfo’ was here
+  752 |   LIST_FOREACH(sinfo, ste, link) { _print_sinfo(sinfo); }
+      |                                    ^~~~~~~~~~~~
+In file included from ../include/pmap.h:5,
+                 from pmap.c:5:
+pmap.c: In function ‘wait_sd_ready’:
+pmap.c:853:20: warning: passing argument 1 of ‘read_sd’ makes integer from pointer without a cast [-Wint-conversion]
+  853 |   panic_on(read_sd(&flag, MALTA_SWAP_STATUS, 1));
+      |                    ^~~~~
+      |                    |
+      |                    uint8_t * {aka unsigned char *}
+../include/printk.h:19:13: note: in definition of macro ‘panic_on’
+   19 |   int _r = (expr);                                                                   \
+      |             ^~~~
+pmap.c:823:26: note: expected ‘u_int’ {aka ‘unsigned int’} but argument is of type ‘uint8_t *’ {aka ‘unsigned char *’}
+  823 | static int read_sd(u_int va, u_int pa, u_int len) {
+      |                    ~~~~~~^~
+In file included from ../include/pmap.h:5,
+                 from pmap.c:5:
+pmap.c: In function ‘sd_read’:
+pmap.c:871:21: warning: passing argument 1 of ‘write_sd’ makes integer from pointer without a cast [-Wint-conversion]
+  871 |   panic_on(write_sd(&temp, MALTA_SWAP_NSECT, 1));
+      |                     ^~~~~
+      |                     |
+      |                     uint8_t * {aka unsigned char *}
+../include/printk.h:19:13: note: in definition of macro ‘panic_on’
+   19 |   int _r = (expr);                                                                   \
+      |             ^~~~
+pmap.c:836:27: note: expected ‘u_int’ {aka ‘unsigned int’} but argument is of type ‘uint8_t *’ {aka ‘unsigned char *’}
+  836 | static int write_sd(u_int va, u_int pa, u_int len) {
+      |                     ~~~~~~^~
+In file included from ../include/pmap.h:5,
+                 from pmap.c:5:
+pmap.c:874:21: warning: passing argument 1 of ‘write_sd’ makes integer from pointer without a cast [-Wint-conversion]
+  874 |   panic_on(write_sd(&temp, MALTA_SWAP_LBAL, 1));
+      |                     ^~~~~
+      |                     |
+      |                     uint8_t * {aka unsigned char *}
+../include/printk.h:19:13: note: in definition of macro ‘panic_on’
+   19 |   int _r = (expr);                                                                   \
+      |             ^~~~
+pmap.c:836:27: note: expected ‘u_int’ {aka ‘unsigned int’} but argument is of type ‘uint8_t *’ {aka ‘unsigned char *’}
+  836 | static int write_sd(u_int va, u_int pa, u_int len) {
+      |                     ~~~~~~^~
+In file included from ../include/pmap.h:5,
+                 from pmap.c:5:
+pmap.c:877:21: warning: passing argument 1 of ‘write_sd’ makes integer from pointer without a cast [-Wint-conversion]
+  877 |   panic_on(write_sd(&temp, MALTA_SWAP_LBAM, 1));
+      |                     ^~~~~
+      |                     |
+      |                     uint8_t * {aka unsigned char *}
+../include/printk.h:19:13: note: in definition of macro ‘panic_on’
+   19 |   int _r = (expr);                                                                   \
+      |             ^~~~
+pmap.c:836:27: note: expected ‘u_int’ {aka ‘unsigned int’} but argument is of type ‘uint8_t *’ {aka ‘unsigned char *’}
+  836 | static int write_sd(u_int va, u_int pa, u_int len) {
+      |                     ~~~~~~^~
+In file included from ../include/pmap.h:5,
+                 from pmap.c:5:
+pmap.c:880:21: warning: passing argument 1 of ‘write_sd’ makes integer from pointer without a cast [-Wint-conversion]
+  880 |   panic_on(write_sd(&temp, MALTA_SWAP_LBAH, 1));
+      |                     ^~~~~
+      |                     |
+      |                     uint8_t * {aka unsigned char *}
+../include/printk.h:19:13: note: in definition of macro ‘panic_on’
+   19 |   int _r = (expr);                                                                   \
+      |             ^~~~
+pmap.c:836:27: note: expected ‘u_int’ {aka ‘unsigned int’} but argument is of type ‘uint8_t *’ {aka ‘unsigned char *’}
+  836 | static int write_sd(u_int va, u_int pa, u_int len) {
+      |                     ~~~~~~^~
+In file included from ../include/pmap.h:5,
+                 from pmap.c:5:
+pmap.c:884:21: warning: passing argument 1 of ‘write_sd’ makes integer from pointer without a cast [-Wint-conversion]
+  884 |   panic_on(write_sd(&temp, MALTA_SWAP_DEVICE, 1));
+      |                     ^~~~~
+      |                     |
+      |                     uint8_t * {aka unsigned char *}
+../include/printk.h:19:13: note: in definition of macro ‘panic_on’
+   19 |   int _r = (expr);                                                                   \
+      |             ^~~~
+pmap.c:836:27: note: expected ‘u_int’ {aka ‘unsigned int’} but argument is of type ‘uint8_t *’ {aka ‘unsigned char *’}
+  836 | static int write_sd(u_int va, u_int pa, u_int len) {
+      |                     ~~~~~~^~
+In file included from ../include/pmap.h:5,
+                 from pmap.c:5:
+pmap.c:887:21: warning: passing argument 1 of ‘write_sd’ makes integer from pointer without a cast [-Wint-conversion]
+  887 |   panic_on(write_sd(&temp, MALTA_SWAP_STATUS, 1));
+      |                     ^~~~~
+      |                     |
+      |                     uint8_t * {aka unsigned char *}
+../include/printk.h:19:13: note: in definition of macro ‘panic_on’
+   19 |   int _r = (expr);                                                                   \
+      |             ^~~~
+pmap.c:836:27: note: expected ‘u_int’ {aka ‘unsigned int’} but argument is of type ‘uint8_t *’ {aka ‘unsigned char *’}
+  836 | static int write_sd(u_int va, u_int pa, u_int len) {
+      |                     ~~~~~~^~
+In file included from ../include/pmap.h:5,
+                 from pmap.c:5:
+pmap.c:893:34: warning: passing argument 1 of ‘read_sd’ makes integer from pointer without a cast [-Wint-conversion]
+  893 |    panic_on(read_sd(dst + offset + i * 4, MALTA_SWAP_DATA, 4));
+      |                     ~~~~~~~~~~~~~^~~~~~~
+      |                                  |
+      |                                  void *
+../include/printk.h:19:13: note: in definition of macro ‘panic_on’
+   19 |   int _r = (expr);                                                                   \
+      |             ^~~~
+pmap.c:823:26: note: expected ‘u_int’ {aka ‘unsigned int’} but argument is of type ‘void *’
+  823 | static int read_sd(u_int va, u_int pa, u_int len) {
+      |                    ~~~~~~^~
+In file included from ../include/pmap.h:5,
+                 from pmap.c:5:
+pmap.c:896:20: warning: passing argument 1 of ‘read_sd’ makes integer from pointer without a cast [-Wint-conversion]
+  896 |   panic_on(read_sd(&temp, MALTA_SWAP_STATUS, 1));
+      |                    ^~~~~
+      |                    |
+      |                    uint8_t * {aka unsigned char *}
+../include/printk.h:19:13: note: in definition of macro ‘panic_on’
+   19 |   int _r = (expr);                                                                   \
+      |             ^~~~
+pmap.c:823:26: note: expected ‘u_int’ {aka ‘unsigned int’} but argument is of type ‘uint8_t *’ {aka ‘unsigned char *’}
+  823 | static int read_sd(u_int va, u_int pa, u_int len) {
+      |                    ~~~~~~^~
+In file included from ../include/pmap.h:5,
+                 from pmap.c:5:
+pmap.c: In function ‘sd_write’:
+pmap.c:913:21: warning: passing argument 1 of ‘write_sd’ makes integer from pointer without a cast [-Wint-conversion]
+  913 |   panic_on(write_sd(&temp, MALTA_SWAP_NSECT, 1));
+      |                     ^~~~~
+      |                     |
+      |                     uint8_t * {aka unsigned char *}
+../include/printk.h:19:13: note: in definition of macro ‘panic_on’
+   19 |   int _r = (expr);                                                                   \
+      |             ^~~~
+pmap.c:836:27: note: expected ‘u_int’ {aka ‘unsigned int’} but argument is of type ‘uint8_t *’ {aka ‘unsigned char *’}
+  836 | static int write_sd(u_int va, u_int pa, u_int len) {
+      |                     ~~~~~~^~
+In file included from ../include/pmap.h:5,
+                 from pmap.c:5:
+pmap.c:916:21: warning: passing argument 1 of ‘write_sd’ makes integer from pointer without a cast [-Wint-conversion]
+  916 |   panic_on(write_sd(&temp, MALTA_SWAP_LBAL, 1));
+      |                     ^~~~~
+      |                     |
+      |                     uint8_t * {aka unsigned char *}
+../include/printk.h:19:13: note: in definition of macro ‘panic_on’
+   19 |   int _r = (expr);                                                                   \
+      |             ^~~~
+pmap.c:836:27: note: expected ‘u_int’ {aka ‘unsigned int’} but argument is of type ‘uint8_t *’ {aka ‘unsigned char *’}
+  836 | static int write_sd(u_int va, u_int pa, u_int len) {
+      |                     ~~~~~~^~
+In file included from ../include/pmap.h:5,
+                 from pmap.c:5:
+pmap.c:919:21: warning: passing argument 1 of ‘write_sd’ makes integer from pointer without a cast [-Wint-conversion]
+  919 |   panic_on(write_sd(&temp, MALTA_SWAP_LBAM, 1));
+      |                     ^~~~~
+      |                     |
+      |                     uint8_t * {aka unsigned char *}
+../include/printk.h:19:13: note: in definition of macro ‘panic_on’
+   19 |   int _r = (expr);                                                                   \
+      |             ^~~~
+pmap.c:836:27: note: expected ‘u_int’ {aka ‘unsigned int’} but argument is of type ‘uint8_t *’ {aka ‘unsigned char *’}
+  836 | static int write_sd(u_int va, u_int pa, u_int len) {
+      |                     ~~~~~~^~
+In file included from ../include/pmap.h:5,
+                 from pmap.c:5:
+pmap.c:922:21: warning: passing argument 1 of ‘write_sd’ makes integer from pointer without a cast [-Wint-conversion]
+  922 |   panic_on(write_sd(&temp, MALTA_SWAP_LBAH, 1));
+      |                     ^~~~~
+      |                     |
+      |                     uint8_t * {aka unsigned char *}
+../include/printk.h:19:13: note: in definition of macro ‘panic_on’
+   19 |   int _r = (expr);                                                                   \
+      |             ^~~~
+pmap.c:836:27: note: expected ‘u_int’ {aka ‘unsigned int’} but argument is of type ‘uint8_t *’ {aka ‘unsigned char *’}
+  836 | static int write_sd(u_int va, u_int pa, u_int len) {
+      |                     ~~~~~~^~
+In file included from ../include/pmap.h:5,
+                 from pmap.c:5:
+pmap.c:926:21: warning: passing argument 1 of ‘write_sd’ makes integer from pointer without a cast [-Wint-conversion]
+  926 |   panic_on(write_sd(&temp, MALTA_SWAP_DEVICE, 1));
+      |                     ^~~~~
+      |                     |
+      |                     uint8_t * {aka unsigned char *}
+../include/printk.h:19:13: note: in definition of macro ‘panic_on’
+   19 |   int _r = (expr);                                                                   \
+      |             ^~~~
+pmap.c:836:27: note: expected ‘u_int’ {aka ‘unsigned int’} but argument is of type ‘uint8_t *’ {aka ‘unsigned char *’}
+  836 | static int write_sd(u_int va, u_int pa, u_int len) {
+      |                     ~~~~~~^~
+In file included from ../include/pmap.h:5,
+                 from pmap.c:5:
+pmap.c:929:21: warning: passing argument 1 of ‘write_sd’ makes integer from pointer without a cast [-Wint-conversion]
+  929 |   panic_on(write_sd(&temp, MALTA_SWAP_STATUS, 1));
+      |                     ^~~~~
+      |                     |
+      |                     uint8_t * {aka unsigned char *}
+../include/printk.h:19:13: note: in definition of macro ‘panic_on’
+   19 |   int _r = (expr);                                                                   \
+      |             ^~~~
+pmap.c:836:27: note: expected ‘u_int’ {aka ‘unsigned int’} but argument is of type ‘uint8_t *’ {aka ‘unsigned char *’}
+  836 | static int write_sd(u_int va, u_int pa, u_int len) {
+      |                     ~~~~~~^~
+In file included from ../include/pmap.h:5,
+                 from pmap.c:5:
+pmap.c:935:35: warning: passing argument 1 of ‘write_sd’ makes integer from pointer without a cast [-Wint-conversion]
+  935 |    panic_on(write_sd(src + offset + i * 4, MALTA_SWAP_DATA, 4));
+      |                      ~~~~~~~~~~~~~^~~~~~~
+      |                                   |
+      |                                   void *
+../include/printk.h:19:13: note: in definition of macro ‘panic_on’
+   19 |   int _r = (expr);                                                                   \
+      |             ^~~~
+pmap.c:836:27: note: expected ‘u_int’ {aka ‘unsigned int’} but argument is of type ‘void *’
+  836 | static int write_sd(u_int va, u_int pa, u_int len) {
+      |                     ~~~~~~^~
+In file included from ../include/pmap.h:5,
+                 from pmap.c:5:
+pmap.c:938:20: warning: passing argument 1 of ‘read_sd’ makes integer from pointer without a cast [-Wint-conversion]
+  938 |   panic_on(read_sd(&temp, MALTA_SWAP_STATUS, 1));
+      |                    ^~~~~
+      |                    |
+      |                    uint8_t * {aka unsigned char *}
+../include/printk.h:19:13: note: in definition of macro ‘panic_on’
+   19 |   int _r = (expr);                                                                   \
+      |             ^~~~
+pmap.c:823:26: note: expected ‘u_int’ {aka ‘unsigned int’} but argument is of type ‘uint8_t *’ {aka ‘unsigned char *’}
+  823 | static int read_sd(u_int va, u_int pa, u_int len) {
+      |                    ~~~~~~^~
+pmap.c: In function ‘write_page’:
+pmap.c:947:30: warning: passing argument 3 of ‘sd_write’ makes pointer from integer without a cast [-Wint-conversion]
+  947 |  sd_write(2, bno * SECT2BLK, kva, SECT2BLK);
+      |                              ^~~
+      |                              |
+      |                              u_long {aka long unsigned int}
+pmap.c:903:48: note: expected ‘void *’ but argument is of type ‘u_long’ {aka ‘long unsigned int’}
+  903 | void sd_write(u_int diskno, u_int secno, void *src, u_int nsecs) {
+      |                                          ~~~~~~^~~
+pmap.c: In function ‘read_page’:
+pmap.c:953:29: warning: passing argument 3 of ‘sd_read’ makes pointer from integer without a cast [-Wint-conversion]
+  953 |  sd_read(2, bno * SECT2BLK, kva, SECT2BLK);
+      |                             ^~~
+      |                             |
+      |                             u_long {aka long unsigned int}
+pmap.c:861:47: note: expected ‘void *’ but argument is of type ‘u_long’ {aka ‘long unsigned int’}
+  861 | void sd_read(u_int diskno, u_int secno, void *dst, u_int nsecs) {
+      |                                         ~~~~~~^~~
+pmap.c: In function ‘sd_block_alloc’:
+pmap.c:810:1: warning: control reaches end of non-void function [-Wreturn-type]
+  810 | }
+      | ^
+mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O2 --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -DMOS_NSWAP=1023 -DMOS_INIT_OVERRIDDEN -O2 -I../include/ -c -o tlb_asm.o tlb_asm.S
+mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O2 --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -DMOS_NSWAP=1023 -DMOS_INIT_OVERRIDDEN -O2 -I../include/ -c -o tlbex.o tlbex.c
+mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O2 --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -DMOS_NSWAP=1023 -DMOS_INIT_OVERRIDDEN -O2 -I../include/ -c -o env.o env.c
+env.c: In function ‘env_alloc’:
+env.c:260:6: warning: unused variable ‘r’ [-Wunused-variable]
+  260 |  int r;
+      |      ^
+mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O2 --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -DMOS_NSWAP=1023 -DMOS_INIT_OVERRIDDEN -O2 -I../include/ -c -o env_asm.o env_asm.S
+mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O2 --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -DMOS_NSWAP=1023 -DMOS_INIT_OVERRIDDEN -O2 -I../include/ -c -o sched.o sched.c
+mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O2 --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -DMOS_NSWAP=1023 -DMOS_INIT_OVERRIDDEN -O2 -I../include/ -c -o entry.o entry.S
+mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O2 --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -DMOS_NSWAP=1023 -DMOS_INIT_OVERRIDDEN -O2 -I../include/ -c -o genex.o genex.S
+mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O2 --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -DMOS_NSWAP=1023 -DMOS_INIT_OVERRIDDEN -O2 -I../include/ -c -o traps.o traps.c
+mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O2 --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -DMOS_NSWAP=1023 -DMOS_INIT_OVERRIDDEN -O2 -I../include/ -c -o syscall_all.o syscall_all.c
+make[2]: Leaving directory '/home/kino/workdir/mos_lab/22371281/kern'
 mkdir -p target
-mips-linux-gnu-ld -EL -G 0 -static -n -nostdlib --fatal-warnings -EL -G 0 -static -n -nostdlib --fatal-warnings -o target/mos -N -T kernel.lds lib/*.o init/*.o kern/*.o user/bare/*.x user/*.x fs/*.x
+mips-linux-gnu-ld -EL -G 0 -static -n -nostdlib --fatal-warnings -O --gc-sections -EL -G 0 -static -n -nostdlib --fatal-warnings -O --gc-sections -o target/mos -N -T kernel.lds lib/*.o init/*.o kern/*.o user/bare/*.x user/*.x fs/*.x tests/lab6_challenge_swap/*.x
 make --directory=fs image fs-files=""
 make[2]: Entering directory '/home/kino/workdir/mos_lab/22371281/fs'
 dd if=/dev/zero of=../target/fs.img bs=4096 count=1024 2>/dev/null
