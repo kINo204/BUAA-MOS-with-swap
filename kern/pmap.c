@@ -577,9 +577,9 @@ struct Page_tailq page_swap_queue;
 SwapTableEntry *swap_tbl;
 SwapTableEntry *bno_tbl;
 
-#define MAX_SWAPINFO 0x10000
+#define MAX_SWAPINFO 0x100000
 
-struct SwapInfo swapInfos[MAX_SWAPINFO];
+struct SwapInfo *swapInfos;
 LIST_HEAD(, SwapInfo) swapInfo_free_list;
 
 void swap_init(void) {
@@ -592,6 +592,7 @@ void swap_init(void) {
 	// swap_tbl, swapInfos, swapInfo_free_list
 	swap_tbl = (SwapTableEntry *)alloc(npage * sizeof(SwapTableEntry), PAGE_SIZE, 1);
 	bno_tbl = (SwapTableEntry *)alloc(SD_NBLK * sizeof(SwapTableEntry), PAGE_SIZE, 1);
+	swapInfos = (struct SwapInfo *)alloc(MAX_SWAPINFO * sizeof(struct SwapInfo), PAGE_SIZE, 1);
 	LIST_INIT(&swapInfo_free_list);
 	for (int i = 0; i < MAX_SWAPINFO; i++) {
 		LIST_INSERT_HEAD(&swapInfo_free_list, &swapInfos[i], link);
