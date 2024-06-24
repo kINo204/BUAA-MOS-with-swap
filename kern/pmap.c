@@ -575,9 +575,9 @@ struct Page_tailq page_swap_queue;
 // will be traversed to refill the page tables, unsetting V and setting
 // software flag SWAPPED, as well as writing disk address in the PTE.
 SwapTableEntry *swap_tbl;
-SwapTableEntry bno_tbl[SD_NBLK];
+SwapTableEntry *bno_tbl;//[SD_NBLK];
 
-struct SwapInfo *swapInfos;
+struct SwapInfo swapInfos[MAX_SWAPINFO];
 LIST_HEAD(, SwapInfo) swapInfo_free_list;
 
 void swap_init(void) {
@@ -589,9 +589,9 @@ void swap_init(void) {
 
 	// swap_tbl, swapInfos, swapInfo_free_list
 	swap_tbl = (SwapTableEntry *)alloc(npage * sizeof(SwapTableEntry), PAGE_SIZE, 1);
-	//bno_tbl = (SwapTableEntry *)alloc(SD_NBLK * sizeof(SwapTableEntry), PAGE_SIZE, 1);
-	swapInfos = (struct SwapInfo *)alloc(MAX_SWAPINFO * sizeof(struct SwapInfo), PAGE_SIZE, 1);
-	//printk("to memory %x for struct SwapInfos.\n", freemem);
+	bno_tbl = (SwapTableEntry *)alloc(SD_NBLK * sizeof(SwapTableEntry), PAGE_SIZE, 1);
+	//swapInfos = (struct SwapInfo *)alloc(MAX_SWAPINFO * sizeof(struct SwapInfo), PAGE_SIZE, 1);
+	printk("to memory %x for struct SwapInfos.\n", freemem);
 	LIST_INIT(&swapInfo_free_list);
 	for (int i = 0; i < MAX_SWAPINFO; i++) {
 		LIST_INSERT_HEAD(&swapInfo_free_list, &swapInfos[i], link);
