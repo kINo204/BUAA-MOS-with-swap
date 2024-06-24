@@ -9,21 +9,16 @@ int main(int argc,char **argv){
 
 	debugf("fork start\n");
 	if (fork()) { // parent
-		/*debugf("parent return from fork\n");
-		write_seg(0x500000, 15000);
-		if (check_seg(0x500000, 15000) == -1) { user_panic("parent err"); }
-		debugf("parent ");*/
+		debugf("parent return from fork1\n");
+		debugf("child ");
 	} else {
-		debugf("child return from fork\n");
-		if (fork()) {
-		} else {
-			debugf("grandson return from fork\n");
-			if (check_seg(0x500000, 15000) == -1) { user_panic("child err"); }
-			debugf("grandson ");
-		}
+		debugf("child return from fork1\n");
+		write_seg(0x500000, 15000);
+		if (check_seg(0x500000, 15000) == -1) { user_panic("init err"); }
+		debugf("child ");
 	}
-	//debugf("finished\n");
-	
+	debugf("finished\n");
+
 
 	debugf("------Finish my test-----\n");
 	return 0;
@@ -39,8 +34,6 @@ void write_seg(u_int start, int npage) {
 
 int check_seg(u_int start, int npage) {
 	for (u_int va = start; va < start + npage * PAGE_SIZE; va += PAGE_SIZE) {
-		*((int *)va + 8) = 0x114514;
-
 		int val = *((int *)va);
 		if (val != magic) {
 			debugf("wrong value read at va %08x, page #%d: %08x\n", va, (va - start) / PAGE_SIZE, val);
