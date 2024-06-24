@@ -5,7 +5,7 @@
 #include <types.h>
 
 #define SECT_SIZE 512
-#define SD_NBLK 2048 /* 8M */
+#define SD_NBLK 4096 /* 8M */
 #define SD_MAX (SD_NBLK * BLOCK_SIZE)
 // Restriction: PA in PTE is 20 bits, max 0xFFFFF.
 #define SECT2BLK (BLOCK_SIZE / SECT_SIZE)
