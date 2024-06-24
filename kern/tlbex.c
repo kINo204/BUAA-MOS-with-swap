@@ -36,7 +36,7 @@ static void passive_alloc(u_int va, Pde *pgdir, u_int asid) {
 	u_int perm = (va >= UVPT && va < ULIM) ? 0 : PTE_D;
 	panic_on(page_insert(pgdir, asid, p, PTE_ADDR(va), perm));
 
-	if (va < UTOP/*USTACKTOP - PAGE_SIZE*/) {
+	if (va > 0x1000000 && va < UTOP /*USTACKTOP - PAGE_SIZE*/) {
 		//if (va == 0x443ffffc) { printk("register!\n"); }
 		swap_register(p, pgdir, PTE_ADDR(va), asid); // Register ppage for swap.
 	}

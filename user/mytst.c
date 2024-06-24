@@ -4,11 +4,12 @@ int magic = 0x12345678;
 int main(int argc,char **argv){
 	debugf("------Enter my test------\n");
 
-	write_seg(0x500000, 15000);
-	if (check_seg(0x500000, 15000) == -1) { user_panic("init err"); }
+	write_seg(0x500000, 16000);
+	//if (check_seg(0x500000, 15000) == -1) { user_panic("init err"); }
 
 	debugf("fork start\n");
-	if (fork()) { // parent
+	fork();
+/*	if (fork()) { // parent
 		debugf("parent return from fork1\n");
 		debugf("child ");
 	} else {
@@ -18,7 +19,7 @@ int main(int argc,char **argv){
 		debugf("child ");
 	}
 	debugf("finished\n");
-
+*/
 
 	debugf("------Finish my test-----\n");
 	return 0;
