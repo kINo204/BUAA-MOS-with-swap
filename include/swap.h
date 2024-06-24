@@ -4,7 +4,7 @@
 #include <pmap.h>
 #include <sdisk.h>
 
-#define MAX_SWAPINFO 0x4000
+#define MAX_SWAPINFO 0x5000
 
 extern struct Page_tailq page_swap_queue;
 
