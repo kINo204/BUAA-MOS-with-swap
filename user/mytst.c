@@ -4,19 +4,26 @@ int magic = 0x12345678;
 int main(int argc,char **argv){
 	debugf("------Enter my test------\n");
 
-	write_seg(0x500000, 8000);
+	write_seg(0x500000, 2000);
 	debugf("fork1\n");
 	fork();
+	debugf("done\n");
+	write_seg(0x500000, 2000);
 	debugf("fork2\n");
 	fork();
+	//write_seg(0x500000, 100);
 	debugf("fork3\n");
 	fork();
+	//write_seg(0x500000, 100);
 	debugf("fork4\n");
 	fork();
-	debugf("fork5\n");
-	fork();
-	debugf("fork6\n");
-	fork();
+	//write_seg(0x500000, 100);
+	//debugf("fork5\n");
+	//fork();
+	//write_seg(0x500000, 100);
+	//debugf("fork6\n");
+	//fork();
+	/*write_seg(0x500000, 500);*/
 
 	debugf("------Finish my test-----\n");
 	return 0;

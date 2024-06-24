@@ -2,6 +2,10 @@
 #define _SWAP_H_
 
 #include <pmap.h>
+#include <sdisk.h>
+
+#define MAX_SWAPINFO 0x12000
+#define MAX_SWAP_PP 20000
 
 extern struct Page_tailq page_swap_queue;
 
@@ -15,8 +19,8 @@ struct SwapInfo {
 			  // Enough for finding PTE and flush TLB.
 };
 typedef LIST_HEAD(SwapTableEntry_t, SwapInfo) SwapTableEntry;
-extern SwapTableEntry *swap_tbl;
-extern SwapTableEntry *bno_tbl;
+extern SwapTableEntry swap_tbl[MAX_SWAP_PP];
+extern SwapTableEntry bno_tbl[SD_NBLK];
 
 static inline SwapTableEntry *page2ste(struct Page *pp) {
 	return swap_tbl + (pp - pages);
