@@ -731,7 +731,7 @@ mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -f
 mips-linux-gnu-gcc --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic -ffreestanding -fno-stack-protector -fno-builtin -Wa,-xgot -Wall -mxgot -mno-fix-r4000 -march=4kc -DLAB=6 -O0 -g -ggdb -DMOS_DEBUG -I../include -Iinclude -c -o mytst.o mytst.c
 mytst.c: In function ‘main’:
 mytst.c:7:2: warning: implicit declaration of function ‘write_seg’; did you mean ‘write_page’? [-Wimplicit-function-declaration]
-    7 |  write_seg(0x500000, 2000);
+    7 |  write_seg(0x500000, 3000);
       |  ^~~~~~~~~
       |  write_page
 mytst.c: At top level:
@@ -739,7 +739,7 @@ mytst.c:32:6: warning: conflicting types for ‘write_seg’
    32 | void write_seg(u_int start, int npage) {
       |      ^~~~~~~~~
 mytst.c:7:2: note: previous implicit declaration of ‘write_seg’ was here
-    7 |  write_seg(0x500000, 2000);
+    7 |  write_seg(0x500000, 3000);
       |  ^~~~~~~~~
 mips-linux-gnu-ld -o mytst.b -EL -G 0 -static -n -nostdlib --fatal-warnings -EL -G 0 -static -n -nostdlib --fatal-warnings -T ./user.lds mytst.o lib/entry.o lib/syscall_wrap.o lib/debugf.o lib/libos.o lib/fork.o lib/syscall_lib.o lib/ipc.o lib/fd.o lib/pageref.o lib/file.o lib/fsipc.o lib/console.o lib/fprintf.o lib/wait.o lib/spawn.o lib/pipe.o ../lib/elfloader.o ../lib/print.o ../lib/string.o
 ../tools/bintoc -f mytst.b -o mytst.b.c -p user
@@ -833,7 +833,7 @@ make --directory=fs image fs-files=""
 make[2]: Entering directory '/home/kino/workdir/mos_lab/22371281/fs'
 dd if=/dev/zero of=../target/fs.img bs=4096 count=1024 2>/dev/null
 dd if=/dev/zero of=../target/empty.img bs=4096 count=1024 2>/dev/null
-dd if=/dev/zero of=../target/swap.img bs=4096 count=1024 2>/dev/null
+dd if=/dev/zero of=../target/swap.img bs=4096 count=2048 2>/dev/null
 # using awk to remove paths with identical basename from FSIMGFILES
 ../tools/fsformat ../target/fs.img \
 	$(printf '%s\n' rootfs/motd rootfs/newmotd ../user/num.b ../user/echo.b ../user/halt.b ../user/ls.b ../user/sh.b ../user/cat.b ../user/testpipe.b ../user/testpiperace.b ../user/testptelibrary.b ../user/testarg.b ../user/testbss.b ../user/testfdsharing.b ../user/pingpong.b ../user/init.b  | awk -F/ '{ ns[$NF]=$0 } END { for (n in ns) { print ns[n] } }')
