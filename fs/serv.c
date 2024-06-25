@@ -366,7 +366,7 @@ void serve(void) {
 
 		// Receive a request argument page on the REQVA page.
 		req = ipc_recv(&whom, (void *)REQVA, &perm);
-		if (!(perm & PTE_V)) {
+		if (!(perm & (PTE_V | PTE_SWAPPED))) {
 			debugf("Invalid request from %08x: no argument page\n", whom);
 			continue; // just leave it hanging, waiting for the next request.
 		}
