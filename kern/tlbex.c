@@ -40,6 +40,7 @@ static void passive_alloc(u_int va, Pde *pgdir, u_int asid) {
 		//if (va == 0x443ffffc) { printk("register!\n"); }
 		swap_register(p, pgdir, PTE_ADDR(va), asid); // Register ppage for swap.
 	}
+	//printk("+data page: %08x, %08x -> %d\n", PTE_ADDR(va), pgdir, page2ppn(p));
 }
 
 /* Overview:

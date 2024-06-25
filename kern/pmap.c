@@ -341,9 +341,12 @@ void page_remove(Pde *pgdir, u_int asid, u_long va) {
 
 	/* Step 1: Get the page table entry, and check if the page table entry is valid. */
 	struct Page *pp = page_lookup(pgdir, va, &pte);
-	if (pp == NULL) { return; } // invalid VPage
+	if (pp == NULL) {
+		panic("removing invalid page");
+		return; } // invalid VPage
 
 	/* Step 2: Decrease reference count on 'pp'. */
+	//if (pp->pp_ref == 1) { printk("-data page: %08x, %08x -> %d\n", PTE_ADDR(va), pgdir, page2ppn(pp)); }
 	page_decref(pp);
 
 	// Unregister the pp in swap_tbl.
@@ -676,6 +679,7 @@ void swap_back(Pte cur_pte) {
 	// For all VPage of this swapped page, recover:
 	SwapTableEntry *bno_ste = bno2ste(sd_bno);
 	struct SwapInfo *sinfo;
+	assert(p->pp_ref == 0);
 	LIST_FOREACH(sinfo, bno_ste, link) {
 		// Recover PTE.
 		Pde pde = sinfo->pgdir[PDX(sinfo->va)];
@@ -696,7 +700,7 @@ void swap_back(Pte cur_pte) {
 		}*/
 
 		p->pp_ref++;
-	}
+}
 	TAILQ_INSERT_TAIL(&page_swap_queue, p, swap_link);
 
 	// Move SwapInfo from bno_ste to page_ste.

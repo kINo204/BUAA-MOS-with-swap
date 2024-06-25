@@ -339,6 +339,7 @@ static int load_icode_mapper(void *data, u_long va, size_t offset, u_int perm, c
 
 	/* Step 3: Insert 'p' into 'env->env_pgdir' at 'va' with 'perm'. */
 	r = page_insert(env->env_pgdir, env->env_asid, p, va, perm);
+	//printk("+data page: %08x, %08x -> %d\n", PTE_ADDR(va), env->env_pgdir, page2ppn(p));
 
 	return r;
 }

@@ -140,7 +140,8 @@ int fork(void) {
 
 	// Parent continue here:
 	for (u_int va = UTEMP; va < USTACKTOP; va += PAGE_SIZE) {
-		duppage(child, VPN(va));
+		if (vpd[PDX(va)] & PTE_V)
+			duppage(child, VPN(va));
 	}
 	//debugf("duppages end\n");
 

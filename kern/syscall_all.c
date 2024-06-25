@@ -148,6 +148,7 @@ int sys_mem_alloc(u_int envid, u_int va, u_int perm) {
 	/* Step 4: Map the allocated page at 'va' with permission 'perm' using 'page_insert'. */
 	//perm &= ~PTE_SWAPPED;
 	int r = page_insert(env->env_pgdir, env->env_asid, pp, va, perm);
+	//printk("+data page: %08x, %08x -> %d\n", PTE_ADDR(va), env->env_pgdir, page2ppn(pp));
 
 	// TODO Should syscall_mem_alloc() pages be swappable?
 	if (0) { // condition not sure for now
