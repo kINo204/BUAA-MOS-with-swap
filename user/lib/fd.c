@@ -43,7 +43,7 @@ int fd_alloc(struct Fd **fd) {
 			return 0;
 		}
 
-		if ((vpt[va / PTMAP] & PTE_V) == 0) { // the fd is not used
+		if ((vpt[va / PTMAP] & (PTE_V | PTE_SWAPPED)) == 0) { // the fd is not used
 			*fd = (struct Fd *)va;
 			return 0;
 		}
@@ -71,7 +71,7 @@ int fd_lookup(int fdnum, struct Fd **fd) {
 
 	va = INDEX2FD(fdnum);
 
-	if ((vpt[va / PTMAP] & PTE_V) != 0) { // the fd is used
+	if ((vpt[va / PTMAP] & (PTE_V | PTE_SWAPPED)) != 0) { // the fd is used
 		*fd = (struct Fd *)va;
 		return 0;
 	}
@@ -147,8 +147,7 @@ int dup(int oldfdnum, int newfdnum) {
 	if (vpd[PDX(ova)]) {
 		for (i = 0; i < PDMAP; i += PTMAP) {
 			pte = vpt[VPN(ova + i)];
-
-			if (pte & PTE_V) {
+			if (pte & (PTE_V | PTE_SWAPPED)) {
 				// should be no error here -- pd is already allocated
 				if ((r = syscall_mem_map(0, (void *)(ova + i), 0, (void *)(nva + i),
 							 pte & (PTE_D | PTE_LIBRARY))) < 0) {

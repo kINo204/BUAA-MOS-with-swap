@@ -193,7 +193,7 @@ int spawn(char *prog, char **argv) {
 		for (u_int pteno = 0; pteno <= PTX(~0); pteno++) {
 			u_int pn = (pdeno << 10) + pteno;
 			u_int perm = vpt[pn] & ((1 << PGSHIFT) - 1);
-			if ((perm & PTE_V) && (perm & PTE_LIBRARY)) {
+			if ((perm & (PTE_V | PTE_SWAPPED)) && (perm & PTE_LIBRARY)) {
 				void *va = (void *)(pn << PGSHIFT);
 
 				if ((r = syscall_mem_map(0, va, child, va, perm)) < 0) {
