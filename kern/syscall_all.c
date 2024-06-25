@@ -151,7 +151,7 @@ int sys_mem_alloc(u_int envid, u_int va, u_int perm) {
 	//printk("+data page: %08x, %08x -> %d\n", PTE_ADDR(va), env->env_pgdir, page2ppn(pp));
 
 	// TODO Should syscall_mem_alloc() pages be swappable?
-	if (1) { // condition not sure for now
+	if (0) { // condition not sure for now
 		panic_on(pp == NULL);
 		swap_register(pp, env->env_pgdir, va, env->env_asid); // Set page swappable
 	}
@@ -416,11 +416,10 @@ int sys_ipc_recv(u_int dstva) {
  *   Return the original error when underlying calls fail.
  */
 int sys_ipc_try_send(u_int envid, u_int value, u_int srcva, u_int perm) {
-	struct Env *e;
+	struct Env *e; // target env
 	struct Page *p;
 
 	if (srcva != 0 && is_illegal_va(srcva)) { return -E_INVAL; }
-
 	try(envid2env(envid, &e, 0));
 
 	/* Step 3: Check if the target is waiting for a message. */
@@ -447,10 +446,10 @@ int sys_ipc_try_send(u_int envid, u_int value, u_int srcva, u_int perm) {
 		p = page_lookup(curenv->env_pgdir, srcva, NULL);
 		if (p == NULL) { return -E_INVAL; }
 		int swappable = !LIST_EMPTY(page2ste(p));
+
 		page_insert(e->env_pgdir, e->env_asid, p, e->env_ipc_dstva, perm);
-		if (swappable) {
+		if (swappable)
 			swap_register(p, e->env_pgdir, e->env_ipc_dstva, e->env_asid);
-		}
 	}
 	return 0;
 }
