@@ -4,6 +4,7 @@
 #include <pmap.h>
 #include <sdisk.h>
 
+#define NSWAP 100 /* swap operation times */
 #define MAX_SWAPINFO 0x15000
 
 extern struct Page_tailq page_swap_queue;

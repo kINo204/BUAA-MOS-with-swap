@@ -22,6 +22,7 @@ struct Page { // physical page's management structure
 	// page_alloc.  Pages allocated at boot time using pmap.c's "alloc"
 	// do not have valid reference count fields.
 	u_short pp_ref;
+	u_short accessed;
 };
 
 extern struct Page *pages; // address of the page array

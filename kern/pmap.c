@@ -139,7 +139,6 @@ int page_alloc(struct Page **new) {
 	struct Page *pp;
 	if (LIST_EMPTY(&page_free_list))
 	{
-#define NSWAP 1
 		for (int i = 0; i < NSWAP; i++) { swap(); }
 		if (LIST_EMPTY(&page_free_list)) {
 			panic("swap err: no PPage available after swapping");
@@ -152,6 +151,7 @@ int page_alloc(struct Page **new) {
 	memset((void*)page2kva(pp), 0, PAGE_SIZE);
 	pp->swap_link.tqe_next = NULL;
 	pp->swap_link.tqe_prev = NULL;
+	pp->accessed = 0;
 
 	*new = pp;
 	return 0;
@@ -277,6 +277,7 @@ int page_insert(Pde *pgdir, u_int asid, struct Page *pp, u_long va, u_int perm) 
 	 * and increase its 'pp_ref'. */
 	*pte = page2pa(pp) | (perm & ~PTE_SWAPPED) | PTE_C_CACHEABLE | PTE_V;
 	pp->pp_ref++;
+	pp->accessed = 1;
 
 	return 0;
 }
@@ -314,6 +315,7 @@ struct Page *page_lookup(Pde *pgdir, u_long va, /* for efficiency */ Pte **ppte)
 	if (ppte) {
 		*ppte = pte;
 	}
+	pp->accessed = 1;
 
 	return pp;
 }
@@ -341,9 +343,7 @@ void page_remove(Pde *pgdir, u_int asid, u_long va) {
 
 	/* Step 1: Get the page table entry, and check if the page table entry is valid. */
 	struct Page *pp = page_lookup(pgdir, va, &pte);
-	if (pp == NULL) {
-		panic("removing invalid page");
-		return; } // invalid VPage
+	if (pp == NULL) { return; } // invalid VPage
 
 	/* Step 2: Decrease reference count on 'pp'. */
 	//if (pp->pp_ref == 1) { printk("-data page: %08x, %08x -> %d\n", PTE_ADDR(va), pgdir, page2ppn(pp)); }
@@ -716,8 +716,33 @@ void swap_back(Pte cur_pte) {
 // Pick a page in memory and swap it out to the swapping disk.
 void swap(void) {
 	// Get a PPage from page_swap_queue.
-	if (TAILQ_EMPTY(&page_swap_queue)) { panic("no swappable page"); }
+	if (TAILQ_EMPTY(&page_swap_queue)) { return;/*panic("no swappable page");*/ }
+	// Second-chance FIFO.
+#define N_EARLY 100
 	struct Page *pp = TAILQ_FIRST(&page_swap_queue);
+	for (int i = 0; i < N_EARLY; i++) {
+		if (TAILQ_NEXT(pp, swap_link))
+			pp = TAILQ_NEXT(pp, swap_link);
+		else
+			break;
+	}
+	while (1) {
+		//printk("page out: #%d\n", page2ppn(pp));
+		if (pp == TAILQ_LAST(&page_swap_queue, Page_tailq)) {
+			if (pp->accessed == 0) {
+			} else {
+				pp->accessed = 0;
+				pp = TAILQ_FIRST(&page_swap_queue);
+			}
+			break;
+		}
+		if (pp->accessed == 0) {
+			break;
+		} else {
+			pp->accessed = 0;
+		}
+		pp = TAILQ_NEXT(pp, swap_link);
+	}
 
 	// Write PPage data to a disk block.
 	int sd_bno = sd_block_alloc();
