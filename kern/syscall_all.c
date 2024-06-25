@@ -429,7 +429,7 @@ int sys_ipc_try_send(u_int envid, u_int value, u_int srcva, u_int perm) {
 	/* Step 4: Set the target's ipc fields. */
 	e->env_ipc_value = value;
 	e->env_ipc_from = curenv->env_id;
-	e->env_ipc_perm = PTE_V | perm;
+	e->env_ipc_perm = PTE_V | perm & ~PTE_SWAPPED;
 	e->env_ipc_recving = 0;
 
 	/* Step 5: Set the target's status to 'ENV_RUNNABLE' again and insert it to the tail of
@@ -448,8 +448,10 @@ int sys_ipc_try_send(u_int envid, u_int value, u_int srcva, u_int perm) {
 		int swappable = !LIST_EMPTY(page2ste(p));
 
 		page_insert(e->env_pgdir, e->env_asid, p, e->env_ipc_dstva, perm);
-		if (swappable)
+		if (swappable
+				&& !(e == curenv && PTE_ADDR(e->env_ipc_dstva) == PTE_ADDR(srcva))) {
 			swap_register(p, e->env_pgdir, e->env_ipc_dstva, e->env_asid);
+		}
 	}
 	return 0;
 }

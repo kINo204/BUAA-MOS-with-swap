@@ -1,6 +1,6 @@
 #include <lib.h>
 int magic = 0x12345678;
-int num_page = 20000;
+int num_page = 16000;
 
 void recv_seg(u_int start, int num_page) {
 	for (u_int va = start; va < start + num_page * PAGE_SIZE; va += PAGE_SIZE) {
