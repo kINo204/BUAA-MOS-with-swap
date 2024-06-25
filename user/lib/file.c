@@ -152,7 +152,7 @@ int read_map(int fdnum, u_int offset, void **blk) {
 		return -E_NO_DISK;
 	}
 
-	if (!(vpd[PDX(va)] & PTE_V) || !(vpt[VPN(va)] & PTE_V)) {
+	if (!(vpd[PDX(va)] & PTE_V) || !((vpt[VPN(va)] & PTE_V) || (vpt[VPN(va)] & PTE_SWAPPED))) {
 		return -E_NO_DISK;
 	}
 
