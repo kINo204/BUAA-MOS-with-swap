@@ -20,9 +20,8 @@ int pageref(void *v) {
 	}
 
 	/* Step 2: Check the page table. */
-	pte = vpt[VPN(v)];
-
 	int tmp = *((int *)v); // Trigger swapping back
+	pte = vpt[VPN(v)];
 	if (!(pte & PTE_V)) {
 		return 0;
 	}
