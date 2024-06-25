@@ -151,7 +151,7 @@ int sys_mem_alloc(u_int envid, u_int va, u_int perm) {
 	//printk("+data page: %08x, %08x -> %d\n", PTE_ADDR(va), env->env_pgdir, page2ppn(pp));
 
 	// TODO Should syscall_mem_alloc() pages be swappable?
-	if (0) { // condition not sure for now
+	if (1) { // condition not sure for now
 		panic_on(pp == NULL);
 		swap_register(pp, env->env_pgdir, va, env->env_asid); // Set page swappable
 	}
@@ -374,9 +374,7 @@ void sys_panic(char *msg) {
 // Return -E_INVAL on error; no return if success(yield)
 int sys_ipc_recv(u_int dstva) {
 	/* Step 1: Check if 'dstva' is either zero or a legal address. */
-	if (dstva != 0 && is_illegal_va(dstva)) {
-		return -E_INVAL;
-	}
+	if (dstva != 0 && is_illegal_va(dstva)) { return -E_INVAL; }
 
 	/* Step 2: Set 'curenv->env_ipc_recving' to 1. */
 	curenv->env_ipc_recving = 1;
@@ -449,7 +447,8 @@ int sys_ipc_try_send(u_int envid, u_int value, u_int srcva, u_int perm) {
 
 		page_insert(e->env_pgdir, e->env_asid, p, e->env_ipc_dstva, perm);
 		if (swappable
-				&& !(e == curenv && PTE_ADDR(e->env_ipc_dstva) == PTE_ADDR(srcva))) {
+				&& !((e == curenv) && (PTE_ADDR(e->env_ipc_dstva) == PTE_ADDR(srcva)))
+				) {
 			swap_register(p, e->env_pgdir, e->env_ipc_dstva, e->env_asid);
 		}
 	}
