@@ -151,7 +151,7 @@ int sys_mem_alloc(u_int envid, u_int va, u_int perm) {
 	//printk("+data page: %08x, %08x -> %d\n", PTE_ADDR(va), env->env_pgdir, page2ppn(pp));
 
 	// TODO Should syscall_mem_alloc() pages be swappable?
-	if (0) { // condition not sure for now
+	if (1) { // condition not sure for now
 		panic_on(pp == NULL);
 		swap_register(pp, env->env_pgdir, va, env->env_asid); // Set page swappable
 	}
