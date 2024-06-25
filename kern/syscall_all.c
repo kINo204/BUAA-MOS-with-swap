@@ -419,14 +419,8 @@ int sys_ipc_try_send(u_int envid, u_int value, u_int srcva, u_int perm) {
 	struct Env *e;
 	struct Page *p;
 
-	/* Step 1: Check if 'srcva' is either zero or a legal address. */
-	if (srcva != 0 && is_illegal_va(srcva)) {
-		return -E_INVAL;
-	}
+	if (srcva != 0 && is_illegal_va(srcva)) { return -E_INVAL; }
 
-	/* Step 2: Convert 'envid' to 'struct Env *e'. */
-	/* This is the only syscall where the 'envid2env' should be used with 'checkperm' UNSET,
-	 * because the target env is not restricted to 'curenv''s children. */
 	try(envid2env(envid, &e, 0));
 
 	/* Step 3: Check if the target is waiting for a message. */
@@ -452,8 +446,11 @@ int sys_ipc_try_send(u_int envid, u_int value, u_int srcva, u_int perm) {
 		/* Exercise 4.8: Your code here. (8/8) */
 		p = page_lookup(curenv->env_pgdir, srcva, NULL);
 		if (p == NULL) { return -E_INVAL; }
+		int swappable = !LIST_EMPTY(page2ste(p));
 		page_insert(e->env_pgdir, e->env_asid, p, e->env_ipc_dstva, perm);
-		//try(sys_mem_map(curenv->env_id, srcva, envid, e->env_ipc_dstva, perm)); // WHY this is wrong?
+		if (swappable) {
+			swap_register(p, e->env_pgdir, e->env_ipc_dstva, e->env_asid);
+		}
 	}
 	return 0;
 }
