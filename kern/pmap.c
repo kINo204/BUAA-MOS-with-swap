@@ -717,7 +717,8 @@ void swap_back(Pte cur_pte) {
 void swap(void) {
 	// Get a PPage from page_swap_queue.
 	if (TAILQ_EMPTY(&page_swap_queue)) { return;/*panic("no swappable page");*/ }
-	// Second-chance FIFO.
+
+	// Second-chance Clock.
 	static struct Page *last_next = NULL;
 	if (!last_next) { last_next = TAILQ_FIRST(&page_swap_queue); }
 	struct Page *pp = last_next;
