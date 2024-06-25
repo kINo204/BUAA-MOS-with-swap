@@ -20,11 +20,11 @@ int pageref(void *v) {
 	}
 
 	/* Step 2: Check the page table. */
-	int tmp = *((int *)v); // Trigger swapping back
+	//int tmp = *((int *)v); // Trigger swapping back
 	pte = vpt[VPN(v)];
-	if (!(pte & PTE_V)) {
-		return 0;
-	}
+	sys_mem_map(0, v, 0, v, PTE_FLAGS(pte)); // Trigger swapping back
+	pte = vpt[VPN(v)];
+	if (!(pte & PTE_V)) { return 0; }
 	/* Step 3: Return the result. */
 	return pages[PPN(pte)].pp_ref;
 }

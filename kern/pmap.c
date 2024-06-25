@@ -722,17 +722,18 @@ void swap(void) {
 	static struct Page *last_next = NULL;
 	if (!last_next) { last_next = TAILQ_FIRST(&page_swap_queue); }
 	struct Page *pp = last_next;
+	int max = 100;
 	while (1) {
 		if (TAILQ_NEXT(pp, swap_link)) {
 			pp = TAILQ_NEXT(pp, swap_link);
-			if (pp == last_next) { break; } // We came back after a full circle.
-			if (pp->accessed == 1) {
-				pp->accessed = 0;
-			} else {
-				break;
-			}
 		} else { // Jump to the first on the end.
 			pp = TAILQ_FIRST(&page_swap_queue);
+		}
+		if (pp == last_next) { break; } // We came back after a full circle.
+		if (pp->accessed == 1) {
+			pp->accessed = 0;
+		} else {
+			if (--max <= 0) { break; }
 		}
 	}
 	last_next = (TAILQ_NEXT(pp, swap_link) != NULL) ?

@@ -216,7 +216,7 @@ int sys_mem_map(u_int srcid, u_int srcva, u_int dstid, u_int dstva, u_int perm) 
 	// Register new SwapInfo for VPage.
 	int swappable = srcva == UCOW ? swappable_org : swappable_src;
 	if (swappable  // the original page should be swappable
-			&& ((srcid != dstid) || (PTE_ADDR(srcva) != PTE_ADDR(dstva)))) {
+			&& ((srcenv != dstenv) || (PTE_ADDR(srcva) != PTE_ADDR(dstva)))) {
 		swap_register(srcp, dstenv->env_pgdir, dstva, dstenv->env_asid);
 	}
 
