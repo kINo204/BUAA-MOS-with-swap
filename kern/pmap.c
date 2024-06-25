@@ -718,31 +718,24 @@ void swap(void) {
 	// Get a PPage from page_swap_queue.
 	if (TAILQ_EMPTY(&page_swap_queue)) { return;/*panic("no swappable page");*/ }
 	// Second-chance FIFO.
-#define N_EARLY 100
-	struct Page *pp = TAILQ_FIRST(&page_swap_queue);
-	for (int i = 0; i < N_EARLY; i++) {
-		if (TAILQ_NEXT(pp, swap_link))
-			pp = TAILQ_NEXT(pp, swap_link);
-		else
-			break;
-	}
+	static struct Page *last_next = NULL;
+	if (!last_next) { last_next = TAILQ_FIRST(&page_swap_queue); }
+	struct Page *pp = last_next;
 	while (1) {
-		//printk("page out: #%d\n", page2ppn(pp));
-		if (pp == TAILQ_LAST(&page_swap_queue, Page_tailq)) {
-			if (pp->accessed == 0) {
-			} else {
+		if (TAILQ_NEXT(pp, swap_link)) {
+			pp = TAILQ_NEXT(pp, swap_link);
+			if (pp == last_next) { break; } // We came back after a full circle.
+			if (pp->accessed == 1) {
 				pp->accessed = 0;
-				pp = TAILQ_FIRST(&page_swap_queue);
+			} else {
+				break;
 			}
-			break;
+		} else { // Jump to the first on the end.
+			pp = TAILQ_FIRST(&page_swap_queue);
 		}
-		if (pp->accessed == 0) {
-			break;
-		} else {
-			pp->accessed = 0;
-		}
-		pp = TAILQ_NEXT(pp, swap_link);
 	}
+	last_next = (TAILQ_NEXT(pp, swap_link) != NULL) ?
+		TAILQ_NEXT(pp, swap_link) : TAILQ_FIRST(&page_swap_queue);
 
 	// Write PPage data to a disk block.
 	int sd_bno = sd_block_alloc();
